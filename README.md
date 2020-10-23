@@ -1,2 +1,2 @@
-# bot
+# Bot
 QQ BOT
