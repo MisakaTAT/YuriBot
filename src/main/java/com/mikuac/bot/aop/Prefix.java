@@ -41,32 +41,33 @@ public class Prefix {
 
         Object[] args = pjp.getArgs();
 
-        Object arg = args[1];
-
-        if (arg instanceof OnebotEvent.GroupMessageEvent) {
-            OnebotEvent.GroupMessageEvent event = (OnebotEvent.GroupMessageEvent)arg;
-            String msg = event.getRawMessage();
-            if (!msg.startsWith(prefix)) {
-                return BotPlugin.MESSAGE_IGNORE;
+        for (int i = 0; i < args.length; i++){
+            //处理群组消息
+            if (args[i] instanceof OnebotEvent.GroupMessageEvent) {
+                OnebotEvent.GroupMessageEvent event = (OnebotEvent.GroupMessageEvent)args[i];
+                var msg = event.getRawMessage();
+                if (!msg.startsWith(prefix)) {
+                    return BotPlugin.MESSAGE_IGNORE;
+                }
+                var eventBuilder = event.toBuilder();
+                msg = msg.substring(prefix.length());
+                eventBuilder.addMessage(0, OnebotBase.Message.newBuilder().setType("text").putData("text", msg).build());
+                eventBuilder.setRawMessage(msg);
+                args[i] = eventBuilder.build();
             }
-            var eventBuilder = event.toBuilder();
-            msg = msg.substring(prefix.length());
-            eventBuilder.addMessage(0, OnebotBase.Message.newBuilder().setType("text").putData("text", msg).build());
-            eventBuilder.setRawMessage(msg);
-            args[1] = eventBuilder.build();
-        }
-
-        if (arg instanceof OnebotEvent.PrivateMessageEvent) {
-            OnebotEvent.PrivateMessageEvent event = (OnebotEvent.PrivateMessageEvent)arg;
-            String msg = event.getRawMessage();
-            if (!msg.startsWith(prefix)) {
-                return BotPlugin.MESSAGE_IGNORE;
+            //处理私聊消息
+            if (args[i] instanceof OnebotEvent.PrivateMessageEvent) {
+                OnebotEvent.PrivateMessageEvent event = (OnebotEvent.PrivateMessageEvent)args[i];
+                var msg = event.getRawMessage();
+                if (!msg.startsWith(prefix)) {
+                    return BotPlugin.MESSAGE_IGNORE;
+                }
+                var eventBuilder = event.toBuilder();
+                msg = msg.substring(prefix.length());
+                eventBuilder.addMessage(0, OnebotBase.Message.newBuilder().setType("text").putData("text", msg).build());
+                eventBuilder.setRawMessage(msg);
+                args[i] = eventBuilder.build();
             }
-            var eventBuilder = event.toBuilder();
-            msg = msg.substring(prefix.length());
-            eventBuilder.addMessage(0, OnebotBase.Message.newBuilder().setType("text").putData("text", msg).build());
-            eventBuilder.setRawMessage(msg);
-            args[1] = eventBuilder.build();
         }
 
         return pjp.proceed(args);
