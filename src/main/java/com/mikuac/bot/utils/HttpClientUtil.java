@@ -11,15 +11,15 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+/**
+ * @author Zero
+ * @date  2020/10/23 22:50
+ */
+
 @Slf4j
 @Component
 public class HttpClientUtil {
 
-    /**
-     * @param url
-     * @return
-     * @throws Exception
-     */
     public static String httpGetWithJson(String url) throws Exception {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         RequestConfig requestConfig = RequestConfig.custom()

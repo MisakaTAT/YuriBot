@@ -8,6 +8,11 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Zero
+ * @date  2020/10/23 22:50
+ */
+
 @Slf4j
 @Aspect
 @Component
@@ -16,10 +21,12 @@ public class Prefix {
     @Value("${yuri.plugins.prefix-config.prefix}")
     private String prefix;
 
-    //声明切点
-    final private static String prefixPoint = "execution(* com.mikuac.bot.plugins.*.on*Message(..))";
+    /**
+     * 声明切点
+     */
+    final private static String PrefixPoint = "execution(* com.mikuac.bot.plugins.*.on*Message(..))";
 
-    @Around(prefixPoint)
+    @Around(PrefixPoint)
     public Object prefixCheck(ProceedingJoinPoint pjp) throws Throwable {
 
         Object[] args = pjp.getArgs();

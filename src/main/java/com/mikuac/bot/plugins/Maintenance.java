@@ -8,6 +8,11 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Zero
+ * @date  2020/10/23 22:50
+ */
+
 @Component
 public class Maintenance extends BotPlugin {
 
