@@ -20,6 +20,7 @@ public class Setu extends BotPlugin {
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
 
+
         String msg = event.getRawMessage();
 
         if(msg.equals("hi")) {
@@ -35,4 +36,8 @@ public class Setu extends BotPlugin {
         return MESSAGE_IGNORE;
     }
 
+    @Override
+    public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
+        return super.onPrivateMessage(bot, event);
+    }
 }
