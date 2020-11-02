@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Aspect
 @Component
-public class Prefix {
+public class CommandPrefix {
 
     @Value("${yuri.plugins.prefix-config.prefix}")
     private String prefix;

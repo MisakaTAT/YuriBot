@@ -1,0 +1,38 @@
+package com.mikuac.bot.utils;
+
+import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+/**
+ * @author Zero
+ * @date 2020/11/2 13:19
+ */
+@Slf4j
+@Component
+public class TelegramUtils {
+
+    /**
+     * 获取图片链接
+     * @param botToken
+     * @param fileId
+     * @return
+     * @throws Exception
+     */
+    public static String getImgUrl(String botToken, String fileId) {
+        String api = "https://api.telegram.org/bot" + botToken + "/getFile?file_id=" + fileId;
+        String result = null;
+        try {
+            System.out.println(api);
+            result = HttpClientUtil.httpGetWithJson(api);
+        } catch (Exception e) {
+            log.info("Telegram图片链接获取异常 {}",e);
+        }
+        JSONObject jsonObject= JSONObject.parseObject(result);
+        String filePath = (String) jsonObject.getJSONObject("result").get("file_path");
+        String imgUrl = "https://api.telegram.org/file/" + botToken + "/" + filePath;
+        System.out.println(imgUrl);
+        return imgUrl;
+    }
+
+}

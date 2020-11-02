@@ -1,6 +1,9 @@
 package com.mikuac.bot.telegram;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.mikuac.bot.bean.ConfigGet;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -13,22 +16,24 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  * @date 2020/10/31 17:08
  */
 @Component
-public class ForwardMessage extends TelegramLongPollingBot {
+public class ForwardMessage extends TelegramLongPollingBot implements ApplicationRunner {
 
-    @Value("${yuri.telegram.botName}")
-    private String botName;
+    private ConfigGet configGet;
 
-    @Value("${yuri.telegram.botToken}")
-    private String botToken;
+    @Autowired
+    public void setConfigGet(ConfigGet configGet) {
+        this.configGet = configGet;
+    }
 
-    static {
+    @Override
+    public void run(ApplicationArguments args) {
         // 初始化Api上下文
         ApiContextInitializer.init();
         // 实例化Telegram Bots API
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
+        TelegramBotsApi bot = new TelegramBotsApi();
         try {
             // 注册Bot
-            telegramBotsApi.registerBot(new ForwardMessage());
+            bot.registerBot(new ForwardMessage());
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
@@ -42,12 +47,12 @@ public class ForwardMessage extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return botName;
+        return configGet.getBotToken();
     }
 
     @Override
     public String getBotToken() {
-        return botToken;
+        return configGet.getBotToken();
     }
 
 }
