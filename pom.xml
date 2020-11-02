@@ -77,7 +77,7 @@
         <!--telegram框架-->
         <dependency>
             <groupId>org.telegram</groupId>
-            <artifactId>telegrambots</artifactId>
+            <artifactId>telegrambots-spring-boot-starter</artifactId>
             <version>4.9.1</version>
         </dependency>
 

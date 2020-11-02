@@ -2,7 +2,7 @@ package com.mikuac.bot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+import org.telegram.telegrambots.ApiContextInitializer;
 
 /**
  * @author Zero
@@ -11,6 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class BotApplication {
     public static void main(String[] args) {
+        // Telegram框架初始化
+        ApiContextInitializer.init();
         SpringApplication.run(BotApplication.class, args);
     }
 }

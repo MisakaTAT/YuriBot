@@ -23,16 +23,18 @@ public class TelegramUtils {
         String api = "https://api.telegram.org/bot" + botToken + "/getFile?file_id=" + fileId;
         String result = null;
         try {
-            System.out.println(api);
             result = HttpClientUtil.httpGetWithJson(api);
         } catch (Exception e) {
             log.info("Telegram图片链接获取异常 {}",e);
         }
-        JSONObject jsonObject= JSONObject.parseObject(result);
-        String filePath = (String) jsonObject.getJSONObject("result").get("file_path");
-        String imgUrl = "https://api.telegram.org/file/" + botToken + "/" + filePath;
-        System.out.println(imgUrl);
-        return imgUrl;
+        if (result != null) {
+            JSONObject jsonObject = JSONObject.parseObject(result);
+            String filePath = (String) jsonObject.getJSONObject("result").get("file_path");
+            return "https://api.telegram.org/file/bot" + botToken + "/" + filePath;
+        }else {
+            log.info("Telegram图片链接获取失败");
+            return null;
+        }
     }
 
 }
