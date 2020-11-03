@@ -16,7 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  * @date 2020/10/31 17:08
  */
 @Slf4j
-@Component
+//@Component
 public class ForwardMessage extends TelegramLongPollingBot {
 
     private SendMsgUtils sendMsgUtils;

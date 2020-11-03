@@ -12,7 +12,7 @@ import org.telegram.telegrambots.ApiContextInitializer;
 public class BotApplication {
     public static void main(String[] args) {
         // Telegram框架初始化
-        ApiContextInitializer.init();
+        // ApiContextInitializer.init();
         SpringApplication.run(BotApplication.class, args);
     }
 }
