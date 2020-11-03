@@ -12,10 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
+ * AOP前缀处理
  * @author Zero
  * @date  2020/10/23 22:50
  */
-
 @Slf4j
 @Aspect
 @Component

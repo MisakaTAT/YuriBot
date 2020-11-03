@@ -12,15 +12,21 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
+ * Http请求工具类
  * @author Zero
  * @date  2020/10/23 22:50
  */
-
 @Slf4j
 @Component
 public class HttpClientUtil {
 
-    public static String httpGetWithJson(String url) throws Exception {
+    /**
+     * Get请求并返回Json数据
+     * @param url
+     * @return
+     * @throws Exception
+     */
+    public static String httpGetWithJson(String url) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         RequestConfig requestConfig = RequestConfig.custom()
                 //设置连接超时时间
@@ -38,12 +44,12 @@ public class HttpClientUtil {
             //获得返回的结果
             return EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
         } catch (IOException e) {
-            e.printStackTrace();
+            log.info("HttpGetWithJson请求异常：[{}]", e);
         }finally {
             try {
                 httpClient.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.info("HttpGetWithJson HttpClient Close异常：[{}]", e);
             }
         }
         return null;

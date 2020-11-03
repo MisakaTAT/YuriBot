@@ -1,5 +1,6 @@
 package com.mikuac.bot.plugins;
 
+import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;
 import onebot.OnebotEvent;
@@ -11,11 +12,11 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 复读
+ * 复读插件
  * @author Zero
  * @date 2020/10/24 20:27
  */
-
+@Slf4j
 @Component
 public class Repeat extends BotPlugin {
 
@@ -40,6 +41,7 @@ public class Repeat extends BotPlugin {
             countMap.put(groupId, count);
             if (count == randomCount + 1) {
                 bot.sendGroupMsg(groupId, msg, false);
+                log.info("复读成功，复读内容：[{}]", msg);
                 countMap.put(groupId, 0);
             }
         } else {

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
+ * Telegram工具类
  * @author Zero
  * @date 2020/11/2 13:19
  */
@@ -25,14 +26,13 @@ public class TelegramUtils {
         try {
             result = HttpClientUtil.httpGetWithJson(api);
         } catch (Exception e) {
-            log.info("Telegram图片链接获取异常 {}",e);
+            log.info("Telegram图片链接获取异常 [{}]", e);
         }
         if (result != null) {
             JSONObject jsonObject = JSONObject.parseObject(result);
             String filePath = (String) jsonObject.getJSONObject("result").get("file_path");
             return "https://api.telegram.org/file/bot" + botToken + "/" + filePath;
         }else {
-            log.info("Telegram图片链接获取失败");
             return null;
         }
     }

@@ -8,21 +8,41 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
+ * QQ主动消息推送工具类
  * @author Zero
  * @date 2020/11/2 19:42
  */
 @Component
 public class SendMsgUtils {
 
-    @Autowired
     private BotContainer botContainer;
+
+    @Autowired
+    public void setBotContainer(BotContainer botContainer) {
+        this.botContainer = botContainer;
+    }
 
     @Value("${yuri.bot.selfId}")
     private Long botId;
 
-    public void sendGroupMsg(Msg msg) {
+    /**
+     * 私聊消息发送
+     * @param userId
+     * @param msg
+     */
+    public void sendPrivateMsg(long userId, Msg msg) {
         Bot bot = botContainer.getBots().get(botId);
-        bot.sendGroupMsg(204219849,msg.build(),false);
+        bot.sendPrivateMsg(userId, msg.build(), false);
+    }
+
+    /**
+     * 群组消息发送
+     * @param groupId
+     * @param msg
+     */
+    public void sendGroupMsg(long groupId, Msg msg) {
+        Bot bot = botContainer.getBots().get(botId);
+        bot.sendGroupMsg(groupId, msg.build(), false);
     }
 
 }

@@ -19,8 +19,12 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Component
 public class ForwardMessage extends TelegramLongPollingBot {
 
-    @Autowired
     private SendMsgUtils sendMsgUtils;
+
+    @Autowired
+    public void setSendMsgUtils(SendMsgUtils sendMsgUtils) {
+        this.sendMsgUtils = sendMsgUtils;
+    }
 
     @Value("${yuri.telegram.enable}")
     private Boolean enable;
@@ -43,7 +47,7 @@ public class ForwardMessage extends TelegramLongPollingBot {
                         Msg msg = Msg.builder()
                                 .image(imgUrl)
                                 .text("消息来自Telegram群组：" + (forwardFrom != null ? forwardFrom : groupName));
-                        sendMsgUtils.sendGroupMsg(msg);
+                        sendMsgUtils.sendGroupMsg(1111L,msg);
                     }
                 }
             }
