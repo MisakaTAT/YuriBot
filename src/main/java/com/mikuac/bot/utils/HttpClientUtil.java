@@ -22,26 +22,28 @@ public class HttpClientUtil {
 
     /**
      * Get请求并返回Json数据
-     * @param url
+     * @param url api地址
      * @return
      * @throws Exception
      */
     public static String httpGetWithJson(String url) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         RequestConfig requestConfig = RequestConfig.custom()
-                //设置连接超时时间
+                // 设置连接超时时间
                 .setConnectTimeout(5000)
-                //设置请求超时时间
+                // 设置请求超时时间
                 .setConnectionRequestTimeout(5000)
                 .setSocketTimeout(5000)
-                //默认允许自动重定向
+                // 默认允许自动重定向
                 .setRedirectsEnabled(true)
                 .build();
         HttpGet httpGet = new HttpGet(url);
+        // 设置请求头
+        httpGet.setHeader("referer","no-referer");
         httpGet.setConfig(requestConfig);
         try {
             HttpResponse httpResponse = httpClient.execute(httpGet);
-            //获得返回的结果
+            // 获得返回的结果
             return EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
         } catch (IOException e) {
             log.info("HttpGetWithJson请求异常：[{}]", e);
