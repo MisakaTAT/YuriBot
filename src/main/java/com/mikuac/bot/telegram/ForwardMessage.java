@@ -35,20 +35,18 @@ public class ForwardMessage extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (enable) {
-            Boolean isGroupChat = update.getMessage().getChat().isGroupChat();
-            if (isGroupChat) {
-                String groupName = update.getMessage().getChat().getTitle();
-                String forwardFrom = update.getMessage().getForwardFromChat().getTitle();
-                String imgFileId = update.getMessage().getPhoto().get(2).getFileId();
-                if (imgFileId != null) {
-                    String imgUrl = TelegramUtils.getImgUrl(botToken, imgFileId);
-                    if (imgUrl != null) {
-                        Msg msg = Msg.builder()
-                                .image(imgUrl)
-                                .text("消息来自Telegram群组：" + (forwardFrom != null ? forwardFrom : groupName));
-                        sendMsgUtils.sendGroupMsg(1111L,msg);
-                    }
+        Boolean isGroupChat = update.getMessage().getChat().isGroupChat();
+        if (isGroupChat) {
+            String groupName = update.getMessage().getChat().getTitle();
+            String forwardFrom = update.getMessage().getForwardFromChat().getTitle();
+            String imgFileId = update.getMessage().getPhoto().get(2).getFileId();
+            if (imgFileId != null) {
+                String imgUrl = TelegramUtils.getImgUrl(botToken, imgFileId);
+                if (imgUrl != null) {
+                    Msg msg = Msg.builder()
+                            .image(imgUrl)
+                            .text("消息来自Telegram群组：" + (forwardFrom != null ? forwardFrom : groupName));
+                    sendMsgUtils.sendGroupMsg(1111L,msg);
                 }
             }
         }
