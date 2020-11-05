@@ -7,6 +7,7 @@ import com.mikuac.bot.utils.HttpClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;
+import net.lz1998.pbbot.utils.Msg;
 import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +27,7 @@ public class RainbowSixStats extends BotPlugin {
     @Value("${yuri.plugins.rainbow-six-stats.msgMatch}")
     private String msgMatch;
 
+    private int rankImg;
     /**
      * 战绩查询方法
      * @param gameUserName 游戏用户名
@@ -35,16 +37,26 @@ public class RainbowSixStats extends BotPlugin {
         System.out.println(result);
         R6S r6s = JSON.parseObject(result, R6S.class);
         for (BasicStat basicstat : r6s.getBasicStat()) {
-            System.out.println(basicstat.getRegion());
+            if ("apac".equals(basicstat.getRegion())) {
+                rankImg = basicstat.getRank();
+                System.out.println(rankImg);
+            }
         }
     }
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
         String msg = event.getRawMessage();
-        System.out.println(msgMatch);
-        if (msg.matches(msgMatch)){
+        long groupId = event.getGroupId();
+        long userId = event.getUserId();
+
+        if ("GET".equals(msg)){
             getRainbowSixStats("MisakaTAT");
+            Msg msgBuilder = Msg.builder()
+                    .at(userId)
+                    .image("https://s1.ax1x.com/2020/11/05/B23QW8.png");
+            System.out.println("https://www.r6s.cn/NewRanksSvg/r"+rankImg+".svg");
+            bot.sendGroupMsg(groupId,msgBuilder.build(),false);
         }
 
         return MESSAGE_IGNORE;

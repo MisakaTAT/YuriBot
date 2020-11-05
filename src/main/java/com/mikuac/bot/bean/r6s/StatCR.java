@@ -1,31 +1,50 @@
 package com.mikuac.bot.bean.r6s;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
 /**
- * R6S战绩实体类
+ * 常规战 & 排名战总数据
  * @author Zero
- * @date 2020/11/5 24:00
+ * @date 2020/11/3 23:00
  */
 @Data
 @Component
 public class StatCR {
 
+    /**
+     * 击杀数
+     */
     private int kills;
-    @JsonProperty("timePlayed")
-    private int timeplayed;
-    private int mmr;
-    @JsonProperty("user_id")
-    private String userId;
+
+    /**
+     * 游玩时长
+     */
+    private int timePlayed;
+
+    /**
+     * 败场
+     */
     private int lost;
+
+    /**
+     * 胜场
+     */
     private int won;
-    @JsonProperty("update_at")
-    private UpdateAt updateAt;
+
+    /**
+     * 游戏模式（casual，ranked）
+     */
     private String model;
-    private String id;
+
+    /**
+     * 总场次
+     */
     private int played;
+
+    /**
+     * 死亡次数
+     */
     private int deaths;
 
 }

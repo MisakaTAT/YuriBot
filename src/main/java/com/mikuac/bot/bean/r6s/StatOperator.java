@@ -1,27 +1,40 @@
 package com.mikuac.bot.bean.r6s;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
 /**
- * R6S战绩实体类
+ * 干员数据
  * @author Zero
- * @date 2020/11/5 24:00
+ * @date 2020/11/4 23:00
  */
 @Data
 @Component
 public class StatOperator {
 
+    /**
+     * 击杀数
+     */
     private int kills;
-    @JsonProperty("timePlayed")
-    private int timeplayed;
-    @JsonProperty("user_id")
-    private String userId;
+
+    /**
+     * 败场
+     */
     private int lost;
+
+    /**
+     * 胜场
+     */
     private int won;
+
+    /**
+     * 干员名
+     */
     private String name;
-    private String id;
+
+    /**
+     * 死亡数
+     */
     private int deaths;
 
 }

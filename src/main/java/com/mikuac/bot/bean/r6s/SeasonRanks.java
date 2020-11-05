@@ -2,35 +2,62 @@ package com.mikuac.bot.bean.r6s;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.stereotype.Component;
 
 /**
- * R6S战绩实体类
+ * 赛季排位数据
  * @author Zero
- * @date 2020/11/5 24:00
+ * @date 2020/11/4 23:00
  */
 @Data
 @Component
 public class SeasonRanks {
 
+    /**
+     * 胜场
+     */
     private int wins;
-    @JsonProperty("skill_stdev")
-    private double skillStdev;
+
+    /**
+     * 最高MMR
+     */
     @JsonProperty("max_mmr")
     private int maxMmr;
+
+    /**
+     * 弃赛场次
+     */
     private int abandons;
+
+    /**
+     * 败场
+     */
     private int losses;
+
+    /**
+     * 最终MMR
+     */
     private int mmr;
+
+    /**
+     * 最高段位（取图标用）
+     */
     @JsonProperty("max_rank")
     private int maxRank;
-    @JsonProperty("user_id")
-    private String userId;
+
+    /**
+     * 最终段位（取图标用）
+     */
     private int rank;
+
+    /**
+     * 赛季
+     */
     private int season;
-    private String id;
+
+    /**
+     * 区域
+     */
     private String region;
-    @JsonProperty("skill_mean")
-    private double skillMean;
 
 }

@@ -1,10 +1,11 @@
 package com.mikuac.bot.bean.r6s;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
 /**
- * R6S战绩实体类
+ * 武器数据
  * @author Zero
  * @date 2020/11/5 24:00
  */
@@ -12,12 +13,32 @@ import org.springframework.stereotype.Component;
 @Component
 public class StatWeapon {
 
+    /**
+     * 击杀
+     */
     private int kills;
-    private int headshot;
-    private String id;
-    private int bullethit;
+
+    /**
+     * 爆头击杀
+     */
+    @JsonProperty("headshot")
+    private int headShot;
+
+    /**
+     * 子弹命中次数
+     */
+    @JsonProperty("bullethit")
+    private int bulletHit;
+
+    /**
+     * 武器名
+     */
     private String type;
-    private int bulletfired;
-    private String userid;
+
+    /**
+     * 开火次数
+     */
+    @JsonProperty("bulletfired")
+    private int bulletFired;
 
 }

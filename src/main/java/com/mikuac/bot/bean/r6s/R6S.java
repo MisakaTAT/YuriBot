@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * R6S战绩实体类
  * @author Zero
- * @date 2020/11/5 24:00
+ * @date 2020/11/4 23:00
  */
 @Data
 @Component
@@ -25,28 +25,22 @@ public class R6S {
     private String username;
 
     /**
-     * 基本战绩
+     * 当前赛季基本数据
      */
     @JsonProperty("Basicstat")
     private List<BasicStat> basicStat;
 
     /**
-     * 赛季排位数据
+     * 历史赛季排位数据
      */
     @JsonProperty("SeasonRanks")
     private List<SeasonRanks> seasonRanks;
 
     /**
-     * 常规战数据
+     * 常规战 & 排名战总数据
      */
     @JsonProperty("StatCR")
     private List<StatCR> statCr;
-
-    /**
-     * 近日概况
-     */
-    @JsonProperty("StatCR2")
-    private List<StatCR2> statCr2;
 
     /**
      * 模式数据数据

@@ -5,21 +5,38 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 
 /**
- * R6S战绩实体类
+ * 模式数据
  * @author Zero
- * @date 2020/11/5 24:00
+ * @date 2020/11/4 23:00
  */
 @Data
 @Component
 public class StatBHS {
 
-    private int bestscore;
-    @JsonProperty("user_id")
-    private String userId;
+    /**
+     * 最高分
+     */
+    @JsonProperty("bestscore")
+    private int bestScore;
+
+    /**
+     * 败场
+     */
     private int lost;
+
+    /**
+     * 胜场
+     */
     private int won;
+
+    /**
+     * 模式
+     */
     private String model;
-    private String id;
+
+    /**
+     * 总场数
+     */
     private int played;
 
 }

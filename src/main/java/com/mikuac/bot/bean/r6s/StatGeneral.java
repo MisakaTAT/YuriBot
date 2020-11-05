@@ -5,37 +5,73 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 
 /**
- * R6S战绩实体类
+ * 综合数据
  * @author Zero
- * @date 2020/11/5 24:00
+ * @date 2020/11/4 23:00
  */
 @Data
 @Component
 public class StatGeneral {
 
-    @JsonProperty("killAssists")
-    private int killassists;
+    /**
+     * 助攻
+     */
+    private int killAssists;
+
+    /**
+     * 总击杀
+     */
     private int kills;
+
+    /**
+     * 近战击杀
+     */
     @JsonProperty("meleeKills")
-    private int meleekills;
-    @JsonProperty("bulletsFired")
-    private int bulletsfired;
-    @JsonProperty("penetrationKills")
-    private int penetrationkills;
+    private int meleeKills;
+
+    /**
+     * 总开火次数
+     */
+    private int bulletsFired;
+
+    /**
+     * 穿透击杀
+     */
+    private int penetrationKills;
+
+    /**
+     * 总游戏场次
+     */
     private int played;
+
+    /**
+     * 救助
+     */
     private int revives;
-    @JsonProperty("timePlayed")
-    private int timeplayed;
-    @JsonProperty("user_id")
-    private String userId;
-    private int headshot;
+
+    /**
+     * 爆头击杀
+     */
+    private int headShot;
+
+    /**
+     * 总败场
+     */
     private int lost;
-    @JsonProperty("bulletsHit")
-    private int bulletshit;
+
+    /**
+     * 子弹命中次数
+     */
+    private int bulletsHit;
+
+    /**
+     * 总胜场
+     */
     private int won;
-    @JsonProperty("update_at")
-    private UpdateAt updateAt;
-    private String id;
+
+    /**
+     * 死亡次数
+     */
     private int deaths;
 
 }
