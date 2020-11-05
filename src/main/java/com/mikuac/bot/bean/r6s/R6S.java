@@ -40,13 +40,13 @@ public class R6S {
      * 常规战 & 排名战总数据
      */
     @JsonProperty("StatCR")
-    private List<StatCR> statCr;
+    private List<StatCR> statCR;
 
     /**
      * 模式数据数据
      */
     @JsonProperty("StatBHS")
-    private List<StatBHS> statBhs;
+    private List<StatBHS> statBHS;
 
     /**
      * 武器数据

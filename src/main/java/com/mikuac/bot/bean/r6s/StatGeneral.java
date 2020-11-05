@@ -1,6 +1,5 @@
 package com.mikuac.bot.bean.r6s;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +25,6 @@ public class StatGeneral {
     /**
      * 近战击杀
      */
-    @JsonProperty("meleeKills")
     private int meleeKills;
 
     /**
