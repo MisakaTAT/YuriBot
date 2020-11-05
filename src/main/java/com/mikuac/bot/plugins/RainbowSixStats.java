@@ -118,8 +118,8 @@ public class RainbowSixStats extends BotPlugin {
                 gameUserId = msg.replaceAll("^[查获][询取]", "").replaceAll("[战数][绩据]-[Rr彩][6六]亚服", "");
                 log.info("彩虹六号战绩查询gameUserId URLEncoder异常 [{}]",e);
             }
+            bot.sendGroupMsg(groupId,Msg.builder().at(userId).text(gameUserId+"数据查询中，请稍后~").build(),false);
             try {
-                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text(gameUserId+"数据查询中，请稍后~").build(),false);
                 getRainbowSixStats(gameUserId);
                 getDataAndBuilder();
                 bot.sendGroupMsg(groupId,getDataAndBuilder().text("\n\n").at(userId).build(),false);
@@ -142,13 +142,13 @@ public class RainbowSixStats extends BotPlugin {
                 gameUserId = msg.replaceAll("^[查获][询取]", "").replaceAll("[战数][绩据]-[Rr彩][6六]亚服", "");
                 log.info("彩虹六号战绩查询gameUserId URLEncoder异常 [{}]",e);
             }
+            bot.sendPrivateMsg(userId,Msg.builder().text(gameUserId+"数据查询中，请稍后~").build(),false);
             try {
-                bot.sendPrivateMsg(userId,Msg.builder().at(userId).text(gameUserId+"数据查询中，请稍后~").build(),false);
                 getRainbowSixStats(gameUserId);
                 getDataAndBuilder();
                 bot.sendPrivateMsg(userId,getDataAndBuilder().build(),false);
             } catch (Exception e) {
-                bot.sendPrivateMsg(userId,Msg.builder().at(userId).text(gameUserId+"游戏数据查询失败，请稍后重试~").build(),false);
+                bot.sendPrivateMsg(userId,Msg.builder().text(gameUserId+"游戏数据查询失败，请稍后重试~").build(),false);
             }
         }
         return MESSAGE_IGNORE;
