@@ -32,9 +32,9 @@ public class RainbowSixStats extends BotPlugin {
         this.r6S = r6S;
     }
 
-    @Value("${yuri.plugins.rainbow-six-stats.api}")
+    @Value("${yuri.plugins.r6s-config.api}")
     private String api;
-    @Value("${yuri.plugins.rainbow-six-stats.msgMatch}")
+    @Value("${yuri.plugins.r6s-config.msgMatch}")
     private String msgMatch;
 
     /**
@@ -42,7 +42,7 @@ public class RainbowSixStats extends BotPlugin {
      * @param gameUserName 游戏用户名
      */
     public void getRainbowSixStats(String gameUserName) {
-        String result = HttpClientUtil.httpGetWithJson(api+gameUserName);
+        String result = HttpClientUtil.httpGetWithJson(api+gameUserName,true);
         r6S = JSON.parseObject(result, R6S.class);
     }
 
@@ -142,13 +142,13 @@ public class RainbowSixStats extends BotPlugin {
                 gameUserId = msg.replaceAll("^[查获][询取]", "").replaceAll("[战数][绩据]-[Rr彩][6六]亚服", "");
                 log.info("彩虹六号战绩查询gameUserId URLEncoder异常 [{}]",e);
             }
-            bot.sendPrivateMsg(userId,Msg.builder().text(gameUserId+"数据查询中，请稍后~").build(),false);
+            bot.sendPrivateMsg(userId,gameUserId+"数据查询中，请稍后~",false);
             try {
                 getRainbowSixStats(gameUserId);
                 getDataAndBuilder();
                 bot.sendPrivateMsg(userId,getDataAndBuilder().build(),false);
             } catch (Exception e) {
-                bot.sendPrivateMsg(userId,Msg.builder().text(gameUserId+"游戏数据查询失败，请稍后重试~").build(),false);
+                bot.sendPrivateMsg(userId,gameUserId+"游戏数据查询失败，请稍后重试~",false);
             }
         }
         return MESSAGE_IGNORE;

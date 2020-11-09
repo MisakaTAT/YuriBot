@@ -26,7 +26,7 @@ public class HttpClientUtil {
      * @return
      * @throws Exception
      */
-    public static String httpGetWithJson(String url) {
+    public static String httpGetWithJson(String url,Boolean noReferer) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         RequestConfig requestConfig = RequestConfig.custom()
                 // 设置连接超时时间
@@ -39,7 +39,9 @@ public class HttpClientUtil {
                 .build();
         HttpGet httpGet = new HttpGet(url);
         // 设置请求头
-        httpGet.setHeader("referer","no-referer");
+        if (noReferer) {
+            httpGet.setHeader("referer","no-referer");
+        }
         httpGet.setConfig(requestConfig);
         try {
             HttpResponse httpResponse = httpClient.execute(httpGet);

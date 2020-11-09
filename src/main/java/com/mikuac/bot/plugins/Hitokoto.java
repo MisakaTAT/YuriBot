@@ -63,7 +63,7 @@ public class Hitokoto extends BotPlugin {
     Map<Long, Long> lastGetTimeMap = new ConcurrentHashMap<>();
 
     public void getData(char type) {
-        String result = HttpClientUtil.httpGetWithJson(api + type);
+        String result = HttpClientUtil.httpGetWithJson(api + type,false);
         JSONObject jsonObject = JSONObject.parseObject(result);
         hitokoto = jsonObject.getString("hitokoto");
         from = jsonObject.getString("from");
