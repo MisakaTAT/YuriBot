@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -149,7 +148,7 @@ public class SeTu extends BotPlugin {
                     Msg stInfoMsg = Msg.builder();
                     for (Data data : seTuBean.getData()) {
                         stInfoMsg.at(userId);
-                        stInfoMsg.text("标题：" + data.getTitle());
+                        stInfoMsg.text("\n标题：" + data.getTitle());
                         stInfoMsg.text("\nPID：" + data.getPid());
                         stInfoMsg.text("\n作者：" + data.getAuthor());
                         stInfoMsg.text("\n链接：" + "https://www.pixiv.net/artworks/" + data.getPid());
