@@ -12,6 +12,8 @@ import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -77,8 +79,8 @@ public class Hitokoto extends BotPlugin {
         if (msg.matches(msgMatch)) {
             long groupId = event.getGroupId();
             long userId = event.getUserId();
-            long getNowTime = event.getTime()/1000;
-            long lastGetTime = lastGetTimeMap.getOrDefault(groupId + userId, 0L)/1000;
+            long getNowTime = Instant.now().getEpochSecond();
+            long lastGetTime = lastGetTimeMap.getOrDefault(groupId + userId, 0L);
             long rCd = Math.abs((getNowTime - lastGetTime)-cdTime);
             // 逻辑处理
             if (getNowTime >= lastGetTime + cdTime) {
@@ -95,7 +97,7 @@ public class Hitokoto extends BotPlugin {
                             .at(userId)
                             .text("\n『" + hitokoto + "』\n" + "出自：" + from + "\n" + "类型：" + type);
                     bot.sendGroupMsg(groupId, msgBuilder.build(), false);
-                    lastGetTimeMap.put(groupId + userId, event.getTime());
+                    lastGetTimeMap.put(groupId + userId, Instant.now().getEpochSecond());
                 } catch (Exception e) {
                     bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("一言获取失败,请稍后重试~").build(),false);
                     log.info("一言群组发送异常：[{}]", e);
@@ -113,8 +115,8 @@ public class Hitokoto extends BotPlugin {
         // 私聊消息处理
         if (msg.matches(msgMatch)) {
             long userId = event.getUserId();
-            long getNowTime = event.getTime()/1000;
-            long lastGetTime = lastGetTimeMap.getOrDefault(userId, 0L)/1000;
+            long getNowTime = Instant.now().getEpochSecond();
+            long lastGetTime = lastGetTimeMap.getOrDefault(userId, 0L);
             long rCd = Math.abs((getNowTime - lastGetTime)-cdTime);
             // 逻辑处理
             if (getNowTime >= lastGetTime + cdTime) {
@@ -130,7 +132,7 @@ public class Hitokoto extends BotPlugin {
                     Msg msgBuilder = Msg.builder()
                             .text("『" + hitokoto + "』\n" + "出自：" + from + "\n" + "类型：" + type);
                     bot.sendPrivateMsg(userId, msgBuilder.build(), false);
-                    lastGetTimeMap.put(userId, event.getTime());
+                    lastGetTimeMap.put(userId, Instant.now().getEpochSecond());
                 } catch (Exception e) {
                     bot.sendPrivateMsg(userId,"一言获取失败,请稍后重试~",false);
                     log.info("一言私聊发送异常：[{}]", e);

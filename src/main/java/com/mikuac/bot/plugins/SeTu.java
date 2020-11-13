@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -73,19 +75,6 @@ public class SeTu extends BotPlugin {
         seTuBean = JSON.parseObject(result, SetuBean.class);
     }
 
-    public Msg getDataAndBuilder() {
-        Msg msg = Msg.builder();
-        for (Data data : seTuBean.getData()) {
-            msg.text("标题：" + data.getTitle());
-            msg.text("\nPID：" + data.getPid());
-            msg.text("\n作者：" + data.getAuthor());
-            msg.text("\n链接：" + "https://www.pixiv.net/artworks/" + data.getPid());
-            msg.text("\n反代链接：" + data.getUrl());
-            picUrl = data.getUrl();
-        }
-        return msg;
-    }
-
     @Async
     public void deleteMsg(int msgId) {
         Bot bot = botContainer.getBots().get(botId);
@@ -106,24 +95,33 @@ public class SeTu extends BotPlugin {
         // 私聊消息处理
         if (msg.matches(msgMatch)) {
             long userId = event.getUserId();
-            long getNowTime = event.getTime()/1000;
-            long lastGetTime = lastGetTimeMap.getOrDefault(userId, 0L)/1000;
+            long getNowTime = Instant.now().getEpochSecond();
+            long lastGetTime = lastGetTimeMap.getOrDefault(userId, 0L);
             long rCd = Math.abs((getNowTime - lastGetTime)-cdTime);
             // 逻辑处理
             if (getNowTime >= lastGetTime + cdTime) {
                 bot.sendPrivateMsg(userId, "少女祈祷中~",false);
                 try {
                     getData(msg.matches("(.*?)[rR]18(.*)") ? "&r18=1" : "&r18=0");
-                    lastGetTimeMap.put(userId, event.getTime());
-                    bot.sendPrivateMsg(userId, getDataAndBuilder().build(),false);
+                    lastGetTimeMap.put(userId, Instant.now().getEpochSecond());
+                    Msg stInfoMsg = Msg.builder();
+                    for (Data data : seTuBean.getData()) {
+                        stInfoMsg.text("标题：" + data.getTitle());
+                        stInfoMsg.text("\nPID：" + data.getPid());
+                        stInfoMsg.text("\n作者：" + data.getAuthor());
+                        stInfoMsg.text("\n链接：" + "https://www.pixiv.net/artworks/" + data.getPid());
+                        stInfoMsg.text("\n反代链接：" + data.getUrl());
+                        picUrl = data.getUrl();
+                    }
+                    bot.sendPrivateMsg(userId, stInfoMsg.build(),false);
                     int msgId = bot.sendPrivateMsg(userId,Msg.builder().image(picUrl).build(),false).getMessageId();
                     deleteMsg(msgId);
                 } catch (Exception e) {
+                    lastGetTimeMap.put(userId, 0L);
                     bot.sendPrivateMsg(userId, "图片获取失败，请稍后重试~", false);
                     log.info("色图私聊发送异常 [{}]", e);
                 }
             } else {
-                lastGetTimeMap.put(userId, 0L);
                 bot.sendPrivateMsg(userId,"请求过于频繁~ 剩余CD时间为" + rCd + "秒",false);
             }
         }
@@ -137,8 +135,8 @@ public class SeTu extends BotPlugin {
         if (msg.matches(msgMatch)) {
             long userId = event.getUserId();
             long groupId = event.getGroupId();
-            long getNowTime = event.getTime()/1000;
-            long lastGetTime = lastGetTimeMap.getOrDefault(userId+groupId, 0L)/1000;
+            long getNowTime = Instant.now().getEpochSecond();
+            long lastGetTime = lastGetTimeMap.getOrDefault(userId+groupId, 0L);
             long rCd = Math.abs((getNowTime - lastGetTime)-cdTime);
             // 逻辑处理
             int count = getCountMap.get(userId) == null ? 0 : getCountMap.get(userId);
@@ -147,8 +145,19 @@ public class SeTu extends BotPlugin {
                 try {
                     getData(msg.matches("(.*?)[rR]18(.*)") ? "&r18=1" : "&r18=0");
                     getCountMap.put(userId, count + 1);
-                    lastGetTimeMap.put(userId+groupId, event.getTime());
-                    bot.sendGroupMsg(groupId, getDataAndBuilder().at(userId).build(),false);
+                    lastGetTimeMap.put(userId+groupId, Instant.now().getEpochSecond());
+                    Msg stInfoMsg = Msg.builder();
+                    for (Data data : seTuBean.getData()) {
+                        stInfoMsg.at(userId);
+                        stInfoMsg.text("标题：" + data.getTitle());
+                        stInfoMsg.text("\nPID：" + data.getPid());
+                        stInfoMsg.text("\n作者：" + data.getAuthor());
+                        stInfoMsg.text("\n链接：" + "https://www.pixiv.net/artworks/" + data.getPid());
+                        stInfoMsg.text("\n反代链接：" + data.getUrl());
+                        stInfoMsg.text("\n今日剩余次数：" + (maxGet - getCountMap.get(userId)));
+                        picUrl = data.getUrl();
+                    }
+                    bot.sendGroupMsg(groupId, stInfoMsg.build(),false);
                     int msgId = bot.sendGroupMsg(groupId,Msg.builder().image(picUrl).build(),false).getMessageId();
                     deleteMsg(msgId);
                 } catch (Exception e) {
