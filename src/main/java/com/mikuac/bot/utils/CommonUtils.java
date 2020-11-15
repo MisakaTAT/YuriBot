@@ -16,8 +16,7 @@ public class CommonUtils {
      * @return
      */
     public static String formatDouble(double value) {
-        double format = Math.round(value * 100) * 0.01d;
-        return String.valueOf(format);
+        return String.valueOf(Double.valueOf(String.format("%.2f", value)));
     }
 
 }
