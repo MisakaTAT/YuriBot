@@ -3,12 +3,14 @@ package com.mikuac.bot;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.telegram.telegrambots.ApiContextInitializer;
 
 /**
  * @author Zero
  * @create 2020/10/23 22:50
  */
+@EnableScheduling
 @EnableAsync
 @SpringBootApplication
 public class BotApplication {
