@@ -6,13 +6,13 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.3.4.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>com.mikuac</groupId>
-    <artifactId>bot</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>bot</name>
-    <description>Tencent QQ Bot</description>
+    <artifactId>Yuri-Bot</artifactId>
+    <version>v1.0.0-Alpha</version>
+    <name>Yuri Bot</name>
+    <description>你好~ 我是悠里⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄</description>
 
     <properties>
         <java.version>14</java.version>

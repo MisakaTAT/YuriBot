@@ -54,8 +54,8 @@ public class SeTu extends BotPlugin {
     private int delTime;
     @Value("${yuri.plugins.setu-config.maxGet}")
     private int maxGet;
-    @Value("${yuri.plugins.setu-config.msgMatch}")
-    private String msgMatch;
+    @Value("${yuri.plugins.setu-config.msgRegex}")
+    private String msgRegex;
 
     private String picUrl;
 
@@ -92,7 +92,7 @@ public class SeTu extends BotPlugin {
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
         String msg = event.getRawMessage();
         // 私聊消息处理
-        if (msg.matches(msgMatch)) {
+        if (msg.matches(msgRegex)) {
             long userId = event.getUserId();
             long getNowTime = Instant.now().getEpochSecond();
             long lastGetTime = lastGetTimeMap.getOrDefault(userId, 0L);
@@ -131,7 +131,7 @@ public class SeTu extends BotPlugin {
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
         String msg = event.getRawMessage();
         // 私聊消息处理
-        if (msg.matches(msgMatch)) {
+        if (msg.matches(msgRegex)) {
             long userId = event.getUserId();
             long groupId = event.getGroupId();
             long getNowTime = Instant.now().getEpochSecond();

@@ -49,8 +49,8 @@ public class Hitokoto extends BotPlugin {
     private String api;
     @Value("${yuri.plugins.hitokoto-config.cdTime}")
     private int cdTime;
-    @Value("${yuri.plugins.hitokoto-config.msgMatch}")
-    private String msgMatch;
+    @Value("${yuri.plugins.hitokoto-config.msgRegex}")
+    private String msgRegex;
 
     private String types = "abcdefghijkl";
 
@@ -75,7 +75,7 @@ public class Hitokoto extends BotPlugin {
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
         String msg = event.getRawMessage();
         // 群组消息处理
-        if (msg.matches(msgMatch)) {
+        if (msg.matches(msgRegex)) {
             long groupId = event.getGroupId();
             long userId = event.getUserId();
             long getNowTime = Instant.now().getEpochSecond();
@@ -112,7 +112,7 @@ public class Hitokoto extends BotPlugin {
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
         String msg = event.getRawMessage();
         // 私聊消息处理
-        if (msg.matches(msgMatch)) {
+        if (msg.matches(msgRegex)) {
             long userId = event.getUserId();
             long getNowTime = Instant.now().getEpochSecond();
             long lastGetTime = lastGetTimeMap.getOrDefault(userId, 0L);

@@ -34,8 +34,8 @@ public class RainbowSixStats extends BotPlugin {
 
     @Value("${yuri.plugins.r6s-config.api}")
     private String api;
-    @Value("${yuri.plugins.r6s-config.msgMatch}")
-    private String msgMatch;
+    @Value("${yuri.plugins.r6s-config.msgRegex}")
+    private String msgRegex;
 
     /**
      * 战绩查询方法
@@ -108,7 +108,7 @@ public class RainbowSixStats extends BotPlugin {
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
         String msg = event.getRawMessage();
-        if (msg.matches(msgMatch)){
+        if (msg.matches(msgRegex)){
             long groupId = event.getGroupId();
             long userId = event.getUserId();
             String gameUserId;
@@ -133,7 +133,7 @@ public class RainbowSixStats extends BotPlugin {
     @Override
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
         String msg = event.getRawMessage();
-        if (msg.matches(msgMatch)){
+        if (msg.matches(msgRegex)){
             long userId = event.getUserId();
             String gameUserId;
             try {
