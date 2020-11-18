@@ -32,7 +32,7 @@ public interface MsgCountRepository extends JpaRepository<MsgCount,Integer> {
      * @param groupId
      * @return
      */
-    @Query(value = "SELECT MAX(today_msg_count) FROM msg_count WHERE group_id = :groupId", nativeQuery = true)
+    @Query(value = "SELECT * FROM msg_count WHERE group_id = :groupId order by today_msg_count desc limit 1;", nativeQuery = true)
     Optional<MsgCount> findTodayMaxCount(long groupId);
 
     /**

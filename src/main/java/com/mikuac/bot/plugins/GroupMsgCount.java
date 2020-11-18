@@ -41,16 +41,16 @@ public class GroupMsgCount extends BotPlugin {
         this.msgCountRepository = msgCountRepository;
     }
 
+    @Value("${yuri.bot.adminId}")
+    private long adminId;
+
     @Bean
     public TaskScheduler taskScheduler() {
         ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
         taskScheduler.setPoolSize(10);
         taskScheduler.initialize();
-        return (TaskScheduler)taskScheduler;
+        return taskScheduler;
     }
-
-    @Value("${yuri.bot.adminId}")
-    private long adminId;
 
     @Scheduled(cron = "0 0 00 * * ?",zone = "Asia/Shanghai")
     public void sendMsg() throws InterruptedException {
@@ -60,7 +60,7 @@ public class GroupMsgCount extends BotPlugin {
                 if (msgCount.isPresent()) {
                     Msg msg = Msg.builder()
                             .at(msgCount.get().getUserId())
-                            .text("\n由于您太能水，获得今日群龙王称号~")
+                            .text("\n恭喜获得今日群龙王称号~")
                             .text("\n今日发言次数：" + msgCount.get().getTodayMsgCount())
                             .text("\n历史统计次数：" + msgCount.get().getAllMsgCount());
                     sendMsgUtils.sendGroupMsg(groupId,msg);
