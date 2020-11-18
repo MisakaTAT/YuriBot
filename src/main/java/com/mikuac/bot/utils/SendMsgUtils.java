@@ -58,7 +58,7 @@ public class SendMsgUtils {
      */
     public List<Long> getGroupList() {
         Bot bot = botContainer.getBots().get(botId);
-        List<Long> groupId = new ArrayList();
+        List<Long> groupId = new ArrayList<>();
         int groupCount = Objects.requireNonNull(bot.getGroupList()).getGroupCount();
         for (int i = 0; i < groupCount; i++) {
             groupId.add(bot.getGroupList().getGroup(i).getGroupId());
