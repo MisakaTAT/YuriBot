@@ -2,6 +2,7 @@ package com.mikuac.bot.telegram;
 
 import com.mikuac.bot.utils.SendMsgUtils;
 import com.mikuac.bot.utils.TelegramUtils;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.utils.Msg;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class ForwardMessage extends TelegramLongPollingBot {
     @Value("${yuri.telegram.botToken}")
     private String botToken;
 
+    @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
         Boolean isGroupChat = update.getMessage().getChat().isGroupChat();

@@ -6,7 +6,6 @@ import net.lz1998.pbbot.utils.Msg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -34,8 +33,10 @@ public class SendMsgUtils {
      * @param userId
      * @param msg
      */
-    public void sendPrivateMsg(long userId, Msg msg) {
+    public void sendPrivateMsg(long userId, Msg msg) throws InterruptedException {
         Bot bot = botContainer.getBots().get(botId);
+        // 限制发送速度
+        Thread.sleep(1000);
         bot.sendPrivateMsg(userId, msg.build(), false);
     }
 
@@ -44,8 +45,10 @@ public class SendMsgUtils {
      * @param groupId
      * @param msg
      */
-    public void sendGroupMsg(long groupId, Msg msg) {
+    public void sendGroupMsg(long groupId, Msg msg) throws InterruptedException {
         Bot bot = botContainer.getBots().get(botId);
+        // 限制发送速度
+        Thread.sleep(1000);
         bot.sendGroupMsg(groupId, msg.build(), false);
     }
 
