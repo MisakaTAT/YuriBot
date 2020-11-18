@@ -56,16 +56,14 @@ public class GroupMsgCount extends BotPlugin {
     public void sendMsg() throws InterruptedException {
         if (sendMsgUtils.getGroupList().size() != 0) {
             for (long groupId : sendMsgUtils.getGroupList()) {
-                if (msgCountRepository.findTodayMaxCount(groupId).isPresent()) {
-                    Optional<MsgCount> msgCount = msgCountRepository.findTodayMaxCount(groupId);
-                    if (msgCount.isPresent()) {
-                        Msg msg = Msg.builder()
-                                .at(msgCount.get().getUserId())
-                                .text("\n由于您太能水，获得今日群龙王称号~")
-                                .text("\n今日发言次数：" + msgCount.get().getTodayMsgCount())
-                                .text("\n历史统计次数：" + msgCount.get().getAllMsgCount());
-                        sendMsgUtils.sendGroupMsg(groupId,msg);
-                    }
+                Optional<MsgCount> msgCount = msgCountRepository.findTodayMaxCount(groupId);
+                if (msgCount.isPresent()) {
+                    Msg msg = Msg.builder()
+                            .at(msgCount.get().getUserId())
+                            .text("\n由于您太能水，获得今日群龙王称号~")
+                            .text("\n今日发言次数：" + msgCount.get().getTodayMsgCount())
+                            .text("\n历史统计次数：" + msgCount.get().getAllMsgCount());
+                    sendMsgUtils.sendGroupMsg(groupId,msg);
                 } else {
                     log.info("群组[{}]发言次数获取异常",groupId);
                     Msg msg = Msg.builder()
@@ -88,25 +86,19 @@ public class GroupMsgCount extends BotPlugin {
         msgCountRepository.save(msgCount);
     }
 
-    public Optional<MsgCount> getByGroupId(long groupId) {
-        return msgCountRepository.findById(groupId);
-    }
-
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
-
         long userId = event.getUserId();
         long groupId = event.getGroupId();
-
-        if (getByGroupId(groupId).isPresent()) {
-            int todayMsgCount = getByGroupId(groupId).get().getTodayMsgCount();
-            int allMsgCount = getByGroupId(groupId).get().getAllMsgCount();
-            add(groupId, userId, ++todayMsgCount, ++allMsgCount);
+        Optional<MsgCount> msgCount = msgCountRepository.findByGroupAndUserId(groupId,userId);
+        if (msgCount.isPresent()) {
+            int todayMsgCount = msgCount.get().getTodayMsgCount();
+            int allMsgCount = msgCount.get().getAllMsgCount();
+            msgCountRepository.update(groupId, userId, ++todayMsgCount, ++allMsgCount);
         } else {
-            log.info("群组[{}]从未进行消息统计，即将创建该群组字段",groupId);
+            log.info("群组[{}]内的用户[{}]从未进行消息统计，即将创建该群组字段",groupId,userId);
             add(groupId,userId,1,1);
         }
-
         return MESSAGE_IGNORE;
     }
 
