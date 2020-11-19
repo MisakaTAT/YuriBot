@@ -54,8 +54,8 @@ public class GroupMsgCount extends BotPlugin {
 
     @Scheduled(cron = "0 0 00 * * ?",zone = "Asia/Shanghai")
     public void sendMsg() throws InterruptedException {
-        if (sendMsgUtils.getGroupList().size() != 0) {
-            for (long groupId : sendMsgUtils.getGroupList()) {
+        if (this.sendMsgUtils.getGroupList() != null && !this.sendMsgUtils.getGroupList().isEmpty()) {
+            for (long groupId : this.sendMsgUtils.getGroupList()) {
                 Optional<MsgCount> msgCount = msgCountRepository.findTodayMaxCount(groupId);
                 if (msgCount.isPresent()) {
                     Msg msg = Msg.builder()
