@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "msg_count")
-public class MsgCount {
+public class MsgCountEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

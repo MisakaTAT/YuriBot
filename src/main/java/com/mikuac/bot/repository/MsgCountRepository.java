@@ -1,6 +1,6 @@
 package com.mikuac.bot.repository;
 
-import com.mikuac.bot.entity.MsgCount;
+import com.mikuac.bot.entity.MsgCountEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +13,7 @@ import java.util.Optional;
  * @date 2020/11/18 9:50
  */
 @Repository
-public interface MsgCountRepository extends JpaRepository<MsgCount,Integer> {
+public interface MsgCountRepository extends JpaRepository<MsgCountEntity,Integer> {
 
     /**
      * 更新字段
@@ -33,7 +33,7 @@ public interface MsgCountRepository extends JpaRepository<MsgCount,Integer> {
      * @return
      */
     @Query(value = "SELECT * FROM msg_count WHERE group_id = :groupId order by today_msg_count desc limit 1;", nativeQuery = true)
-    Optional<MsgCount> findTodayMaxCount(long groupId);
+    Optional<MsgCountEntity> findTodayMaxCount(long groupId);
 
     /**
      * 根据群组与用户ID查询
@@ -42,7 +42,7 @@ public interface MsgCountRepository extends JpaRepository<MsgCount,Integer> {
      * @return
      */
     @Query(value = "SELECT * FROM msg_count WHERE group_id = :groupId AND user_id = :userId", nativeQuery = true)
-    Optional<MsgCount> findByGroupAndUserId(long groupId, long userId);
+    Optional<MsgCountEntity> findByGroupAndUserId(long groupId, long userId);
 
     /**
      * 重置每日统计次数为0

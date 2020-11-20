@@ -1,6 +1,6 @@
 package com.mikuac.bot.plugins;
 
-import com.mikuac.bot.entity.MsgCount;
+import com.mikuac.bot.entity.MsgCountEntity;
 import com.mikuac.bot.repository.MsgCountRepository;
 import com.mikuac.bot.utils.SendMsgUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -54,9 +54,9 @@ public class GroupMsgCount extends BotPlugin {
 
     @Scheduled(cron = "0 0 00 * * ?",zone = "Asia/Shanghai")
     public void sendMsg() throws InterruptedException {
-        if (this.sendMsgUtils.getGroupList() != null && !this.sendMsgUtils.getGroupList().isEmpty()) {
-            for (long groupId : this.sendMsgUtils.getGroupList()) {
-                Optional<MsgCount> msgCount = msgCountRepository.findTodayMaxCount(groupId);
+        if (sendMsgUtils.getGroupList() != null && !sendMsgUtils.getGroupList().isEmpty()) {
+            for (long groupId : sendMsgUtils.getGroupList()) {
+                Optional<MsgCountEntity> msgCount = msgCountRepository.findTodayMaxCount(groupId);
                 if (msgCount.isPresent()) {
                     Msg msg = Msg.builder()
                             .at(msgCount.get().getUserId())
@@ -78,19 +78,19 @@ public class GroupMsgCount extends BotPlugin {
     }
 
     public void add(long groupId,long userId,int todayMsgCount,int allMsgCount){
-        MsgCount msgCount = new MsgCount();
-        msgCount.setGroupId(groupId);
-        msgCount.setUserId(userId);
-        msgCount.setTodayMsgCount(todayMsgCount);
-        msgCount.setAllMsgCount(allMsgCount);
-        msgCountRepository.save(msgCount);
+        MsgCountEntity msgCountEntity = new MsgCountEntity();
+        msgCountEntity.setGroupId(groupId);
+        msgCountEntity.setUserId(userId);
+        msgCountEntity.setTodayMsgCount(todayMsgCount);
+        msgCountEntity.setAllMsgCount(allMsgCount);
+        msgCountRepository.save(msgCountEntity);
     }
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
         long userId = event.getUserId();
         long groupId = event.getGroupId();
-        Optional<MsgCount> msgCount = msgCountRepository.findByGroupAndUserId(groupId,userId);
+        Optional<MsgCountEntity> msgCount = msgCountRepository.findByGroupAndUserId(groupId,userId);
         if (msgCount.isPresent()) {
             int todayMsgCount = msgCount.get().getTodayMsgCount();
             int allMsgCount = msgCount.get().getAllMsgCount();
