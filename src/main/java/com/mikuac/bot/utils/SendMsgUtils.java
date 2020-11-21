@@ -1,5 +1,6 @@
 package com.mikuac.bot.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotContainer;
 import net.lz1998.pbbot.utils.Msg;
@@ -15,6 +16,7 @@ import java.util.Objects;
  * @author Zero
  * @date 2020/11/2 19:42
  */
+@Slf4j
 @Component
 public class SendMsgUtils {
 
@@ -56,9 +58,16 @@ public class SendMsgUtils {
      * 获取群组列表，返回List
      * @return
      */
-    public List<Long> getGroupList() {
+    public List<Long> getGroupList() throws InterruptedException {
         Bot bot = botContainer.getBots().get(botId);
         List<Long> groupIdList = new ArrayList<>();
+        int errorCount = 0;
+        while (bot == null) {
+            errorCount++;
+            log.info("Bot对象获取失败，当前失败次数[{}]，将在30秒后重试~",errorCount);
+            Thread.sleep(3000);
+            bot = botContainer.getBots().get(botId);
+        }
         int groupCount = Objects.requireNonNull(bot.getGroupList()).getGroupCount();
         for (int i = 0; i < groupCount; i++) {
             groupIdList.add(bot.getGroupList().getGroup(i).getGroupId());
