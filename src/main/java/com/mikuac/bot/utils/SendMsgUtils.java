@@ -65,7 +65,7 @@ public class SendMsgUtils {
         while (bot == null) {
             ++errorCount;
             log.info("Bot对象获取失败，当前失败次数[{}]，将在10秒后重试~",errorCount);
-            Thread.sleep(1000);
+            Thread.sleep(10000);
             bot = botContainer.getBots().get(botId);
         }
         int groupCount = Objects.requireNonNull(bot.getGroupList()).getGroupCount();
