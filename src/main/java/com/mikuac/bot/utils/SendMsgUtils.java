@@ -69,6 +69,7 @@ public class SendMsgUtils {
             bot = botContainer.getBots().get(botId);
         }
         int groupCount = Objects.requireNonNull(bot.getGroupList()).getGroupCount();
+        log.info("Bot对象获取成功[{}]",bot);
         for (int i = 0; i < groupCount; i++) {
             groupIdList.add(bot.getGroupList().getGroup(i).getGroupId());
         }
