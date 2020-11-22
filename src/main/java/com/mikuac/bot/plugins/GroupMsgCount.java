@@ -16,6 +16,8 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -54,8 +56,9 @@ public class GroupMsgCount extends BotPlugin {
 
     @Scheduled(cron = "0 0 00 * * ?",zone = "Asia/Shanghai")
     public void sendMsg() throws InterruptedException {
-        if (sendMsgUtils.getGroupList() != null && !sendMsgUtils.getGroupList().isEmpty()) {
-            for (long groupId : sendMsgUtils.getGroupList()) {
+        List<Long> groupIdList = sendMsgUtils.getGroupList();
+        if (groupIdList != null && !groupIdList.isEmpty()) {
+            for (long groupId :groupIdList) {
                 Optional<MsgCountEntity> msgCount = msgCountRepository.findTodayMaxCount(groupId);
                 if (msgCount.isPresent()) {
                     Msg msg = Msg.builder()
