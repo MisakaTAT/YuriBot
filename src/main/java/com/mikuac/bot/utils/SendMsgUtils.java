@@ -59,17 +59,28 @@ public class SendMsgUtils {
      * @return
      */
     public List<Long> getGroupList() throws InterruptedException {
-        Bot bot = botContainer.getBots().get(botId);
         List<Long> groupIdList = new ArrayList<>();
-        int errorCount = 0;
+        //获取Bot对象
+        Bot bot = botContainer.getBots().get(botId);
+        int botErrorCount = 0;
         while (bot == null) {
-            ++errorCount;
-            log.info("Bot对象获取失败，当前失败次数[{}]，将在10秒后重试~",errorCount);
+            ++botErrorCount;
+            log.info("Bot对象获取失败，当前失败次数[{}]，将在10秒后重试~",botErrorCount);
             Thread.sleep(10000);
             bot = botContainer.getBots().get(botId);
         }
-        int groupCount = Objects.requireNonNull(bot.getGroupList()).getGroupCount();
         log.info("Bot对象获取成功[{}]",bot);
+        //获取群组列表数
+        int groupCount = Objects.requireNonNull(bot.getGroupList()).getGroupCount();
+        int groupCountError = 0;
+        while (groupCount == 0) {
+            ++groupCountError;
+            log.info("群组计数获取失败，当前失败次数[{}]，将在10秒后重试~",groupCountError);
+            Thread.sleep(10000);
+            groupCount = Objects.requireNonNull(bot.getGroupList()).getGroupCount();
+        }
+        log.info("群组计数获取成功[{}]",groupCount);
+        //遍历群号
         for (int i = 0; i < groupCount; i++) {
             groupIdList.add(bot.getGroupList().getGroup(i).getGroupId());
         }
