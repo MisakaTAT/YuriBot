@@ -57,8 +57,9 @@ public class SendMsgUtils {
     }
 
     /**
-     * 获取群组列表，返回List
+     * 获取群号列表
      * @return
+     * @throws InterruptedException
      */
     public List<Long> getGroupList() throws InterruptedException {
 
@@ -70,30 +71,43 @@ public class SendMsgUtils {
         Bot bot = botContainer.getBots().get(botId);
         if (bot == null) {
             for (int i = 1; i < retryCount ;i++) {
-                log.info("Bot对象获取失败，当前失败[{}]次，剩余重试次数[{}]，将在10秒后重试~",i,retryCount-i-1);
-                Thread.sleep(10000);
+                log.info("Bot对象获取失败，当前失败[{}]次，剩余重试次数[{}]，将在5秒后重试~",i,retryCount-i-1);
+                Thread.sleep(5000);
                 bot = botContainer.getBots().get(botId);
                 if (bot != null) {
                     log.info("Bot对象获取成功[{}]",bot);
                     break;
                 }
+                if (i == 5) {
+                    log.info("Bot对象获取失败5次，将中止此函数");
+                    return groupIdList;
+                }
             }
-            log.info("Bot对象获取失败5次，将中止此函数并返回null值");
-            return null;
         } else {
             log.info("Bot对象获取成功[{}]",bot);
         }
 
-        //获取群组列表数
-        try {
-            int groupCount = Objects.requireNonNull(bot.getGroupList()).getGroupCount();
-            log.info("群组计数获取成功，当前群组数量[{}]",groupCount);
-            //遍历群号
-            for (int i = 0; i < groupCount; i++) {
-                groupIdList.add(bot.getGroupList().getGroup(i).getGroupId());
+        //获取群号列表
+        for (int i = 1; i < retryCount; i++) {
+            try {
+                assert bot != null;
+                int groupCount = Objects.requireNonNull(bot.getGroupList()).getGroupCount();
+                if (groupCount != 0) {
+                    log.info("群组计数获取成功，当前群组数量[{}]",groupCount);
+                    //遍历群号
+                    for (int j = 0; j < groupCount; j++) {
+                        groupIdList.add(bot.getGroupList().getGroup(j).getGroupId());
+                    }
+                    break;
+                }
+            } catch (NullPointerException e) {
+                log.info("群组计数获取失败，当前失败[{}]次，剩余重试次数[{}]，将在5秒后重试~",i,retryCount-i-1);
+                if (i == 5) {
+                    log.info("群组计数获取失败5次，将中止此函数");
+                    return groupIdList;
+                }
+                Thread.sleep(5000);
             }
-        } catch (NullPointerException e) {
-            log.info("群组计数获取失败",e);
         }
 
         return groupIdList;
