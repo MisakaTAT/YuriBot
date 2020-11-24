@@ -99,7 +99,7 @@ public class Hitokoto extends BotPlugin {
                     lastGetTimeMap.put(groupId + userId, Instant.now().getEpochSecond());
                 } catch (Exception e) {
                     bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("一言获取失败,请稍后重试~").build(),false);
-                    log.info("一言群组发送异常：[{}]", e);
+                    log.info("一言群组发送异常", e);
                 }
             }else {
                 bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("请求过于频繁~ 剩余CD时间为" + rCd + "秒").build(),false);
@@ -134,7 +134,7 @@ public class Hitokoto extends BotPlugin {
                     lastGetTimeMap.put(userId, Instant.now().getEpochSecond());
                 } catch (Exception e) {
                     bot.sendPrivateMsg(userId,"一言获取失败,请稍后重试~",false);
-                    log.info("一言私聊发送异常：[{}]", e);
+                    log.info("一言私聊发送异常", e);
                 }
             }else {
                 bot.sendPrivateMsg(userId,"请求过于频繁~ 剩余CD时间为" + rCd + "秒",false);
