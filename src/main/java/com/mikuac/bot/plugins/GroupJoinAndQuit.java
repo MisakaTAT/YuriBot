@@ -8,7 +8,6 @@ import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import java.util.Objects;
 
 /**
  * 入群欢迎 & 退群提醒
@@ -37,15 +36,8 @@ public class GroupJoinAndQuit extends BotPlugin {
     public int onGroupDecreaseNotice(@NotNull Bot bot, @NotNull OnebotEvent.GroupDecreaseNoticeEvent event) {
         long groupId = event.getGroupId();
         long userId = event.getUserId();
-        String nickName = "昵称获取失败";
-        try {
-            nickName = Objects.requireNonNull(bot.getGroupMemberInfo(groupId, userId, true)).getNickname();
-            log.info("退群检测插件用户名获取成功：[{}] QQ：[{}]",nickName,userId);
-        } catch (NullPointerException e) {
-            log.info("退群检测插件用户名获取失败",e);
-        }
         Msg msg = Msg.builder()
-                .text(nickName + "(" + userId + ")" + "由于精神失常退出了此群");
+            .text(userId + "由于精神失常退出了此群");
         bot.sendGroupMsg(groupId,msg.build(),false);
         return MESSAGE_IGNORE;
     }
