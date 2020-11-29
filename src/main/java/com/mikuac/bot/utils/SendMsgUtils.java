@@ -62,6 +62,7 @@ public class SendMsgUtils {
     public List<Long> getGroupList() throws InterruptedException {
 
         int retryCount = 6;
+        int retryDelay = 10000;
 
         List<Long> groupIdList = new ArrayList<>();
 
@@ -69,8 +70,8 @@ public class SendMsgUtils {
         Bot bot = botContainer.getBots().get(botId);
         if (bot == null) {
             for (int i = 1; i < retryCount ;i++) {
-                log.info("Bot对象获取失败，当前失败[{}]次，剩余重试次数[{}]，将在5秒后重试~",i,retryCount-i-1);
-                Thread.sleep(5000);
+                log.info("Bot对象获取失败，当前失败[{}]次，剩余重试次数[{}]，将在" + (retryDelay/1000) + "秒后重试~",i,retryCount-i-1);
+                Thread.sleep(retryDelay);
                 bot = botContainer.getBots().get(botId);
                 if (bot != null) {
                     log.info("Bot对象获取成功[{}]",bot);
@@ -90,21 +91,24 @@ public class SendMsgUtils {
             try {
                 assert bot != null;
                 int groupCount = Objects.requireNonNull(bot.getGroupList()).getGroupCount();
-                if (groupCount != 0) {
+                if (groupCount >= 0) {
                     log.info("群组计数获取成功，当前群组数量[{}]",groupCount);
                     //遍历群号
                     for (int j = 0; j < groupCount; j++) {
                         groupIdList.add(bot.getGroupList().getGroup(j).getGroupId());
                     }
                     break;
+                } else {
+                    log.info("群组计数获取失败，且未发生异常，将中止此函数，当前群组计数[{}]",groupCount);
+                    return groupIdList;
                 }
-            } catch (NullPointerException e) {
-                log.info("群组计数获取失败，当前失败[{}]次，剩余重试次数[{}]，将在5秒后重试~",i,retryCount-i-1);
+            } catch (Exception e) {
+                log.info("群组计数获取失败，当前失败[{}]次，剩余重试次数[{}]，将在" + (retryDelay/1000) + "秒后重试~",i,retryCount-i-1);
                 if (i == 5) {
                     log.info("群组计数获取失败5次，将中止此函数");
                     return groupIdList;
                 }
-                Thread.sleep(5000);
+                Thread.sleep(retryDelay);
             }
         }
 
