@@ -134,11 +134,7 @@ public class WhatAnime extends BotPlugin {
                     bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("WhatAnime番剧检索失败，请稍后重试~").build(),false);
                     log.info("WhatAnime插件检索异常",e);
                 }
-            } else {
-                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("消息中匹配图片链接失败,请重新发送").build(),false);
-                log.info("WhatAnime图片链接匹配失败");
             }
-
         }
 
         return MESSAGE_IGNORE;
@@ -195,9 +191,6 @@ public class WhatAnime extends BotPlugin {
                     bot.sendPrivateMsg(userId,"WhatAnime番剧检索失败，请稍后重试~",false);
                     log.info("WhatAnime插件检索异常",e);
                 }
-            } else {
-                bot.sendPrivateMsg(userId,"消息中匹配图片链接失败",false);
-                log.info("WhatAnime图片链接匹配失败");
             }
         }
 
