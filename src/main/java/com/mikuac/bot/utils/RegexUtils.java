@@ -21,4 +21,18 @@ public class RegexUtils {
 //        return null;
 //    }
 
+    /**
+     * 传入消息字符串，匹配其中的图片链接
+     * @param msg
+     */
+    public static String getMsgPicUrl(String msg) {
+        final String regex = "(http|https)://[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-.,@?^=%&:/~+#]*[\\w\\-@?^=%&/~+#])?";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher =  pattern.matcher(msg);
+        if(matcher.find()){
+            return matcher.group();
+        }
+        return null;
+    }
+
 }

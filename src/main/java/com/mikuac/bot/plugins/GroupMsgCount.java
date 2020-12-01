@@ -59,7 +59,7 @@ public class GroupMsgCount extends BotPlugin {
         if (groupIdList != null && !groupIdList.isEmpty()) {
             for (long groupId :groupIdList) {
                 Optional<MsgCountEntity> msgCount = msgCountRepository.findTodayMaxCount(groupId);
-                if (msgCount.isPresent()) {
+                if (msgCount.isPresent() && msgCount.get().getTodayMsgCount() > 0) {
                     Msg msg = Msg.builder()
                             .at(msgCount.get().getUserId())
                             .text("\n恭喜获得今日群龙王称号~")
@@ -67,10 +67,10 @@ public class GroupMsgCount extends BotPlugin {
                             .text("\n历史统计次数：" + msgCount.get().getAllMsgCount());
                     sendMsgUtils.sendGroupMsg(groupId,msg);
                 } else {
-                    log.info("群组[{}]发言次数获取异常",groupId);
+                    log.info("群组[{}]发言次数获取异常或者无人发言",groupId);
                     Msg msg = Msg.builder()
                             .at(adminId)
-                            .text("当前群组发言次数获取异常");
+                            .text("今日无人发言，无群龙王诞生~");
                     sendMsgUtils.sendGroupMsg(groupId,msg);
                 }
             }

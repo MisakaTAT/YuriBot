@@ -89,9 +89,11 @@ public class SendMsgUtils {
         //获取群号列表
         for (int i = 1; i < retryCount; i++) {
             try {
-                assert bot != null;
-                int groupCount = Objects.requireNonNull(bot.getGroupList()).getGroupCount();
-                if (groupCount >= 0) {
+                int groupCount = 0;
+                if (bot != null) {
+                    groupCount = Objects.requireNonNull(bot.getGroupList()).getGroupCount();
+                }
+                if (groupCount > 0) {
                     log.info("群组计数获取成功，当前群组数量[{}]",groupCount);
                     //遍历群号
                     for (int j = 0; j < groupCount; j++) {

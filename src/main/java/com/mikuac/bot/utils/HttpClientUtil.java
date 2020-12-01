@@ -30,10 +30,10 @@ public class HttpClientUtil {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         RequestConfig requestConfig = RequestConfig.custom()
                 // 设置连接超时时间
-                .setConnectTimeout(5000)
+                .setConnectTimeout(10000)
                 // 设置请求超时时间
-                .setConnectionRequestTimeout(5000)
-                .setSocketTimeout(5000)
+                .setConnectionRequestTimeout(10000)
+                .setSocketTimeout(10000)
                 // 默认允许自动重定向
                 .setRedirectsEnabled(true)
                 .build();
@@ -48,12 +48,12 @@ public class HttpClientUtil {
             // 获得返回的结果
             return EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
         } catch (IOException e) {
-            log.info("HttpGetWithJson请求异常：[{}]", e);
+            log.info("HttpGetWithJson请求异常", e);
         }finally {
             try {
                 httpClient.close();
             } catch (IOException e) {
-                log.info("HttpGetWithJson HttpClient Close异常：[{}]", e);
+                log.info("HttpGetWithJson HttpClient Close异常", e);
             }
         }
         return null;
