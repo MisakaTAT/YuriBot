@@ -89,7 +89,7 @@ public class WhatAnime extends BotPlugin {
         if (msg.matches(msgRegex)) {
             // 防止重复执行
             if (map.get(key) != null) {
-                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("您已经处于搜图模式啦，请直接发送图片让我来帮您检索~").build(),false);
+                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("您已经处于搜番模式啦，请直接发送图片让我来帮您检索~").build(),false);
                 return MESSAGE_IGNORE;
             }
             SearchModeUtils.setMap(key,groupId,userId,"group");
@@ -154,7 +154,7 @@ public class WhatAnime extends BotPlugin {
         if (msg.matches(msgRegex)) {
             // 防止重复执行
             if (map.get(key) != null) {
-                bot.sendGroupMsg(userId,Msg.builder().text("您已经处于搜图模式啦，请直接发送图片让我来帮您检索~").build(),false);
+                bot.sendGroupMsg(userId,Msg.builder().text("您已经处于搜番模式啦，请直接发送图片让我来帮您检索~").build(),false);
                 return MESSAGE_IGNORE;
             }
             SearchModeUtils.setMap(key,userId,"private");
