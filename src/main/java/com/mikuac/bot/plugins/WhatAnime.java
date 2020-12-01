@@ -6,10 +6,7 @@ import com.mikuac.bot.bean.whatanime.BasicData;
 import com.mikuac.bot.bean.whatanime.Docs;
 import com.mikuac.bot.bean.whatanime.InfoData;
 import com.mikuac.bot.bean.SearchObj;
-import com.mikuac.bot.utils.CommonUtils;
-import com.mikuac.bot.utils.HttpClientUtil;
-import com.mikuac.bot.utils.RegexUtils;
-import com.mikuac.bot.utils.SearchModeUtils;
+import com.mikuac.bot.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;
@@ -90,6 +87,11 @@ public class WhatAnime extends BotPlugin {
         Map<Long,SearchObj> map = SearchModeUtils.getMap();
 
         if (msg.matches(msgRegex)) {
+            // 防止重复执行
+            if (map.get(key) != null) {
+                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("您已经处于搜图模式啦，请直接发送图片让我来帮您检索~").build(),false);
+                return MESSAGE_IGNORE;
+            }
             SearchModeUtils.setMap(key,groupId,userId,"group");
             bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("您已进入搜番模式，请发送番剧截图来帮您检索~ （滥用此功能将被封禁）").build(),false);
             return MESSAGE_IGNORE;
@@ -150,6 +152,11 @@ public class WhatAnime extends BotPlugin {
         Map<Long,SearchObj> map = SearchModeUtils.getMap();
 
         if (msg.matches(msgRegex)) {
+            // 防止重复执行
+            if (map.get(key) != null) {
+                bot.sendGroupMsg(userId,Msg.builder().text("您已经处于搜图模式啦，请直接发送图片让我来帮您检索~").build(),false);
+                return MESSAGE_IGNORE;
+            }
             SearchModeUtils.setMap(key,userId,"private");
             bot.sendPrivateMsg(userId,Msg.builder().text("您已进入搜番模式，请发送番剧截图来帮您检索~ （滥用此功能将被封禁）").build(),false);
             return MESSAGE_IGNORE;
