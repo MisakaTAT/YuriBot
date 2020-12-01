@@ -2,6 +2,8 @@ package com.mikuac.bot.utils;
 
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 /**
  * 常用工具类
  * @author Zero
@@ -30,6 +32,14 @@ public class CommonUtils {
         int m  = Math.round(minute);
         int s = Math.round(seconds);
         return m + "分" + s + "秒";
+    }
+
+    /**
+     * 生成UUID
+     * @return
+     */
+    public static String getUUID() {
+        return UUID.randomUUID().toString();
     }
 
 }

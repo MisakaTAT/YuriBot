@@ -5,9 +5,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.mikuac.bot.bean.whatanime.BasicData;
 import com.mikuac.bot.bean.whatanime.Docs;
 import com.mikuac.bot.bean.whatanime.InfoData;
+import com.mikuac.bot.bean.SearchObj;
 import com.mikuac.bot.utils.CommonUtils;
 import com.mikuac.bot.utils.HttpClientUtil;
 import com.mikuac.bot.utils.RegexUtils;
+import com.mikuac.bot.utils.SearchModeUtils;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;
@@ -17,6 +19,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import java.time.Instant;
+import java.util.Map;
 
 /**
  * WhatAnime搜番
@@ -49,6 +53,8 @@ public class WhatAnime extends BotPlugin {
     private String msgRegex;
     @Value("${yuri.plugins.what-anime.token}")
     private String token;
+    @Value("${yuri.plugins.what-anime.quitSearchRegex}")
+    private String quitSearchRegex;
 
     public void getBasicData (String picUrl) {
         String result = HttpClientUtil.httpGetWithJson(basicApi + "?token=" + token + "&url=" + picUrl,false);
@@ -79,11 +85,29 @@ public class WhatAnime extends BotPlugin {
         long groupId = event.getGroupId();
         long userId = event.getUserId();
         String msg = event.getRawMessage();
+        long key = groupId+userId;
+
+        Map<Long,SearchObj> map = SearchModeUtils.getMap();
 
         if (msg.matches(msgRegex)) {
+            SearchModeUtils.setMap(key,groupId,userId,"group");
+            bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("您已进入搜番模式，请发送番剧截图来帮您检索~ （滥用此功能将被封禁）").build(),false);
+            return MESSAGE_IGNORE;
+        }
+
+        if (msg.matches(quitSearchRegex)) {
+            SearchModeUtils.quitSearch(key);
+            bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("已为您退出搜番模式~").build(),false);
+            return MESSAGE_IGNORE;
+        }
+
+        if (map.get(key) != null && map.get(key).getEnable() && map.get(key).getGroupId() == groupId) {
             String picUrl = RegexUtils.getMsgPicUrl(msg);
+            // 判断是否为图片消息
             if (picUrl != null) {
-                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("番剧搜索中，请稍后~").build(),false);
+                // 如有操作重新设置TTL
+                map.get(key).setStartTime(Instant.now().getEpochSecond());
+                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("番剧检索中，请稍后~").build(),false);
                 try {
                     getBasicData(picUrl);
                     Docs docs = basicData.getDocs().get(0);
@@ -109,7 +133,7 @@ public class WhatAnime extends BotPlugin {
                     log.info("WhatAnime插件检索异常",e);
                 }
             } else {
-                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("消息中匹配图片链接失败").build(),false);
+                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("消息中匹配图片链接失败,请重新发送").build(),false);
                 log.info("WhatAnime图片链接匹配失败");
             }
 
@@ -122,8 +146,22 @@ public class WhatAnime extends BotPlugin {
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
         long userId = event.getUserId();
         String msg = event.getRawMessage();
+        long key = event.getUserId();
+        Map<Long,SearchObj> map = SearchModeUtils.getMap();
 
         if (msg.matches(msgRegex)) {
+            SearchModeUtils.setMap(key,userId,"private");
+            bot.sendPrivateMsg(userId,Msg.builder().text("您已进入搜番模式，请发送番剧截图来帮您检索~ （滥用此功能将被封禁）").build(),false);
+            return MESSAGE_IGNORE;
+        }
+
+        if (msg.matches(quitSearchRegex)) {
+            SearchModeUtils.quitSearch(key);
+            bot.sendPrivateMsg(userId,Msg.builder().text("已为您退出搜番模式~").build(),false);
+            return MESSAGE_IGNORE;
+        }
+
+        if (map.get(key) != null && map.get(key).getEnable()) {
             String picUrl = RegexUtils.getMsgPicUrl(msg);
             if (picUrl != null) {
                 bot.sendPrivateMsg(userId,"番剧搜索中，请稍后~",false);
@@ -154,7 +192,6 @@ public class WhatAnime extends BotPlugin {
                 bot.sendPrivateMsg(userId,"消息中匹配图片链接失败",false);
                 log.info("WhatAnime图片链接匹配失败");
             }
-
         }
 
         return MESSAGE_IGNORE;

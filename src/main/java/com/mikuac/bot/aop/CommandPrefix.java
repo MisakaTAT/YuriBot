@@ -17,8 +17,8 @@ import org.springframework.stereotype.Component;
  * @date  2020/10/23 22:50
  */
 @Slf4j
-@Aspect
-@Component
+//@Aspect
+//@Component
 public class CommandPrefix {
 
     @Value("${yuri.plugins.prefix-config.prefix}")

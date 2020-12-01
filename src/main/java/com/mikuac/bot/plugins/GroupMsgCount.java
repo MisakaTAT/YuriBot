@@ -45,14 +45,6 @@ public class GroupMsgCount extends BotPlugin {
     @Value("${yuri.bot.adminId}")
     private long adminId;
 
-    @Bean
-    public TaskScheduler taskScheduler() {
-        ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
-        taskScheduler.setPoolSize(10);
-        taskScheduler.initialize();
-        return taskScheduler;
-    }
-
     @Scheduled(cron = "0 0 00 * * ?",zone = "Asia/Shanghai")
     public void sendMsg() throws InterruptedException {
         List<Long> groupIdList = sendMsgUtils.getGroupList();
