@@ -11,10 +11,7 @@ import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
@@ -61,8 +58,7 @@ public class GroupMsgCount extends BotPlugin {
                 } else {
                     log.info("群组[{}]发言次数获取异常或者无人发言",groupId);
                     Msg msg = Msg.builder()
-                            .at(adminId)
-                            .text("今日无人发言，无群龙王诞生~");
+                            .text("今日群内无人发言，暂无龙王诞生~");
                     sendMsgUtils.sendGroupMsg(groupId,msg);
                 }
             }
