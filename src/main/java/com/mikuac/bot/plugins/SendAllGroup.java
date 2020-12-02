@@ -1,5 +1,6 @@
 package com.mikuac.bot.plugins;
 
+import com.mikuac.bot.utils.RegexUtils;
 import com.mikuac.bot.utils.SendMsgUtils;
 import lombok.SneakyThrows;
 import net.lz1998.pbbot.bot.Bot;
@@ -33,9 +34,6 @@ public class SendAllGroup extends BotPlugin {
     @Value("${yuri.plugins.send-all-group.msgRegex}")
     private String msgRegex;
 
-    @Value("${yuri.plugins.send-all-group.replaceRegex}")
-    private String replaceRegex;
-
     @SneakyThrows
     @Override
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
@@ -45,7 +43,7 @@ public class SendAllGroup extends BotPlugin {
             List<Long> groupIdList = sendMsgUtils.getGroupList();
             if (groupIdList != null && !groupIdList.isEmpty()) {
                 for (long groupId : groupIdList) {
-                    sendMsgUtils.sendGroupMsg(groupId, Msg.builder().text(msg.replaceAll(replaceRegex,"")));
+                    sendMsgUtils.sendGroupMsg(groupId, Msg.builder().text(RegexUtils.getSendAllGroupMsg(msg)));
                 }
             }
         }

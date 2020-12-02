@@ -150,17 +150,17 @@ public class WhatAnime extends BotPlugin {
         if (msg.matches(msgRegex)) {
             // 防止重复执行
             if (map.get(key) != null) {
-                bot.sendPrivateMsg(userId,Msg.builder().text("您已经处于搜番模式啦，请直接发送图片让我来帮您检索~").build(),false);
+                bot.sendPrivateMsg(userId,"您已经处于搜番模式啦，请直接发送图片让我来帮您检索~",false);
                 return MESSAGE_IGNORE;
             }
             SearchModeUtils.setMap(key,userId,"private");
-            bot.sendPrivateMsg(userId,Msg.builder().text("您已进入搜番模式，请发送番剧截图来帮您检索~ （滥用此功能将被封禁）").build(),false);
+            bot.sendPrivateMsg(userId,"您已进入搜番模式，请发送番剧截图来帮您检索~ （滥用此功能将被封禁）",false);
             return MESSAGE_IGNORE;
         }
 
         if (msg.matches(quitSearchRegex)) {
             SearchModeUtils.quitSearch(key);
-            bot.sendPrivateMsg(userId,Msg.builder().text("已为您退出搜番模式~").build(),false);
+            bot.sendPrivateMsg(userId,"已为您退出搜番模式~",false);
             return MESSAGE_IGNORE;
         }
 

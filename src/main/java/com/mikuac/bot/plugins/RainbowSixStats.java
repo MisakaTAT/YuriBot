@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.mikuac.bot.bean.r6s.*;
 import com.mikuac.bot.utils.CommonUtils;
 import com.mikuac.bot.utils.HttpClientUtil;
+import com.mikuac.bot.utils.RegexUtils;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;
@@ -113,9 +114,9 @@ public class RainbowSixStats extends BotPlugin {
             long userId = event.getUserId();
             String gameUserId;
             try {
-                gameUserId = URLEncoder.encode(msg.replaceAll("^[查获][询取]", "").replaceAll("[战数][绩据]-[Rr彩][6六]亚服", ""), "utf-8");
+                gameUserId = URLEncoder.encode(RegexUtils.getR6Id(msg), "utf-8");
             } catch (UnsupportedEncodingException e) {
-                gameUserId = msg.replaceAll("^[查获][询取]", "").replaceAll("[战数][绩据]-[Rr彩][6六]亚服", "");
+                gameUserId = RegexUtils.getR6Id(msg);
                 log.info("彩虹六号战绩查询gameUserId URLEncoder异常",e);
             }
             bot.sendGroupMsg(groupId,Msg.builder().at(userId).text(gameUserId+"数据查询中，请稍后~").build(),false);
@@ -137,9 +138,9 @@ public class RainbowSixStats extends BotPlugin {
             long userId = event.getUserId();
             String gameUserId;
             try {
-                gameUserId = URLEncoder.encode(msg.replaceAll("^[查获][询取]", "").replaceAll("[战数][绩据]-[Rr彩][6六]亚服", ""), "utf-8");
+                gameUserId = URLEncoder.encode(RegexUtils.getR6Id(msg), "utf-8");
             } catch (UnsupportedEncodingException e) {
-                gameUserId = msg.replaceAll("^[查获][询取]", "").replaceAll("[战数][绩据]-[Rr彩][6六]亚服", "");
+                gameUserId = RegexUtils.getR6Id(msg);
                 log.info("彩虹六号战绩查询gameUserId URLEncoder异常",e);
             }
             bot.sendPrivateMsg(userId,gameUserId+"数据查询中，请稍后~",false);

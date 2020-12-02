@@ -2,7 +2,6 @@ package com.mikuac.bot.aop;
 
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.BotPlugin;
-import onebot.OnebotBase;
 import onebot.OnebotEvent;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -17,12 +16,14 @@ import org.springframework.stereotype.Component;
  * @date  2020/10/23 22:50
  */
 @Slf4j
-//@Aspect
-//@Component
+@Aspect
+@Component
 public class CommandPrefix {
 
     @Value("${yuri.plugins.prefix-config.prefix}")
     private String prefix;
+
+    final String imgMsgRegex = "<image.*>";
 
     /**
      * 声明切点
@@ -42,31 +43,37 @@ public class CommandPrefix {
         Object[] args = pjp.getArgs();
 
         for (int i = 0; i < args.length; i++){
-            //处理群组消息
+            // 处理群组消息
             if (args[i] instanceof OnebotEvent.GroupMessageEvent) {
                 OnebotEvent.GroupMessageEvent event = (OnebotEvent.GroupMessageEvent)args[i];
-                var msg = event.getRawMessage();
-                if (!msg.startsWith(prefix)) {
+                String msg = event.getRawMessage();
+                // 如果消息未携带prefix，且未匹配到img标签则拦截（用于搜图模式）
+                if (!msg.startsWith(prefix) && !msg.matches(imgMsgRegex)) {
                     return BotPlugin.MESSAGE_IGNORE;
                 }
-                var eventBuilder = event.toBuilder();
-                msg = msg.substring(prefix.length());
-                eventBuilder.addMessage(0, OnebotBase.Message.newBuilder().setType("text").putData("text", msg).build());
-                eventBuilder.setRawMessage(msg);
-                args[i] = eventBuilder.build();
+                // 如果消息携带prefix则去除prefix并放行
+                if (msg.startsWith(prefix)) {
+                    var eventBuilder = event.toBuilder();
+                    msg = msg.substring(prefix.length());
+                    eventBuilder.setRawMessage(msg);
+                    args[i] = eventBuilder.build();
+                }
             }
-            //处理私聊消息
+            // 处理私聊消息
             if (args[i] instanceof OnebotEvent.PrivateMessageEvent) {
                 OnebotEvent.PrivateMessageEvent event = (OnebotEvent.PrivateMessageEvent)args[i];
-                var msg = event.getRawMessage();
-                if (!msg.startsWith(prefix)) {
+                String msg = event.getRawMessage();
+                // 如果消息未携带prefix，且未匹配到img标签则拦截（用于搜图模式）
+                if (!msg.startsWith(prefix) && !msg.matches(imgMsgRegex)) {
                     return BotPlugin.MESSAGE_IGNORE;
                 }
-                var eventBuilder = event.toBuilder();
-                msg = msg.substring(prefix.length());
-                eventBuilder.addMessage(0, OnebotBase.Message.newBuilder().setType("text").putData("text", msg).build());
-                eventBuilder.setRawMessage(msg);
-                args[i] = eventBuilder.build();
+                // 如果消息携带prefix则去除prefix并放行
+                if (msg.startsWith(prefix)) {
+                    var eventBuilder = event.toBuilder();
+                    msg = msg.substring(prefix.length());
+                    eventBuilder.setRawMessage(msg);
+                    args[i] = eventBuilder.build();
+                }
             }
         }
 
