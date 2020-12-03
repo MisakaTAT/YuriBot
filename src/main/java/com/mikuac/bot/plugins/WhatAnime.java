@@ -182,6 +182,8 @@ public class WhatAnime extends BotPlugin {
         if (map.get(key) != null && map.get(key).getEnable()) {
             String picUrl = RegexUtils.regex(RegexUtils.GET_MSG_PIC_URL,msg);
             if (picUrl != null) {
+                // 如有操作重新设置TTL
+                map.get(key).setStartTime(Instant.now().getEpochSecond());
                 bot.sendPrivateMsg(userId,"番剧搜索中，请稍后~",false);
                 try {
                     getBasicData(picUrl);
