@@ -107,7 +107,6 @@ public class SauceNao extends BotPlugin {
                     // 发送消息
                     sauceNaoBean.getResults().forEach(k->{
                         if (k.getResultHeader().getIndexName().matches("(.*)Pixiv(.*)")) {
-                            System.out.println(k.getResultData());
                             Msg sendMsg = Msg.builder()
                                     .image(k.getResultHeader().getThumbnail())
                                     .text("\n相似度："+k.getResultHeader().getSimilarity()+"%")
