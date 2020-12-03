@@ -224,7 +224,7 @@ public class SauceNao extends BotPlugin {
                                     .text("\n\n日文名："+k.getResultData().getJpName())
                                     .text("\n\n英文名："+k.getResultData().getEngName())
                                     .text("\n\n今日剩余搜索配额："+sauceNaoBean.getHeader().getLongRemaining())
-                                    .text("\n数据来源：SauceNao (NHentai)");
+                                    .text("\n数据来源：SauceNao (E-Hentai)");
                             bot.sendGroupMsg(groupId,sendMsg.build(),false);
                         } else {
                             bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("未检索到您发送的内容，请更换图片后重新尝试~").build(),false);
