@@ -6,6 +6,8 @@ import com.mikuac.bot.bean.whatanime.BasicData;
 import com.mikuac.bot.bean.whatanime.Docs;
 import com.mikuac.bot.bean.whatanime.InfoData;
 import com.mikuac.bot.bean.SearchObj;
+import com.mikuac.bot.config.ApiConst;
+import com.mikuac.bot.config.MsgRegexConst;
 import com.mikuac.bot.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
@@ -42,15 +44,11 @@ public class WhatAnime extends BotPlugin {
         this.infoData = infoData;
     }
 
-    @Value("${yuri.plugins.whatAnime.basicApi}")
-    private String basicApi;
-    @Value("${yuri.plugins.whatAnime.infoApi}")
-    private String infoApi;
     @Value("${yuri.plugins.whatAnime.token}")
     private String token;
 
     public void getBasicData (String picUrl) {
-        String result = HttpClientUtil.httpGetWithJson(basicApi + "?token=" + token + "&url=" + picUrl,false);
+        String result = HttpClientUtil.httpGetWithJson(ApiConst.WHATANIME_BASIC_API + "?token=" + token + "&url=" + picUrl,false);
         basicData = JSON.parseObject(result, BasicData.class);
         // 取得基本信息后调用getDetailedData方法取得详细信息
         // api docs返回结果按相似性排序，从最相似到最不相似，所以取list第一个即可
@@ -64,7 +62,7 @@ public class WhatAnime extends BotPlugin {
     }
 
     public void getDetailedData (int aniListId) {
-        String result = HttpClientUtil.httpGetWithJson(infoApi + aniListId,false);
+        String result = HttpClientUtil.httpGetWithJson(ApiConst.WHATANIME_INFO_API + aniListId,false);
         JSONArray jsonArray = JSON.parseArray(result);
         if (jsonArray != null) {
             infoData = JSON.parseObject(jsonArray.getJSONObject(0).toString(), InfoData.class);
@@ -82,7 +80,7 @@ public class WhatAnime extends BotPlugin {
 
         Map<Long,SearchObj> map = SearchModeUtils.getMap();
 
-        if (msg.matches(MsgRegex.WHAT_ANIME)) {
+        if (msg.matches(MsgRegexConst.WHATANIME)) {
             // 防止重复执行
             if (map.get(key) != null) {
                 bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("您已经处于搜番模式啦，请直接发送图片让我来帮您检索~").build(),false);
@@ -93,7 +91,7 @@ public class WhatAnime extends BotPlugin {
             return MESSAGE_IGNORE;
         }
 
-        if (msg.matches(MsgRegex.WHAT_ANIME_QUIT)) {
+        if (msg.matches(MsgRegexConst.WHATANIME_QUIT)) {
             SearchModeUtils.quitSearch(key);
             bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("已为您退出搜番模式~").build(),false);
             return MESSAGE_IGNORE;
@@ -143,7 +141,7 @@ public class WhatAnime extends BotPlugin {
         long key = event.getUserId();
         Map<Long,SearchObj> map = SearchModeUtils.getMap();
 
-        if (msg.matches(MsgRegex.WHAT_ANIME)) {
+        if (msg.matches(MsgRegexConst.WHATANIME)) {
             // 防止重复执行
             if (map.get(key) != null) {
                 bot.sendPrivateMsg(userId,"您已经处于搜番模式啦，请直接发送图片让我来帮您检索~",false);
@@ -154,7 +152,7 @@ public class WhatAnime extends BotPlugin {
             return MESSAGE_IGNORE;
         }
 
-        if (msg.matches(MsgRegex.WHAT_ANIME_QUIT)) {
+        if (msg.matches(MsgRegexConst.WHATANIME_QUIT)) {
             SearchModeUtils.quitSearch(key);
             bot.sendPrivateMsg(userId,"已为您退出搜番模式~",false);
             return MESSAGE_IGNORE;

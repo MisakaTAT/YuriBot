@@ -2,9 +2,10 @@ package com.mikuac.bot.plugins;
 
 import com.alibaba.fastjson.JSON;
 import com.mikuac.bot.bean.r6s.*;
+import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.utils.CommonUtils;
 import com.mikuac.bot.utils.HttpClientUtil;
-import com.mikuac.bot.utils.MsgRegex;
+import com.mikuac.bot.config.MsgRegexConst;
 import com.mikuac.bot.utils.RegexUtils;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
@@ -34,15 +35,12 @@ public class RainbowSixStats extends BotPlugin {
         this.r6S = r6S;
     }
 
-    @Value("${yuri.plugins.r6s.api}")
-    private String api;
-
     /**
      * 战绩查询方法
      * @param gameUserName 游戏用户名
      */
     public void getRainbowSixStats(String gameUserName) {
-        String result = HttpClientUtil.httpGetWithJson(api+gameUserName,true);
+        String result = HttpClientUtil.httpGetWithJson(ApiConst.R6S_API +gameUserName,true);
         r6S = JSON.parseObject(result, R6S.class);
     }
 
@@ -108,7 +106,7 @@ public class RainbowSixStats extends BotPlugin {
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
         String msg = event.getRawMessage();
-        if (msg.matches(MsgRegex.RAINBOW_SIX_STATS)){
+        if (msg.matches(MsgRegexConst.RAINBOW_SIX_STATS)){
             long groupId = event.getGroupId();
             long userId = event.getUserId();
             String gameUserId = RegexUtils.regex(RegexUtils.GET_R6_ID,msg);
@@ -133,7 +131,7 @@ public class RainbowSixStats extends BotPlugin {
     @Override
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
         String msg = event.getRawMessage();
-        if (msg.matches(MsgRegex.RAINBOW_SIX_STATS)){
+        if (msg.matches(MsgRegexConst.RAINBOW_SIX_STATS)){
             long userId = event.getUserId();
             String gameUserId = RegexUtils.regex(RegexUtils.GET_R6_ID,msg);
             if (gameUserId != null) {

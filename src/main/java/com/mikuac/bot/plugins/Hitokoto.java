@@ -3,8 +3,9 @@ package com.mikuac.bot.plugins;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.utils.HttpClientUtil;
-import com.mikuac.bot.utils.MsgRegex;
+import com.mikuac.bot.config.MsgRegexConst;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;
@@ -46,8 +47,6 @@ public class Hitokoto extends BotPlugin {
         }
     };
 
-    @Value("${yuri.plugins.hitokoto.api}")
-    private String api;
     @Value("${yuri.plugins.hitokoto.cdTime}")
     private int cdTime;
 
@@ -63,7 +62,7 @@ public class Hitokoto extends BotPlugin {
     Map<Long, Long> lastGetTimeMap = new ConcurrentHashMap<>();
 
     public void getData(char type) {
-        String result = HttpClientUtil.httpGetWithJson(api + type,false);
+        String result = HttpClientUtil.httpGetWithJson(ApiConst.HITOKOTO_API + type,false);
         JSONObject jsonObject = JSONObject.parseObject(result);
         hitokoto = jsonObject.getString("hitokoto");
         from = jsonObject.getString("from");
@@ -74,7 +73,7 @@ public class Hitokoto extends BotPlugin {
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
         String msg = event.getRawMessage();
         // 群组消息处理
-        if (msg.matches(MsgRegex.HITOKOTO)) {
+        if (msg.matches(MsgRegexConst.HITOKOTO)) {
             long groupId = event.getGroupId();
             long userId = event.getUserId();
             long getNowTime = Instant.now().getEpochSecond();
@@ -111,7 +110,7 @@ public class Hitokoto extends BotPlugin {
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
         String msg = event.getRawMessage();
         // 私聊消息处理
-        if (msg.matches(MsgRegex.HITOKOTO)) {
+        if (msg.matches(MsgRegexConst.HITOKOTO)) {
             long userId = event.getUserId();
             long getNowTime = Instant.now().getEpochSecond();
             long lastGetTime = lastGetTimeMap.getOrDefault(userId, 0L);

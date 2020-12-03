@@ -3,9 +3,10 @@ package com.mikuac.bot.plugins;
 import com.alibaba.fastjson.JSON;
 import com.mikuac.bot.bean.setu.Data;
 import com.mikuac.bot.bean.setu.SetuBean;
+import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.repository.PluginSwitchRepository;
 import com.mikuac.bot.utils.HttpClientUtil;
-import com.mikuac.bot.utils.MsgRegex;
+import com.mikuac.bot.config.MsgRegexConst;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotContainer;
@@ -53,8 +54,6 @@ public class SeTu extends BotPlugin {
 
     @Value("${yuri.bot.selfId}")
     private Long botId;
-    @Value("${yuri.plugins.setu.api}")
-    private String api;
     @Value("${yuri.plugins.setu.apiKey}")
     private String apiKey;
     @Value("${yuri.plugins.setu.cdTime}")
@@ -77,7 +76,7 @@ public class SeTu extends BotPlugin {
     }
 
     public void getData(String r18) {
-        String result = HttpClientUtil.httpGetWithJson(api + apiKey + r18,false);
+        String result = HttpClientUtil.httpGetWithJson(ApiConst.SETU_API + apiKey + r18,false);
         seTuBean = JSON.parseObject(result, SetuBean.class);
     }
 
@@ -99,7 +98,7 @@ public class SeTu extends BotPlugin {
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
         String msg = event.getRawMessage();
         // 私聊消息处理
-        if (msg.matches(MsgRegex.SE_TU)) {
+        if (msg.matches(MsgRegexConst.SETU)) {
             long userId = event.getUserId();
             Boolean isPrivateDisable = !pluginSwitchRepository.isPrivateDisable("SeTu");
             Boolean isGlobalDisable = !pluginSwitchRepository.isGlobalDisable("SeTu");
@@ -144,7 +143,7 @@ public class SeTu extends BotPlugin {
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
         String msg = event.getRawMessage();
         // 私聊消息处理
-        if (msg.matches(MsgRegex.SE_TU)) {
+        if (msg.matches(MsgRegexConst.SETU)) {
             long userId = event.getUserId();
             long groupId = event.getGroupId();
             Boolean isGroupDisable = !pluginSwitchRepository.isGroupDisable("SeTu");
