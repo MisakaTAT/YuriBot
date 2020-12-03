@@ -23,7 +23,7 @@ public class SearchModeUtils {
         this.sendMsgUtils = sendMsgUtils;
     }
 
-    static Map<Long, SearchObj> searchMode = new ConcurrentHashMap<>();
+    private static Map<Long, SearchObj> searchMode = new ConcurrentHashMap<>();
 
     @Scheduled(cron = "0/5 * * * * ?",zone = "Asia/Shanghai")
     public void timeOutRemove() throws InterruptedException {

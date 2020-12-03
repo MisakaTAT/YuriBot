@@ -1,5 +1,6 @@
 package com.mikuac.bot.aop;
 
+import com.mikuac.bot.utils.SearchModeUtils;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.BotPlugin;
 import onebot.OnebotEvent;
@@ -47,9 +48,16 @@ public class CommandPrefix {
             if (args[i] instanceof OnebotEvent.GroupMessageEvent) {
                 OnebotEvent.GroupMessageEvent event = (OnebotEvent.GroupMessageEvent)args[i];
                 String msg = event.getRawMessage();
-                // 如果消息未携带prefix，且未匹配到img标签则拦截（用于搜图模式）
+                // 如果消息未携带prefix，且未匹配到纯图片信息则拦截
                 if (!msg.startsWith(prefix) && !msg.matches(imgMsgRegex)) {
                     return BotPlugin.MESSAGE_IGNORE;
+                }
+                // 匹配到纯图片信息判断用户是否处于搜(图/番)模式，否则拦截
+                if (msg.matches(imgMsgRegex)) {
+                    long key = event.getUserId() + event.getGroupId();
+                    if (SearchModeUtils.getMap().get(key) == null) {
+                        return BotPlugin.MESSAGE_IGNORE;
+                    }
                 }
                 // 如果消息携带prefix则去除prefix并放行
                 if (msg.startsWith(prefix)) {
@@ -66,6 +74,13 @@ public class CommandPrefix {
                 // 如果消息未携带prefix，且未匹配到img标签则拦截（用于搜图模式）
                 if (!msg.startsWith(prefix) && !msg.matches(imgMsgRegex)) {
                     return BotPlugin.MESSAGE_IGNORE;
+                }
+                // 匹配到纯图片信息判断用户是否处于搜(图/番)模式，否则拦截
+                if (msg.matches(imgMsgRegex)) {
+                    long key = event.getUserId();
+                    if (SearchModeUtils.getMap().get(key) == null) {
+                        return BotPlugin.MESSAGE_IGNORE;
+                    }
                 }
                 // 如果消息携带prefix则去除prefix并放行
                 if (msg.startsWith(prefix)) {
