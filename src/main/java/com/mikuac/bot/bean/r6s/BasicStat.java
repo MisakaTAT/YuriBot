@@ -1,6 +1,6 @@
 package com.mikuac.bot.bean.r6s;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 import java.util.Date;
@@ -22,7 +22,7 @@ public class BasicStat {
     /**
      * 最高MMR
      */
-    @JsonProperty("max_mmr")
+    @JSONField(name = "max_mmr")
     private int maxMmr;
 
     /**
@@ -36,7 +36,7 @@ public class BasicStat {
     private int abandons;
 
 
-    @JsonProperty("top_rank_position")
+    @JSONField(name = "top_rank_position")
     private int topRankPosition;
 
     /**
@@ -57,13 +57,13 @@ public class BasicStat {
     /**
      * 数据更新时间
      */
-    @JsonProperty("updated_at")
+    @JSONField(name = "updated_at")
     private Date updatedAt;
 
     /**
      * 最高段位数值（方便取段位图标）
      */
-    @JsonProperty("max_rank")
+    @JSONField(name = "max_rank")
     private int maxRank;
 
     /**

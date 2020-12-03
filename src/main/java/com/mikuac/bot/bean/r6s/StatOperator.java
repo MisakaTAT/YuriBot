@@ -1,7 +1,6 @@
 package com.mikuac.bot.bean.r6s;
 
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 /**
  * 干员数据
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Component;
  * @date 2020/11/4 23:00
  */
 @Data
-@Component
 public class StatOperator {
 
     /**

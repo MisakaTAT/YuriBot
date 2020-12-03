@@ -20,4 +20,6 @@ public class ApiConst {
 
     public final static String WHATANIME_INFO_API = "https://trace.moe/info?anilist_id=";
 
+    public final static String SAUCENAO_API = "https://saucenao.com/search.php?";
+
 }

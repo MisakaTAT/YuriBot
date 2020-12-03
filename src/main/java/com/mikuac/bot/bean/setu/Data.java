@@ -1,6 +1,5 @@
 package com.mikuac.bot.bean.setu;
 
-import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
@@ -8,7 +7,6 @@ import java.util.List;
  * @date 2020/11/9 14:33
  */
 @lombok.Data
-@Component
 public class Data {
 
     private long pid;

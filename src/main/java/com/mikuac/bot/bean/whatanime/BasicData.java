@@ -1,6 +1,6 @@
 package com.mikuac.bot.bean.whatanime;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 import java.util.List;
@@ -13,16 +13,16 @@ import java.util.List;
 @Component
 public class BasicData {
 
-    @JsonProperty("RawDocsCount")
+    @JSONField(name = "RawDocsCount")
     private long rawDocsCount;
 
-    @JsonProperty("RawDocsSearchTime")
+    @JSONField(name = "RawDocsSearchTime")
     private long rawDocsSearchTime;
 
-    @JsonProperty("ReRankSearchTime")
+    @JSONField(name = "ReRankSearchTime")
     private long reRankSearchTime;
 
-    @JsonProperty("CacheHit")
+    @JSONField(name = "CacheHit")
     private boolean cacheHit;
 
     private int trial;
@@ -31,12 +31,12 @@ public class BasicData {
 
     private int limit;
 
-    @JsonProperty("limit_ttl")
+    @JSONField(name = "limit_ttl")
     private int limitTtl;
 
     private int quota;
 
-    @JsonProperty("quota_ttl")
+    @JSONField(name = "quota_ttl")
     private int quotaTtl;
 
 }

@@ -1,9 +1,7 @@
 package com.mikuac.bot.bean.whatanime;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
-import org.springframework.stereotype.Component;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -11,14 +9,13 @@ import java.util.List;
  * @date 2020/12/1 9:50
  */
 @Data
-@Component
 public class Docs {
 
     private double from;
 
     private double to;
 
-    @JsonProperty("anilist_id")
+    @JSONField(name = "anilist_id")
     private int aniListId;
 
     private double at;
@@ -31,34 +28,34 @@ public class Docs {
 
     private int episode;
 
-    @JsonProperty("tokenthumb")
+    @JSONField(name = "tokenthumb")
     private String tokenThumb;
 
     private double similarity;
 
     private String title;
 
-    @JsonProperty("title_native")
+    @JSONField(name = "title_native")
     private String titleNative;
 
-    @JsonProperty("title_chinese")
+    @JSONField(name = "title_chinese")
     private String titleChinese;
 
-    @JsonProperty("title_english")
+    @JSONField(name = "title_english")
     private String titleEnglish;
 
-    @JsonProperty("title_romaji")
+    @JSONField(name = "title_romaji")
     private String titleRomaji;
 
-    @JsonProperty("mal_id")
+    @JSONField(name = "mal_id")
     private int malId;
 
     private List<String> synonyms;
 
-    @JsonProperty("synonyms_chinese")
+    @JSONField(name = "synonyms_chinese")
     private List<String> synonymsChinese;
 
-    @JsonProperty("is_adult")
+    @JSONField(name = "is_adult")
     private boolean isAdult;
 
 }

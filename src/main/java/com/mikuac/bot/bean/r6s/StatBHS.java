@@ -1,8 +1,7 @@
 package com.mikuac.bot.bean.r6s;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 /**
  * 模式数据
@@ -10,13 +9,12 @@ import org.springframework.stereotype.Component;
  * @date 2020/11/4 23:00
  */
 @Data
-@Component
 public class StatBHS {
 
     /**
      * 最高分
      */
-    @JsonProperty("bestscore")
+    @JSONField(name = "bestscore")
     private int bestScore;
 
     /**

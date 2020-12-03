@@ -44,11 +44,11 @@ public class WhatAnime extends BotPlugin {
         this.infoData = infoData;
     }
 
-    @Value("${yuri.plugins.whatAnime.token}")
-    private String token;
+    @Value("${yuri.plugins.whatAnime.apiKey}")
+    private String apiKey;
 
     public void getBasicData (String picUrl) {
-        String result = HttpClientUtil.httpGetWithJson(ApiConst.WHATANIME_BASIC_API + "?token=" + token + "&url=" + picUrl,false);
+        String result = HttpClientUtil.httpGetWithJson(ApiConst.WHATANIME_BASIC_API + "?token=" + apiKey + "&url=" + picUrl,false);
         basicData = JSON.parseObject(result, BasicData.class);
         // 取得基本信息后调用getDetailedData方法取得详细信息
         // api docs返回结果按相似性排序，从最相似到最不相似，所以取list第一个即可
@@ -76,7 +76,8 @@ public class WhatAnime extends BotPlugin {
         long groupId = event.getGroupId();
         long userId = event.getUserId();
         String msg = event.getRawMessage();
-        long key = groupId+userId;
+        // key加1以区分其它搜图模式
+        long key = groupId + userId + 1;
 
         Map<Long,SearchObj> map = SearchModeUtils.getMap();
 
@@ -86,14 +87,23 @@ public class WhatAnime extends BotPlugin {
                 bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("您已经处于搜番模式啦，请直接发送图片让我来帮您检索~").build(),false);
                 return MESSAGE_IGNORE;
             }
+            // 检查是否处于搜(图/本)模式
+            if (map.get(key+1) != null) {
+                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("您已经处于搜(图/本)模式，请先退出此模式后再次尝试~"),false);
+                return MESSAGE_IGNORE;
+            }
             SearchModeUtils.setMap(key,groupId,userId,"group");
             bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("您已进入搜番模式，请发送番剧截图来帮您检索~ （滥用此功能将被封禁）").build(),false);
             return MESSAGE_IGNORE;
         }
 
         if (msg.matches(MsgRegexConst.WHATANIME_QUIT)) {
-            SearchModeUtils.quitSearch(key);
-            bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("已为您退出搜番模式~").build(),false);
+            if (map.get(key) != null) {
+                SearchModeUtils.quitSearch(key);
+                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("已为您退出搜番模式~").build(),false);
+                return MESSAGE_IGNORE;
+            }
+            bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("您尚未进入搜番模式~").build(),false);
             return MESSAGE_IGNORE;
         }
 
@@ -122,7 +132,8 @@ public class WhatAnime extends BotPlugin {
                             .text("\n开播时间："+startTime)
                             .text("\n完结时间："+endTime)
                             .text("\n在"+basicData.getLimitTtl()+"秒内剩余"+basicData.getLimit()+"次搜索次数")
-                            .text("\n今日配额剩余："+basicData.getQuota());
+                            .text("\n今日配额剩余："+basicData.getQuota())
+                            .text("\n数据来源：WhatAnime");
                     bot.sendGroupMsg(groupId,msgSend.build(),false);
                 } catch (Exception e) {
                     bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("WhatAnime番剧检索失败，请稍后重试~").build(),false);
@@ -138,7 +149,8 @@ public class WhatAnime extends BotPlugin {
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
         long userId = event.getUserId();
         String msg = event.getRawMessage();
-        long key = event.getUserId();
+        // key加1以区分其它搜图模式
+        long key = userId + 1;
         Map<Long,SearchObj> map = SearchModeUtils.getMap();
 
         if (msg.matches(MsgRegexConst.WHATANIME)) {
@@ -147,14 +159,23 @@ public class WhatAnime extends BotPlugin {
                 bot.sendPrivateMsg(userId,"您已经处于搜番模式啦，请直接发送图片让我来帮您检索~",false);
                 return MESSAGE_IGNORE;
             }
+            // 检查是否处于搜(图/本)模式
+            if (map.get(key+1) != null) {
+                bot.sendPrivateMsg(userId,"您已经处于搜(图/本)模式，请先退出此模式后再次尝试~",false);
+                return MESSAGE_IGNORE;
+            }
             SearchModeUtils.setMap(key,userId,"private");
             bot.sendPrivateMsg(userId,"您已进入搜番模式，请发送番剧截图来帮您检索~ （滥用此功能将被封禁）",false);
             return MESSAGE_IGNORE;
         }
 
         if (msg.matches(MsgRegexConst.WHATANIME_QUIT)) {
-            SearchModeUtils.quitSearch(key);
-            bot.sendPrivateMsg(userId,"已为您退出搜番模式~",false);
+            if (map.get(key) != null) {
+                SearchModeUtils.quitSearch(key);
+                bot.sendPrivateMsg(userId,"已为您退出搜番模式~",false);
+                return MESSAGE_IGNORE;
+            }
+            bot.sendPrivateMsg(userId,"您尚未进入搜番模式~",false);
             return MESSAGE_IGNORE;
         }
 
@@ -179,10 +200,11 @@ public class WhatAnime extends BotPlugin {
                             .text("\n开播时间："+startTime)
                             .text("\n完结时间："+endTime)
                             .text("\n在"+basicData.getLimitTtl()+"秒内剩余"+basicData.getLimit()+"次搜索次数")
-                            .text("\n今日配额剩余："+basicData.getQuota());
+                            .text("\n今日配额剩余："+basicData.getQuota())
+                            .text("\n数据来源：WhatAnime");
                     bot.sendPrivateMsg(userId,msgSend.build(),false);
                 } catch (Exception e) {
-                    bot.sendPrivateMsg(userId,"WhatAnime番剧检索失败，请稍后重试~",false);
+                    bot.sendPrivateMsg(userId,"WhatAnime检索服务出现异常，请稍后重试~",false);
                     log.info("WhatAnime插件检索异常",e);
                 }
             }

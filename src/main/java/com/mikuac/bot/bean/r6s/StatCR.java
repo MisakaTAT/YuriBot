@@ -1,7 +1,6 @@
 package com.mikuac.bot.bean.r6s;
 
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 /**
  * 常规战 & 排名战总数据
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Component;
  * @date 2020/11/3 23:00
  */
 @Data
-@Component
 public class StatCR {
 
     /**

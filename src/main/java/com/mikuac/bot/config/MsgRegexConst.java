@@ -16,9 +16,13 @@ public class MsgRegexConst {
 
     public final static String SETU = "^[来來发發给給]([1一])?[张張个個幅点點份]([Rr]18的?)?[色瑟][图圖]$|^setu(-[Rr]18)?$|^[色瑟][图圖](-[Rr]18)?$";
 
-    public final static String WHATANIME = "^(搜番模式)$";
+    public final static String WHATANIME = "^(搜番(模式)?)$";
 
-    public final static String WHATANIME_QUIT = "^(退出搜番模式)$";
+    public final static String WHATANIME_QUIT = "^(退出搜番(模式)?)$";
+
+    public final static String SAUCE_NAO = "^(搜[图本](子)?(模式)?)$";
+
+    public final static String SAUCE_NAO_QUIT = "^(退出搜[图本](子)?(模式)?)$";
 
     public final static String SEND_ALL_GROUP = "^(SendAllGroup)-(.*)$";
 

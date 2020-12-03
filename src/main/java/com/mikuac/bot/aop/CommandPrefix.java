@@ -52,10 +52,11 @@ public class CommandPrefix {
                 if (!msg.startsWith(prefix) && !msg.matches(imgMsgRegex)) {
                     return BotPlugin.MESSAGE_IGNORE;
                 }
-                // 匹配到纯图片信息判断用户是否处于搜(图/番)模式，否则拦截
+                // 匹配到纯图片信息判断用户是否处于搜(图/番/本)模式，否则拦截
                 if (msg.matches(imgMsgRegex)) {
-                    long key = event.getUserId() + event.getGroupId();
-                    if (SearchModeUtils.getMap().get(key) == null) {
+                    long waKey = event.getUserId() + event.getGroupId() + 1;
+                    long snKey = event.getUserId() + event.getGroupId() + 2;
+                    if (SearchModeUtils.getMap().get(waKey) == null && SearchModeUtils.getMap().get(snKey) == null) {
                         return BotPlugin.MESSAGE_IGNORE;
                     }
                 }
@@ -75,10 +76,11 @@ public class CommandPrefix {
                 if (!msg.startsWith(prefix) && !msg.matches(imgMsgRegex)) {
                     return BotPlugin.MESSAGE_IGNORE;
                 }
-                // 匹配到纯图片信息判断用户是否处于搜(图/番)模式，否则拦截
+                // 匹配到纯图片信息判断用户是否处于搜(图/番/本)模式，否则拦截
                 if (msg.matches(imgMsgRegex)) {
-                    long key = event.getUserId();
-                    if (SearchModeUtils.getMap().get(key) == null) {
+                    long waKey = event.getUserId() + 1;
+                    long snKey = event.getUserId() + 2;
+                    if (SearchModeUtils.getMap().get(waKey) == null && SearchModeUtils.getMap().get(snKey) == null) {
                         return BotPlugin.MESSAGE_IGNORE;
                     }
                 }

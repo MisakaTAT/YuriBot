@@ -1,6 +1,6 @@
 package com.mikuac.bot.bean.whatanime;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -40,7 +40,7 @@ public class InfoData {
 
     private String bannerImage;
 
-    @JsonProperty("coverImage")
+    @JSONField(name = "coverImage")
     private CoverImage coverImage;
 
 }

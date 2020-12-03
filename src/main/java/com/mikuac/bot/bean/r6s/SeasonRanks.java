@@ -1,8 +1,7 @@
 package com.mikuac.bot.bean.r6s;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 /**
  * 赛季排位数据
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
  * @date 2020/11/4 23:00
  */
 @Data
-@Component
 public class SeasonRanks {
 
     /**
@@ -21,7 +19,7 @@ public class SeasonRanks {
     /**
      * 最高MMR
      */
-    @JsonProperty("max_mmr")
+    @JSONField(name = "max_mmr")
     private int maxMmr;
 
     /**
@@ -42,7 +40,7 @@ public class SeasonRanks {
     /**
      * 最高段位（取图标用）
      */
-    @JsonProperty("max_rank")
+    @JSONField(name = "max_rank")
     private int maxRank;
 
     /**

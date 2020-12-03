@@ -1,8 +1,7 @@
 package com.mikuac.bot.bean.r6s;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 /**
  * 武器数据
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
  * @date 2020/11/5 24:00
  */
 @Data
-@Component
 public class StatWeapon {
 
     /**
@@ -21,13 +19,13 @@ public class StatWeapon {
     /**
      * 爆头击杀
      */
-    @JsonProperty("headshot")
+    @JSONField(name = "headshot")
     private int headShot;
 
     /**
      * 子弹命中次数
      */
-    @JsonProperty("bullethit")
+    @JSONField(name = "bullethit")
     private int bulletHit;
 
     /**
@@ -38,7 +36,7 @@ public class StatWeapon {
     /**
      * 开火次数
      */
-    @JsonProperty("bulletfired")
+    @JSONField(name = "bulletfired")
     private int bulletFired;
 
 }
