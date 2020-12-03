@@ -14,8 +14,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 彩虹六号战绩查询
@@ -112,21 +112,21 @@ public class RainbowSixStats extends BotPlugin {
         if (msg.matches(msgRegex)){
             long groupId = event.getGroupId();
             long userId = event.getUserId();
-            String gameUserId;
-            try {
-                gameUserId = URLEncoder.encode(RegexUtils.getR6Id(msg), "utf-8");
-            } catch (UnsupportedEncodingException e) {
-                gameUserId = RegexUtils.getR6Id(msg);
-                log.info("彩虹六号战绩查询gameUserId URLEncoder异常",e);
+            String gameUserId = RegexUtils.regex(RegexUtils.GET_R6_ID,msg);
+            if (gameUserId != null) {
+                gameUserId = URLEncoder.encode(gameUserId, StandardCharsets.UTF_8);
+                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text(gameUserId+"数据查询中，请稍后~").build(),false);
+                try {
+                    getRainbowSixStats(gameUserId);
+                    getDataAndBuilder();
+                    bot.sendGroupMsg(groupId,getDataAndBuilder().text("\n\n").at(userId).build(),false);
+                } catch (Exception e) {
+                    bot.sendGroupMsg(groupId,Msg.builder().at(userId).text(gameUserId+"游戏数据查询失败，请稍后重试~").build(),false);
+                }
+            } else {
+                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("游戏ID匹配失败，请重试~").build(),false);
             }
-            bot.sendGroupMsg(groupId,Msg.builder().at(userId).text(gameUserId+"数据查询中，请稍后~").build(),false);
-            try {
-                getRainbowSixStats(gameUserId);
-                getDataAndBuilder();
-                bot.sendGroupMsg(groupId,getDataAndBuilder().text("\n\n").at(userId).build(),false);
-            } catch (Exception e) {
-                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text(gameUserId+"游戏数据查询失败，请稍后重试~").build(),false);
-            }
+
         }
         return MESSAGE_IGNORE;
     }
@@ -136,20 +136,19 @@ public class RainbowSixStats extends BotPlugin {
         String msg = event.getRawMessage();
         if (msg.matches(msgRegex)){
             long userId = event.getUserId();
-            String gameUserId;
-            try {
-                gameUserId = URLEncoder.encode(RegexUtils.getR6Id(msg), "utf-8");
-            } catch (UnsupportedEncodingException e) {
-                gameUserId = RegexUtils.getR6Id(msg);
-                log.info("彩虹六号战绩查询gameUserId URLEncoder异常",e);
-            }
-            bot.sendPrivateMsg(userId,gameUserId+"数据查询中，请稍后~",false);
-            try {
-                getRainbowSixStats(gameUserId);
-                getDataAndBuilder();
-                bot.sendPrivateMsg(userId,getDataAndBuilder().build(),false);
-            } catch (Exception e) {
-                bot.sendPrivateMsg(userId,gameUserId+"游戏数据查询失败，请稍后重试~",false);
+            String gameUserId = RegexUtils.regex(RegexUtils.GET_R6_ID,msg);
+            if (gameUserId != null) {
+                gameUserId = URLEncoder.encode(gameUserId, StandardCharsets.UTF_8);
+                bot.sendPrivateMsg(userId,gameUserId+"数据查询中，请稍后~",false);
+                try {
+                    getRainbowSixStats(gameUserId);
+                    getDataAndBuilder();
+                    bot.sendPrivateMsg(userId,getDataAndBuilder().build(),false);
+                } catch (Exception e) {
+                    bot.sendPrivateMsg(userId,gameUserId+"游戏数据查询失败，请稍后重试~",false);
+                }
+            } else {
+                bot.sendPrivateMsg(userId,"游戏ID匹配失败，请重试~",false);
             }
         }
         return MESSAGE_IGNORE;

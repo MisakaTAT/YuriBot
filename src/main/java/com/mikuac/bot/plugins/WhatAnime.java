@@ -104,7 +104,7 @@ public class WhatAnime extends BotPlugin {
         }
 
         if (map.get(key) != null && map.get(key).getEnable() && map.get(key).getGroupId() == groupId) {
-            String picUrl = RegexUtils.getMsgPicUrl(msg);
+            String picUrl = RegexUtils.regex(RegexUtils.GET_MSG_PIC_URL,msg);
             // 判断是否为图片消息
             if (picUrl != null) {
                 // 如有操作重新设置TTL
@@ -165,7 +165,7 @@ public class WhatAnime extends BotPlugin {
         }
 
         if (map.get(key) != null && map.get(key).getEnable()) {
-            String picUrl = RegexUtils.getMsgPicUrl(msg);
+            String picUrl = RegexUtils.regex(RegexUtils.GET_MSG_PIC_URL,msg);
             if (picUrl != null) {
                 bot.sendPrivateMsg(userId,"番剧搜索中，请稍后~",false);
                 try {

@@ -41,9 +41,10 @@ public class SendAllGroup extends BotPlugin {
         String msg = event.getRawMessage();
         if (userId == adminId && msg.matches(msgRegex)) {
             List<Long> groupIdList = sendMsgUtils.getGroupList();
-            if (groupIdList != null && !groupIdList.isEmpty()) {
+            String regMsg = RegexUtils.regex(RegexUtils.GET_SEND_ALL_GROUP_MSG,msg);
+            if (groupIdList != null && !groupIdList.isEmpty() && regMsg != null) {
                 for (long groupId : groupIdList) {
-                    sendMsgUtils.sendGroupMsg(groupId, Msg.builder().text(RegexUtils.getSendAllGroupMsg(msg)));
+                    sendMsgUtils.sendGroupMsg(groupId, Msg.builder().text(regMsg));
                 }
             }
         }
