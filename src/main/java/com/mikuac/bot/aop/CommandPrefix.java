@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommandPrefix {
 
-    @Value("${yuri.plugins.prefix-config.prefix}")
+    @Value("${yuri.plugins.prefix.prefix}")
     private String prefix;
 
     final String imgMsgRegex = "<image.*>";

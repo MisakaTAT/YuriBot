@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.mikuac.bot.utils.HttpClientUtil;
+import com.mikuac.bot.utils.MsgRegex;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;
@@ -28,7 +29,7 @@ public class Hitokoto extends BotPlugin {
     /**
      * 初始化typesMap
      */
-    Map<Character, String> typesMap = new ConcurrentHashMap() {
+    Map<Character, String> typesMap = new ConcurrentHashMap<>() {
         {
             put('a', "动画");
             put('b', "漫画");
@@ -45,12 +46,10 @@ public class Hitokoto extends BotPlugin {
         }
     };
 
-    @Value("${yuri.plugins.hitokoto-config.api}")
+    @Value("${yuri.plugins.hitokoto.api}")
     private String api;
-    @Value("${yuri.plugins.hitokoto-config.cdTime}")
+    @Value("${yuri.plugins.hitokoto.cdTime}")
     private int cdTime;
-    @Value("${yuri.plugins.hitokoto-config.msgRegex}")
-    private String msgRegex;
 
     private String types = "abcdefghijkl";
 
@@ -75,7 +74,7 @@ public class Hitokoto extends BotPlugin {
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
         String msg = event.getRawMessage();
         // 群组消息处理
-        if (msg.matches(msgRegex)) {
+        if (msg.matches(MsgRegex.HITOKOTO)) {
             long groupId = event.getGroupId();
             long userId = event.getUserId();
             long getNowTime = Instant.now().getEpochSecond();
@@ -112,7 +111,7 @@ public class Hitokoto extends BotPlugin {
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
         String msg = event.getRawMessage();
         // 私聊消息处理
-        if (msg.matches(msgRegex)) {
+        if (msg.matches(MsgRegex.HITOKOTO)) {
             long userId = event.getUserId();
             long getNowTime = Instant.now().getEpochSecond();
             long lastGetTime = lastGetTimeMap.getOrDefault(userId, 0L);

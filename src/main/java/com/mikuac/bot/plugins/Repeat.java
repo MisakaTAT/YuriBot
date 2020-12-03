@@ -23,7 +23,7 @@ public class Repeat extends BotPlugin {
     Map<Long, String> lastMsgMap = new ConcurrentHashMap<>();
     Map<Long, Integer> countMap = new ConcurrentHashMap<>();
 
-    @Value("${yuri.plugins.repeat-config.randomCountSize}")
+    @Value("${yuri.plugins.repeat.randomCountSize}")
     private int randomCountSize;
 
     @Override

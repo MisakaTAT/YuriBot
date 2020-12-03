@@ -16,9 +16,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class Maintenance extends BotPlugin {
 
-    @Value("${yuri.plugins.maintenance-config.isMaintenance}")
+    @Value("${yuri.plugins.maintenance.isMaintenance}")
     private Boolean isMaintenance;
-    @Value("${yuri.plugins.maintenance-config.maintenanceMsg}")
+    @Value("${yuri.plugins.maintenance.maintenanceMsg}")
     private String maintenanceMsg;
 
     @Override

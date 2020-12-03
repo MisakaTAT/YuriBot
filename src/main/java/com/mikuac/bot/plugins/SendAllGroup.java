@@ -1,5 +1,6 @@
 package com.mikuac.bot.plugins;
 
+import com.mikuac.bot.utils.MsgRegex;
 import com.mikuac.bot.utils.RegexUtils;
 import com.mikuac.bot.utils.SendMsgUtils;
 import lombok.SneakyThrows;
@@ -31,15 +32,12 @@ public class SendAllGroup extends BotPlugin {
     @Value("${yuri.bot.adminId}")
     private long adminId;
 
-    @Value("${yuri.plugins.send-all-group.msgRegex}")
-    private String msgRegex;
-
     @SneakyThrows
     @Override
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
         long userId = event.getUserId();
         String msg = event.getRawMessage();
-        if (userId == adminId && msg.matches(msgRegex)) {
+        if (userId == adminId && msg.matches(MsgRegex.SEND_ALL_GROUP)) {
             List<Long> groupIdList = sendMsgUtils.getGroupList();
             String regMsg = RegexUtils.regex(RegexUtils.GET_SEND_ALL_GROUP_MSG,msg);
             if (groupIdList != null && !groupIdList.isEmpty() && regMsg != null) {

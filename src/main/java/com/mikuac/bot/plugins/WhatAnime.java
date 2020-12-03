@@ -42,16 +42,12 @@ public class WhatAnime extends BotPlugin {
         this.infoData = infoData;
     }
 
-    @Value("${yuri.plugins.what-anime.basicApi}")
+    @Value("${yuri.plugins.whatAnime.basicApi}")
     private String basicApi;
-    @Value("${yuri.plugins.what-anime.infoApi}")
+    @Value("${yuri.plugins.whatAnime.infoApi}")
     private String infoApi;
-    @Value("${yuri.plugins.what-anime.msgRegex}")
-    private String msgRegex;
-    @Value("${yuri.plugins.what-anime.token}")
+    @Value("${yuri.plugins.whatAnime.token}")
     private String token;
-    @Value("${yuri.plugins.what-anime.quitSearchRegex}")
-    private String quitSearchRegex;
 
     public void getBasicData (String picUrl) {
         String result = HttpClientUtil.httpGetWithJson(basicApi + "?token=" + token + "&url=" + picUrl,false);
@@ -86,7 +82,7 @@ public class WhatAnime extends BotPlugin {
 
         Map<Long,SearchObj> map = SearchModeUtils.getMap();
 
-        if (msg.matches(msgRegex)) {
+        if (msg.matches(MsgRegex.WHAT_ANIME)) {
             // 防止重复执行
             if (map.get(key) != null) {
                 bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("您已经处于搜番模式啦，请直接发送图片让我来帮您检索~").build(),false);
@@ -97,7 +93,7 @@ public class WhatAnime extends BotPlugin {
             return MESSAGE_IGNORE;
         }
 
-        if (msg.matches(quitSearchRegex)) {
+        if (msg.matches(MsgRegex.WHAT_ANIME_QUIT)) {
             SearchModeUtils.quitSearch(key);
             bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("已为您退出搜番模式~").build(),false);
             return MESSAGE_IGNORE;
@@ -147,7 +143,7 @@ public class WhatAnime extends BotPlugin {
         long key = event.getUserId();
         Map<Long,SearchObj> map = SearchModeUtils.getMap();
 
-        if (msg.matches(msgRegex)) {
+        if (msg.matches(MsgRegex.WHAT_ANIME)) {
             // 防止重复执行
             if (map.get(key) != null) {
                 bot.sendPrivateMsg(userId,"您已经处于搜番模式啦，请直接发送图片让我来帮您检索~",false);
@@ -158,7 +154,7 @@ public class WhatAnime extends BotPlugin {
             return MESSAGE_IGNORE;
         }
 
-        if (msg.matches(quitSearchRegex)) {
+        if (msg.matches(MsgRegex.WHAT_ANIME_QUIT)) {
             SearchModeUtils.quitSearch(key);
             bot.sendPrivateMsg(userId,"已为您退出搜番模式~",false);
             return MESSAGE_IGNORE;
