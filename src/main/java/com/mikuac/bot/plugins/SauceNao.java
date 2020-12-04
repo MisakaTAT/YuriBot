@@ -90,7 +90,7 @@ public class SauceNao extends BotPlugin {
                     searchResult(picUrl);
                     // 检查24小时内剩余搜索额度
                     if (sauceNaoBean.getHeader().getLongRemaining() <= 0) {
-                        bot.sendPrivateMsg(userId,"Saucenao 今日搜索配额已耗尽，明天再来吧~",false);
+                        bot.sendPrivateMsg(userId,"Saucenao 24小时内搜索配额已耗尽，明天再来吧~",false);
                         return MESSAGE_IGNORE;
                     }
                     // 检查30秒内剩余搜索额度
@@ -113,7 +113,7 @@ public class SauceNao extends BotPlugin {
                                     .text("\n画师："+k.getResultData().getMemberName())
                                     .text("\nPixiv：https://pixiv.net/i/"+k.getResultData().getPixivId())
                                     .text("\nAuthor：https://pixiv.net/u/"+k.getResultData().getMemberId())
-                                    .text("\n今日剩余搜索配额："+sauceNaoBean.getHeader().getLongRemaining())
+                                    .text("\n剩余搜索配额："+sauceNaoBean.getHeader().getLongRemaining())
                                     .text("\n数据来源：SauceNao (Pixiv)");
                             bot.sendPrivateMsg(userId,sendMsg.build(),false);
                         } else if (k.getResultHeader().getIndexName().matches("(.*)E-Hentai(.*)")) {
@@ -123,7 +123,7 @@ public class SauceNao extends BotPlugin {
                                     .text("\n来源："+k.getResultData().getSource())
                                     .text("\n\n日文名："+k.getResultData().getJpName())
                                     .text("\n\n英文名："+k.getResultData().getEngName())
-                                    .text("\n\n今日剩余搜索配额："+sauceNaoBean.getHeader().getLongRemaining())
+                                    .text("\n\n剩余搜索配额："+sauceNaoBean.getHeader().getLongRemaining())
                                     .text("\n数据来源：SauceNao (E-Hentai)");
                             bot.sendPrivateMsg(userId,sendMsg.build(),false);
                         } else {
@@ -186,7 +186,7 @@ public class SauceNao extends BotPlugin {
                     searchResult(picUrl);
                     // 检查24小时内剩余搜索额度
                     if (sauceNaoBean.getHeader().getLongRemaining() <= 0) {
-                        bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("Saucenao 今日搜索配额已耗尽，明天再来吧~").build(),false);
+                        bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("Saucenao 24小时内搜索配额已耗尽，明天再来吧~").build(),false);
                         return MESSAGE_IGNORE;
                     }
                     // 检查30秒内剩余搜索额度
@@ -210,7 +210,7 @@ public class SauceNao extends BotPlugin {
                                     .text("\n画师："+k.getResultData().getMemberName())
                                     .text("\nPixiv：https://pixiv.net/i/"+k.getResultData().getPixivId())
                                     .text("\nAuthor：https://pixiv.net/u/"+k.getResultData().getMemberId())
-                                    .text("\n今日剩余搜索配额："+sauceNaoBean.getHeader().getLongRemaining())
+                                    .text("\n剩余搜索配额："+sauceNaoBean.getHeader().getLongRemaining())
                                     .text("\n数据来源：SauceNao (Pixiv)");
                             bot.sendGroupMsg(groupId,sendMsg.build(),false);
                         } else if (k.getResultHeader().getIndexName().matches("(.*)E-Hentai(.*)")) {
@@ -221,7 +221,7 @@ public class SauceNao extends BotPlugin {
                                     .text("\n来源："+k.getResultData().getSource())
                                     .text("\n\n日文名："+k.getResultData().getJpName())
                                     .text("\n\n英文名："+k.getResultData().getEngName())
-                                    .text("\n\n今日剩余搜索配额："+sauceNaoBean.getHeader().getLongRemaining())
+                                    .text("\n\n剩余搜索配额："+sauceNaoBean.getHeader().getLongRemaining())
                                     .text("\n数据来源：SauceNao (E-Hentai)");
                             bot.sendGroupMsg(groupId,sendMsg.build(),false);
                         } else {
