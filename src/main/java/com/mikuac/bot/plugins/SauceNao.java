@@ -1,10 +1,11 @@
 package com.mikuac.bot.plugins;
 
 import com.alibaba.fastjson.JSON;
-import com.mikuac.bot.bean.SearchObj;
+import com.mikuac.bot.bean.SearchBean;
 import com.mikuac.bot.bean.saucenao.SauceNaoBean;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.MsgRegexConst;
+import com.mikuac.bot.utils.BanUtils;
 import com.mikuac.bot.utils.HttpClientUtil;
 import com.mikuac.bot.utils.RegexUtils;
 import com.mikuac.bot.utils.SearchModeUtils;
@@ -36,6 +37,17 @@ public class SauceNao extends BotPlugin {
         this.sauceNaoBean = sauceNaoBean;
     }
 
+    private BanUtils banUtils;
+
+    @Autowired
+    public void setBanUtils(BanUtils banUtils) {
+        this.banUtils = banUtils;
+    }
+
+    @Value("${yuri.plugins.banUtils.limitTime}")
+    private int limitTime;
+    @Value("${yuri.plugins.banUtils.limitCount}")
+    private int limitCount;
     @Value("${yuri.plugins.sauceNao.apiKey}")
     private String apiKey;
 
@@ -52,9 +64,13 @@ public class SauceNao extends BotPlugin {
         // key加2以区分其它搜图模式
         long key = userId + 2;
 
-        Map<Long, SearchObj> map = SearchModeUtils.getMap();
+        Map<Long, SearchBean> map = SearchModeUtils.getMap();
 
         if (msg.matches(MsgRegexConst.SAUCE_NAO)) {
+            if (banUtils.isBanned(userId)) {
+                bot.sendPrivateMsg(userId,"您因触发滥用规则已被永久封禁~",false);
+                return MESSAGE_IGNORE;
+            }
             // 防止重复执行
             if (map.get(key) != null) {
                 bot.sendPrivateMsg(userId,"您已经处于搜(图/本)模式啦，请直接发送图片让我来帮您检索~",false);
@@ -66,7 +82,7 @@ public class SauceNao extends BotPlugin {
                 return MESSAGE_IGNORE;
             }
             SearchModeUtils.setMap(key,userId,"private");
-            bot.sendPrivateMsg(userId,"您已进入搜(图/本)模式，请发送图片来帮您检索~ (滥用此功能将被封禁)",false);
+            bot.sendPrivateMsg(userId,"您已进入搜(图/本)模式，请发送图片来帮您检索~ (注意："+limitTime+"秒内发送超过"+limitCount+"张图片将会触发滥用规则被永久封禁！)",false);
             return MESSAGE_IGNORE;
         }
 
@@ -85,6 +101,8 @@ public class SauceNao extends BotPlugin {
             if (picUrl != null) {
                 // 如有操作重新设置TTL
                 map.get(key).setStartTime(Instant.now().getEpochSecond());
+                // 检查滥用
+                banUtils.setBan(userId);
                 bot.sendPrivateMsg(userId,"图片搜索中，请稍后~",false);
                 try {
                     searchResult(picUrl);
@@ -148,9 +166,13 @@ public class SauceNao extends BotPlugin {
         // key加2以区分其它搜图模式
         long key = userId + groupId + 2;
 
-        Map<Long, SearchObj> map = SearchModeUtils.getMap();
+        Map<Long, SearchBean> map = SearchModeUtils.getMap();
 
         if (msg.matches(MsgRegexConst.SAUCE_NAO)) {
+            if (banUtils.isBanned(userId)) {
+                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("您因触发滥用规则已被永久封禁~").build(),false);
+                return MESSAGE_IGNORE;
+            }
             // 防止重复执行
             if (map.get(key) != null) {
                 bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("您已经处于搜(图/本)模式啦，请直接发送图片让我来帮您检索~").build(),false);
@@ -162,7 +184,7 @@ public class SauceNao extends BotPlugin {
                 return MESSAGE_IGNORE;
             }
             SearchModeUtils.setMap(key,groupId,userId,"group");
-            bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("您已进入搜(图/本)模式，请发送图片来帮您检索~ (滥用此功能将被封禁)").build(),false);
+            bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("您已进入搜(图/本)模式，请发送图片来帮您检索~ (注意："+limitTime+"秒内发送超过"+limitCount+"张图片将会触发滥用规则被永久封禁！)").build(),false);
             return MESSAGE_IGNORE;
         }
 
@@ -181,6 +203,8 @@ public class SauceNao extends BotPlugin {
             if (picUrl != null) {
                 // 如有操作重新设置TTL
                 map.get(key).setStartTime(Instant.now().getEpochSecond());
+                // 检查滥用
+                banUtils.setBan(userId);
                 bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("图片搜索中，请稍后~").build(),false);
                 try {
                     searchResult(picUrl);

@@ -1,6 +1,6 @@
 package com.mikuac.bot.utils;
 
-import com.mikuac.bot.bean.SearchObj;
+import com.mikuac.bot.bean.SearchBean;
 import net.lz1998.pbbot.utils.Msg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -23,7 +23,7 @@ public class SearchModeUtils {
         this.sendMsgUtils = sendMsgUtils;
     }
 
-    private static Map<Long, SearchObj> searchMode = new ConcurrentHashMap<>();
+    private static Map<Long, SearchBean> searchMode = new ConcurrentHashMap<>();
 
     @Scheduled(cron = "0/5 * * * * ?",zone = "Asia/Shanghai")
     public void timeOutRemove() throws InterruptedException {
@@ -56,27 +56,27 @@ public class SearchModeUtils {
     }
 
     public static void setMap (long key,long groupId,long userId,String msgType) {
-        SearchObj searchObj = new SearchObj();
-        searchObj.setKey(key);
-        searchObj.setGroupId(groupId);
-        searchObj.setUserId(userId);
-        searchObj.setEnable(true);
-        searchObj.setStartTime(Instant.now().getEpochSecond());
-        searchObj.setMsgType(msgType);
-        searchMode.put(key,searchObj);
+        SearchBean searchBean = new SearchBean();
+        searchBean.setKey(key);
+        searchBean.setGroupId(groupId);
+        searchBean.setUserId(userId);
+        searchBean.setEnable(true);
+        searchBean.setStartTime(Instant.now().getEpochSecond());
+        searchBean.setMsgType(msgType);
+        searchMode.put(key, searchBean);
     }
 
     public static void setMap (long key,long userId,String msgType) {
-        SearchObj searchObj = new SearchObj();
-        searchObj.setKey(key);
-        searchObj.setUserId(userId);
-        searchObj.setEnable(true);
-        searchObj.setStartTime(Instant.now().getEpochSecond());
-        searchObj.setMsgType(msgType);
-        searchMode.put(key,searchObj);
+        SearchBean searchBean = new SearchBean();
+        searchBean.setKey(key);
+        searchBean.setUserId(userId);
+        searchBean.setEnable(true);
+        searchBean.setStartTime(Instant.now().getEpochSecond());
+        searchBean.setMsgType(msgType);
+        searchMode.put(key, searchBean);
     }
 
-    public static Map<Long, SearchObj> getMap () {
+    public static Map<Long, SearchBean> getMap () {
         return searchMode;
     }
 

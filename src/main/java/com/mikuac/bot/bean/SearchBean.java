@@ -7,7 +7,7 @@ import lombok.Data;
  * @date 2020/12/1 15:23
  */
 @Data
-public class SearchObj {
+public class SearchBean {
 
     /**
      * 群组为UserId加GroupId
