@@ -76,10 +76,11 @@ public class AntiBiliApp extends BotPlugin {
                     Msg sendMsg = Msg.builder()
                             .image(data.getPic())
                             .text("\n" + data.getTitle())
-                            .text("\n【UP】" + data.getOwner().getName())
-                            .text("\n【播放】" + stat.getView() + "【弹幕】" + stat.getDanmaku() + "【投币】" + stat.getCoin())
-                            .text("\n【评论】" + stat.getReply() + "【分享】" + stat.getShare() + "【点赞】" + stat.getLike())
-                            .text("\n" + videoUrl + data.getAid())
+                            .text("\nUP：" + data.getOwner().getName())
+                            .text("\n播放：" + stat.getView() + "  弹幕：" + stat.getDanmaku())
+                            .text("\n投币：" + stat.getCoin() + "  点赞：" + stat.getLike())
+                            .text("\n评论：" + stat.getReply() + "  分享：" + stat.getShare())
+                            .text("\n" + videoUrl + "av" +data.getAid())
                             .text("\n" + videoUrl + data.getBvid());
                     bot.sendPrivateMsg(userId,sendMsg.build(),false);
                 }
@@ -111,10 +112,11 @@ public class AntiBiliApp extends BotPlugin {
                             .at(userId)
                             .image(data.getPic())
                             .text("\n" + data.getTitle())
-                            .text("\n【UP】" + data.getOwner().getName())
-                            .text("\n【播放】" + stat.getView() + "【弹幕】" + stat.getDanmaku() + "【投币】" + stat.getCoin())
-                            .text("\n【评论】" + stat.getReply() + "【分享】" + stat.getShare() + "【点赞】" + stat.getLike())
-                            .text("\n" + videoUrl + data.getAid())
+                            .text("\nUP：" + data.getOwner().getName())
+                            .text("\n播放：" + stat.getView() + "  弹幕：" + stat.getDanmaku())
+                            .text("\n投币：" + stat.getCoin() + "  点赞：" + stat.getLike())
+                            .text("\n评论：" + stat.getReply() + "  分享：" + stat.getShare())
+                            .text("\n" + videoUrl + "av" +data.getAid())
                             .text("\n" + videoUrl + data.getBvid());
                     bot.sendGroupMsg(groupId,sendMsg.build(),false);
                 }
