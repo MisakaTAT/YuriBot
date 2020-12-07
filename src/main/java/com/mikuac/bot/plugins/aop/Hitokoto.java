@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.mikuac.bot.config.ApiConst;
-import com.mikuac.bot.utils.HttpClientUtil;
+import com.mikuac.bot.utils.HttpClientUtils;
 import com.mikuac.bot.config.RegexConst;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
@@ -62,7 +62,7 @@ public class Hitokoto extends BotPlugin {
     Map<Long, Long> lastGetTimeMap = new ConcurrentHashMap<>();
 
     public void getData(char type) {
-        String result = HttpClientUtil.httpGetWithJson(ApiConst.HITOKOTO_API + type,false);
+        String result = HttpClientUtils.httpGetWithJson(ApiConst.HITOKOTO_API + type,false);
         JSONObject jsonObject = JSONObject.parseObject(result);
         hitokoto = jsonObject.getString("hitokoto");
         from = jsonObject.getString("from");

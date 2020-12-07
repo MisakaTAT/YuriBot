@@ -22,4 +22,6 @@ public class ApiConst {
 
     public final static String SAUCENAO_API = "https://saucenao.com/search.php?";
 
+    public final static String BILI_VIDEO_INFO_API = "https://api.bilibili.com/x/web-interface/view?bvid=";
+
 }

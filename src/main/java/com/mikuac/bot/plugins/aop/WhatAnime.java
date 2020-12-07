@@ -59,7 +59,7 @@ public class WhatAnime extends BotPlugin {
     private String apiKey;
 
     public void getBasicData (String picUrl) {
-        String result = HttpClientUtil.httpGetWithJson(ApiConst.WHATANIME_BASIC_API + "?token=" + apiKey + "&url=" + picUrl,false);
+        String result = HttpClientUtils.httpGetWithJson(ApiConst.WHATANIME_BASIC_API + "?token=" + apiKey + "&url=" + picUrl,false);
         basicData = JSON.parseObject(result, BasicData.class);
         // 取得基本信息后调用getDetailedData方法取得详细信息
         // api docs返回结果按相似性排序，从最相似到最不相似，所以取list第一个即可
@@ -73,7 +73,7 @@ public class WhatAnime extends BotPlugin {
     }
 
     public void getDetailedData (int aniListId) {
-        String result = HttpClientUtil.httpGetWithJson(ApiConst.WHATANIME_INFO_API + aniListId,false);
+        String result = HttpClientUtils.httpGetWithJson(ApiConst.WHATANIME_INFO_API + aniListId,false);
         JSONArray jsonArray = JSON.parseArray(result);
         if (jsonArray != null) {
             infoData = JSON.parseObject(jsonArray.getJSONObject(0).toString(), InfoData.class);

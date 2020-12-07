@@ -5,7 +5,7 @@ import com.mikuac.bot.bean.setu.Data;
 import com.mikuac.bot.bean.setu.SetuBean;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.repository.PluginSwitchRepository;
-import com.mikuac.bot.utils.HttpClientUtil;
+import com.mikuac.bot.utils.HttpClientUtils;
 import com.mikuac.bot.config.RegexConst;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
@@ -76,7 +76,7 @@ public class SeTu extends BotPlugin {
     }
 
     public void getData(String r18) {
-        String result = HttpClientUtil.httpGetWithJson(ApiConst.SETU_API + apiKey + r18,false);
+        String result = HttpClientUtils.httpGetWithJson(ApiConst.SETU_API + apiKey + r18,false);
         seTuBean = JSON.parseObject(result, SetuBean.class);
     }
 

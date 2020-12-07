@@ -7,7 +7,7 @@ import com.mikuac.bot.bean.saucenao.SauceNaoBean;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.RegexConst;
 import com.mikuac.bot.utils.BanUtils;
-import com.mikuac.bot.utils.HttpClientUtil;
+import com.mikuac.bot.utils.HttpClientUtils;
 import com.mikuac.bot.utils.RegexUtils;
 import com.mikuac.bot.utils.SearchModeUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +54,7 @@ public class SauceNao extends BotPlugin {
 
     public void searchResult (String picUrl) {
         String param = "api_key="+apiKey+"&output_type=2&numres=3&db=999&url="+picUrl;
-        String result = HttpClientUtil.httpGetWithJson(ApiConst.SAUCENAO_API + param,false);
+        String result = HttpClientUtils.httpGetWithJson(ApiConst.SAUCENAO_API + param,false);
         sauceNaoBean = JSON.parseObject(result, SauceNaoBean.class);
     }
 

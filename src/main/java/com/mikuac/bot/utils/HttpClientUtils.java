@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-public class HttpClientUtil {
+public class HttpClientUtils {
 
     /**
      * Get请求并返回Json数据

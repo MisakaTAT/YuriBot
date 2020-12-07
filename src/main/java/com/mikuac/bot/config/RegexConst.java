@@ -36,4 +36,10 @@ public class RegexConst {
 
     public final static String AT_ME = "(?<=<at qq=\").*?(?=\"/>)";
 
+    public final static String GET_QQ_DOC_URL = "(?<=\"qqdocurl\":\").*?(?=\\?share_medium)";
+
+    public final static String GET_URL_BVID = "(?<=video/).*?(?=\\?p=)";
+
+    public final static String ANTI_BILI_MINI_APP = "^(.*?)1109937557(.*)";
+
 }

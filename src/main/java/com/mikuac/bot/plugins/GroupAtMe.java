@@ -23,7 +23,6 @@ public class GroupAtMe extends BotPlugin {
         String msg = event.getRawMessage();
         String botId = String.valueOf(event.getSelfId());
         String getAtId = RegexUtils.regex(RegexConst.AT_ME,msg);
-        System.out.println(msg);
         if (botId.equals(getAtId)) {
             String imgUrl = "https://mikuac.com/botimg/atme.jpg";
             long userId = event.getUserId();

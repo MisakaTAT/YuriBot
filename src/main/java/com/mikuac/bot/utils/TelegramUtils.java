@@ -24,7 +24,7 @@ public class TelegramUtils {
         String api = "https://api.telegram.org/bot" + botToken + "/getFile?file_id=" + fileId;
         String result = null;
         try {
-            result = HttpClientUtil.httpGetWithJson(api,false);
+            result = HttpClientUtils.httpGetWithJson(api,false);
         } catch (Exception e) {
             log.info("Telegram图片链接获取异常 [{}]", e);
         }
