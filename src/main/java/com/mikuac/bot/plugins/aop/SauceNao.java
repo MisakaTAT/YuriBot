@@ -1,11 +1,11 @@
-package com.mikuac.bot.plugins;
+package com.mikuac.bot.plugins.aop;
 
 import com.alibaba.fastjson.JSON;
 import com.mikuac.bot.bean.SearchBean;
 import com.mikuac.bot.bean.saucenao.Results;
 import com.mikuac.bot.bean.saucenao.SauceNaoBean;
 import com.mikuac.bot.config.ApiConst;
-import com.mikuac.bot.config.MsgRegexConst;
+import com.mikuac.bot.config.RegexConst;
 import com.mikuac.bot.utils.BanUtils;
 import com.mikuac.bot.utils.HttpClientUtil;
 import com.mikuac.bot.utils.RegexUtils;
@@ -165,7 +165,7 @@ public class SauceNao extends BotPlugin {
 
         Map<Long, SearchBean> map = SearchModeUtils.getMap();
 
-        if (msg.matches(MsgRegexConst.SAUCE_NAO)) {
+        if (msg.matches(RegexConst.SAUCE_NAO)) {
             if (banUtils.isBanned(userId)) {
                 bot.sendPrivateMsg(userId,"您因触发滥用规则已被永久封禁~",false);
                 return MESSAGE_IGNORE;
@@ -185,7 +185,7 @@ public class SauceNao extends BotPlugin {
             return MESSAGE_IGNORE;
         }
 
-        if (msg.matches(MsgRegexConst.SAUCE_NAO_QUIT)) {
+        if (msg.matches(RegexConst.SAUCE_NAO_QUIT)) {
             if (map.get(key) != null) {
                 SearchModeUtils.quitSearch(key);
                 bot.sendPrivateMsg(userId,"已为您退出搜(图/本)模式~",false);
@@ -196,7 +196,7 @@ public class SauceNao extends BotPlugin {
         }
 
         if (map.get(key) != null && map.get(key).getEnable()) {
-            String picUrl = RegexUtils.regex(RegexUtils.GET_MSG_PIC_URL,msg);
+            String picUrl = RegexUtils.regex(RegexConst.GET_MSG_PIC_URL,msg);
             if (picUrl != null) {
                 // 如有操作重新设置TTL
                 map.get(key).setStartTime(Instant.now().getEpochSecond());
@@ -242,7 +242,7 @@ public class SauceNao extends BotPlugin {
 
         Map<Long, SearchBean> map = SearchModeUtils.getMap();
 
-        if (msg.matches(MsgRegexConst.SAUCE_NAO)) {
+        if (msg.matches(RegexConst.SAUCE_NAO)) {
             if (banUtils.isBanned(userId)) {
                 bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("您因触发滥用规则已被永久封禁~").build(),false);
                 return MESSAGE_IGNORE;
@@ -262,7 +262,7 @@ public class SauceNao extends BotPlugin {
             return MESSAGE_IGNORE;
         }
 
-        if (msg.matches(MsgRegexConst.SAUCE_NAO_QUIT)) {
+        if (msg.matches(RegexConst.SAUCE_NAO_QUIT)) {
             if (map.get(key) != null) {
                 SearchModeUtils.quitSearch(key);
                 bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("已为您退出搜(图/本)模式~").build(),false);
@@ -273,7 +273,7 @@ public class SauceNao extends BotPlugin {
         }
 
         if (map.get(key) != null && map.get(key).getEnable()) {
-            String picUrl = RegexUtils.regex(RegexUtils.GET_MSG_PIC_URL,msg);
+            String picUrl = RegexUtils.regex(RegexConst.GET_MSG_PIC_URL,msg);
             if (picUrl != null) {
                 // 如有操作重新设置TTL
                 map.get(key).setStartTime(Instant.now().getEpochSecond());

@@ -1,4 +1,4 @@
-package com.mikuac.bot.plugins;
+package com.mikuac.bot.plugins.aop;
 
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;

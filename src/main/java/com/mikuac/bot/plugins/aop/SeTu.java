@@ -1,4 +1,4 @@
-package com.mikuac.bot.plugins;
+package com.mikuac.bot.plugins.aop;
 
 import com.alibaba.fastjson.JSON;
 import com.mikuac.bot.bean.setu.Data;
@@ -6,7 +6,7 @@ import com.mikuac.bot.bean.setu.SetuBean;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.repository.PluginSwitchRepository;
 import com.mikuac.bot.utils.HttpClientUtil;
-import com.mikuac.bot.config.MsgRegexConst;
+import com.mikuac.bot.config.RegexConst;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotContainer;
@@ -98,7 +98,7 @@ public class SeTu extends BotPlugin {
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
         String msg = event.getRawMessage();
         // 私聊消息处理
-        if (msg.matches(MsgRegexConst.SETU)) {
+        if (msg.matches(RegexConst.SETU)) {
             long userId = event.getUserId();
             Boolean isPrivateDisable = !pluginSwitchRepository.isPrivateDisable("SeTu");
             Boolean isGlobalDisable = !pluginSwitchRepository.isGlobalDisable("SeTu");
@@ -143,7 +143,7 @@ public class SeTu extends BotPlugin {
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
         String msg = event.getRawMessage();
         // 私聊消息处理
-        if (msg.matches(MsgRegexConst.SETU)) {
+        if (msg.matches(RegexConst.SETU)) {
             long userId = event.getUserId();
             long groupId = event.getGroupId();
             Boolean isGroupDisable = !pluginSwitchRepository.isGroupDisable("SeTu");

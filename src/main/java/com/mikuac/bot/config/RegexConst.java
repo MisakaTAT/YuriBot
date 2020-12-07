@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * @date 2020/12/3 9:37
  */
 @Component
-public class MsgRegexConst {
+public class RegexConst {
 
     public final static String HITOKOTO = "^hitokoto(.*)$|^一言(.*)$";
 
@@ -27,5 +27,13 @@ public class MsgRegexConst {
     public final static String SEND_ALL_GROUP = "^(SendAllGroup)-(.*)$";
 
     public final static String SEND_HELP = "^(?i)help|帮助";
+
+    public final static String GET_MSG_PIC_URL = "(http|https)://[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-.,@?^=%&:/~+#]*[\\w\\-@?^=%&/~+#])?";
+
+    public final static String GET_R6_ID = "(?<=询-).*";
+
+    public final static String GET_SEND_ALL_GROUP_MSG = "(?<=SendAllGroup-).*";
+
+    public final static String AT_ME = "(?<=<at qq=\").*?(?=\"/>)";
 
 }

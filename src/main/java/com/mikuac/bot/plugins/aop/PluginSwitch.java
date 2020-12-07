@@ -1,4 +1,4 @@
-package com.mikuac.bot.plugins;
+package com.mikuac.bot.plugins.aop;
 
 import com.mikuac.bot.entity.PluginSwitchEntity;
 import com.mikuac.bot.repository.PluginSwitchRepository;

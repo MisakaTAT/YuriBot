@@ -1,11 +1,11 @@
-package com.mikuac.bot.plugins;
+package com.mikuac.bot.plugins.aop;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.utils.HttpClientUtil;
-import com.mikuac.bot.config.MsgRegexConst;
+import com.mikuac.bot.config.RegexConst;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;
@@ -73,7 +73,7 @@ public class Hitokoto extends BotPlugin {
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
         String msg = event.getRawMessage();
         // 群组消息处理
-        if (msg.matches(MsgRegexConst.HITOKOTO)) {
+        if (msg.matches(RegexConst.HITOKOTO)) {
             long groupId = event.getGroupId();
             long userId = event.getUserId();
             long getNowTime = Instant.now().getEpochSecond();
@@ -110,7 +110,7 @@ public class Hitokoto extends BotPlugin {
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
         String msg = event.getRawMessage();
         // 私聊消息处理
-        if (msg.matches(MsgRegexConst.HITOKOTO)) {
+        if (msg.matches(RegexConst.HITOKOTO)) {
             long userId = event.getUserId();
             long getNowTime = Instant.now().getEpochSecond();
             long lastGetTime = lastGetTimeMap.getOrDefault(userId, 0L);

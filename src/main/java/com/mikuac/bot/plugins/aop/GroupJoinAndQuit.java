@@ -1,4 +1,4 @@
-package com.mikuac.bot.plugins;
+package com.mikuac.bot.plugins.aop;
 
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;

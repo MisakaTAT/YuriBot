@@ -29,7 +29,7 @@ public class CommandPrefix {
     /**
      * 声明切点
      */
-    @Pointcut("execution(* com.mikuac.bot.plugins.*.on*Message(..)) && !execution(* com.mikuac.bot.plugins.GroupMsgCount.on*Message(..)))")
+    @Pointcut("execution(* com.mikuac.bot.plugins.aop.*.on*Message(..)))")
     private void prefixPoint() {}
 
     /**

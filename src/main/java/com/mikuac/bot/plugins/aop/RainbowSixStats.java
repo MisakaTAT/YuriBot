@@ -1,11 +1,11 @@
-package com.mikuac.bot.plugins;
+package com.mikuac.bot.plugins.aop;
 
 import com.alibaba.fastjson.JSON;
 import com.mikuac.bot.bean.r6s.*;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.utils.CommonUtils;
 import com.mikuac.bot.utils.HttpClientUtil;
-import com.mikuac.bot.config.MsgRegexConst;
+import com.mikuac.bot.config.RegexConst;
 import com.mikuac.bot.utils.RegexUtils;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
@@ -14,7 +14,6 @@ import net.lz1998.pbbot.utils.Msg;
 import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -69,34 +68,34 @@ public class RainbowSixStats extends BotPlugin {
                     .text("\n助攻:"+statGeneral.getKillAssists()+"  "+"近战:"+statGeneral.getMeleeKills()+"  "+"救助:"+statGeneral.getRevives()+"  "+"爆头:"+statGeneral.getHeadShot())
                     .text("\n穿透击杀:"+statGeneral.getPenetrationKills()+"  "+"爆头率:"+CommonUtils.formatDouble(((double)statGeneral.getHeadShot()/(double)statGeneral.getKills())*100)+"%");
         }
-        for (StatCR statCR : r6S.getStatCR()) {
-            if ("ranked".equals(statCR.getModel())) {
+        for (StatCR statcr : r6S.getStatCR()) {
+            if ("ranked".equals(statcr.getModel())) {
                 msg.text("\n\n【排名战数据】")
-                        .text("\n胜场:"+statCR.getWon()+"  "+"败场:"+statCR.getLost()+"  "+"胜率:"+ CommonUtils.formatDouble(((double) statCR.getWon() / (double) statCR.getLost()))+"%"+"  "+"游戏场次:"+statCR.getPlayed())
-                        .text("\n击杀:"+statCR.getKills()+"  "+"阵亡:"+statCR.getDeaths()+"  "+"KD:"+ CommonUtils.formatDouble(((double) statCR.getKills() / (double) statCR.getDeaths()))+"%");
+                        .text("\n胜场:"+statcr.getWon()+"  "+"败场:"+statcr.getLost()+"  "+"胜率:"+ CommonUtils.formatDouble(((double) statcr.getWon() / (double) statcr.getLost()))+"%"+"  "+"游戏场次:"+statcr.getPlayed())
+                        .text("\n击杀:"+statcr.getKills()+"  "+"阵亡:"+statcr.getDeaths()+"  "+"KD:"+ CommonUtils.formatDouble(((double) statcr.getKills() / (double) statcr.getDeaths()))+"%");
             }
-            if ("casual".equals(statCR.getModel())) {
+            if ("casual".equals(statcr.getModel())) {
                 msg.text("\n\n【常规战数据】")
-                        .text("\n胜场:"+statCR.getWon()+"  "+"败场:"+statCR.getLost()+"  "+"胜率:"+ CommonUtils.formatDouble(((double) statCR.getWon() / (double) statCR.getLost()))+"%"+"  "+"游戏场次:"+statCR.getPlayed())
-                        .text("\n击杀:"+statCR.getKills()+"  "+"阵亡:"+statCR.getDeaths()+"  "+"KD:"+ CommonUtils.formatDouble(((double) statCR.getKills() / (double) statCR.getDeaths()))+"%");
+                        .text("\n胜场:"+statcr.getWon()+"  "+"败场:"+statcr.getLost()+"  "+"胜率:"+ CommonUtils.formatDouble(((double) statcr.getWon() / (double) statcr.getLost()))+"%"+"  "+"游戏场次:"+statcr.getPlayed())
+                        .text("\n击杀:"+statcr.getKills()+"  "+"阵亡:"+statcr.getDeaths()+"  "+"KD:"+ CommonUtils.formatDouble(((double) statcr.getKills() / (double) statcr.getDeaths()))+"%");
             }
         }
-        for (StatBHS statBHS : r6S.getStatBHS()) {
+        for (StatBHS statbhs : r6S.getStatBHS()) {
             // 肃清威胁
-            if ("secureareapvp".equals(statBHS.getModel())) {
+            if ("secureareapvp".equals(statbhs.getModel())) {
                 msg.text("\n\n【模式数据-肃清威胁】")
-                        .text("\n胜场:"+statBHS.getWon()+"  "+"败场:"+statBHS.getLost()+"  "+"总场次:"+statBHS.getPlayed()+"  "+"最高得分:"+statBHS.getBestScore());
+                        .text("\n胜场:"+statbhs.getWon()+"  "+"败场:"+statbhs.getLost()+"  "+"总场次:"+statbhs.getPlayed()+"  "+"最高得分:"+statbhs.getBestScore());
             }
             // 炸弹
-            if ("plantbombpvp".equals(statBHS.getModel())) {
+            if ("plantbombpvp".equals(statbhs.getModel())) {
                 msg.text("\n\n【模式数据-炸弹模式】")
-                        .text("\n胜场:"+statBHS.getWon()+"  "+"败场:"+statBHS.getLost()+"  "+"总场次:"+statBHS.getPlayed()+"  "+"最高得分:"+statBHS.getBestScore());
+                        .text("\n胜场:"+statbhs.getWon()+"  "+"败场:"+statbhs.getLost()+"  "+"总场次:"+statbhs.getPlayed()+"  "+"最高得分:"+statbhs.getBestScore());
 
             }
             // 人质
-            if ("rescuehostagepvp".equals(statBHS.getModel())) {
+            if ("rescuehostagepvp".equals(statbhs.getModel())) {
                 msg.text("\n\n【模式数据-人质模式】")
-                        .text("\n胜场:"+statBHS.getWon()+"  "+"败场:"+statBHS.getLost()+"  "+"总场次:"+statBHS.getPlayed()+"  "+"最高得分:"+statBHS.getBestScore());
+                        .text("\n胜场:"+statbhs.getWon()+"  "+"败场:"+statbhs.getLost()+"  "+"总场次:"+statbhs.getPlayed()+"  "+"最高得分:"+statbhs.getBestScore());
 
             }
         }
@@ -106,10 +105,10 @@ public class RainbowSixStats extends BotPlugin {
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
         String msg = event.getRawMessage();
-        if (msg.matches(MsgRegexConst.RAINBOW_SIX_STATS)){
+        if (msg.matches(RegexConst.RAINBOW_SIX_STATS)){
             long groupId = event.getGroupId();
             long userId = event.getUserId();
-            String gameUserId = RegexUtils.regex(RegexUtils.GET_R6_ID,msg);
+            String gameUserId = RegexUtils.regex(RegexConst.GET_R6_ID,msg);
             if (gameUserId != null) {
                 gameUserId = URLEncoder.encode(gameUserId, StandardCharsets.UTF_8);
                 bot.sendGroupMsg(groupId,Msg.builder().at(userId).text(gameUserId+"数据查询中，请稍后~").build(),false);
@@ -131,9 +130,9 @@ public class RainbowSixStats extends BotPlugin {
     @Override
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
         String msg = event.getRawMessage();
-        if (msg.matches(MsgRegexConst.RAINBOW_SIX_STATS)){
+        if (msg.matches(RegexConst.RAINBOW_SIX_STATS)){
             long userId = event.getUserId();
-            String gameUserId = RegexUtils.regex(RegexUtils.GET_R6_ID,msg);
+            String gameUserId = RegexUtils.regex(RegexConst.GET_R6_ID,msg);
             if (gameUserId != null) {
                 gameUserId = URLEncoder.encode(gameUserId, StandardCharsets.UTF_8);
                 bot.sendPrivateMsg(userId,gameUserId+"数据查询中，请稍后~",false);
