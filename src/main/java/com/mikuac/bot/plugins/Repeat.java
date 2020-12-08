@@ -1,4 +1,4 @@
-package com.mikuac.bot.plugins.aop;
+package com.mikuac.bot.plugins;
 
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
@@ -34,7 +34,7 @@ public class Repeat extends BotPlugin {
         long groupId = event.getGroupId();
 
         String lastMsg = lastMsgMap.getOrDefault(groupId, "");
-        Integer count = countMap.getOrDefault(groupId, 0);
+        int count = countMap.getOrDefault(groupId, 0);
 
         if (msg.equals(lastMsg)) {
             count++;
