@@ -26,27 +26,40 @@ public class Repeat extends BotPlugin {
     @Value("${yuri.plugins.repeat.randomCountSize}")
     private int randomCountSize;
 
+    /**
+     * 产生一个min-max之间的随机数
+     * result为2排除正常指令，并且max+1
+     * @return 返回一个int值
+     */
+    public int randomCount () {
+        int max = randomCountSize + 1;
+        int min = 2;
+        Random random = new Random();
+        return random.nextInt(max) % (max - min + 1) + min;
+    }
+
+    int randomCount;
+
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
-        Random random = new Random();
-        int randomCount = random.nextInt(randomCountSize);
         String msg = event.getRawMessage();
         long groupId = event.getGroupId();
 
         String lastMsg = lastMsgMap.getOrDefault(groupId, "");
-        int count = countMap.getOrDefault(groupId, 0);
+        int count = countMap.getOrDefault(groupId, 1);
 
         if (msg.equals(lastMsg)) {
-            count++;
-            countMap.put(groupId, count);
-            if (count == randomCount + 1) {
+            countMap.put(groupId, ++count);
+            if (count == randomCount) {
                 bot.sendGroupMsg(groupId, msg, false);
                 log.info("复读成功，复读内容：[{}]", msg);
                 countMap.put(groupId, 0);
+                randomCount = randomCount();
             }
         } else {
-            countMap.put(groupId, 0);
+            countMap.put(groupId, 1);
             lastMsgMap.put(groupId, msg);
+            randomCount = randomCount();
         }
         return MESSAGE_IGNORE;
     }
