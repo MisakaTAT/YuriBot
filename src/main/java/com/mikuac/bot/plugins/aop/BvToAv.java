@@ -25,8 +25,8 @@ public class BvToAv extends BotPlugin {
     long xor = 177451812L;
     long add = 8728348608L;
 
-    static Map<String,Integer> bv2avMap = new ConcurrentHashMap<>();
-    static Map<Integer,String> av2bvMap = new ConcurrentHashMap<>();
+    Map<String,Integer> bv2avMap = new ConcurrentHashMap<>();
+    Map<Integer,String> av2bvMap = new ConcurrentHashMap<>();
 
     public String bv2av (String bvId) {
         long r = 0;
