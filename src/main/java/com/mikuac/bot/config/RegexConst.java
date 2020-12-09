@@ -42,4 +42,6 @@ public class RegexConst {
 
     public final static String ANTI_BILI_MINI_APP = "^(.*?)1109937557(.*)";
 
+    public final static String GET_SYS_INFO = "^(?i)status|(获取)?(运行)?(服务)?状态";
+
 }
