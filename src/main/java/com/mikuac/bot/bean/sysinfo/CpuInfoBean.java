@@ -15,4 +15,14 @@ public class CpuInfoBean {
 
     private String cpuMode;
 
+    private String stepping;
+
+    private int packageCount;
+
+    private int coreCount;
+
+    private int logicalCount;
+
+    private String microcircuit;
+
 }
