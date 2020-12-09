@@ -2,7 +2,6 @@ package com.mikuac.bot.plugins.aop;
 
 import com.mikuac.bot.bean.sysinfo.*;
 import com.mikuac.bot.config.RegexConst;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;
