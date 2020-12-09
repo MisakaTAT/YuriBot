@@ -29,7 +29,7 @@ public class BotApplication {
     }
 
     public static void main(String[] args) {
-        String welcome = "⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄";
+        String welcome = "你好~ 我是悠里⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄";
         // Telegram框架初始化
         ApiContextInitializer.init();
         SpringApplication.run(BotApplication.class, args);
