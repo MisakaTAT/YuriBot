@@ -1,7 +1,8 @@
 package com.mikuac.bot.utils;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
-
 import java.util.UUID;
 
 /**
@@ -11,6 +12,17 @@ import java.util.UUID;
  */
 @Component
 public class CommonUtils {
+
+    private Environment environment;
+
+    @Autowired
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
+
+    public String getHostAndPort(){
+        return "http://127.0.0.1:" + environment.getProperty("local.server.port");
+    }
 
     /**
      * 精确到小数点后两位，返回String
