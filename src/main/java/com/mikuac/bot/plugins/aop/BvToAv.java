@@ -1,7 +1,10 @@
 package com.mikuac.bot.plugins.aop;
 
+import com.mikuac.bot.config.RegexConst;
+import com.mikuac.bot.utils.RegexUtils;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;
+import net.lz1998.pbbot.utils.Msg;
 import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
@@ -16,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class BvToAv extends BotPlugin {
 
-    // 算法来自知乎mcfx的回答
+    // 算法来源
     // https://www.zhihu.com/question/381784377/answer/1099438784
 
     String table = "fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF";
@@ -51,6 +54,53 @@ public class BvToAv extends BotPlugin {
             stringBuilder.replace(s[i], s[i] + 1, r);
         }
         return stringBuilder.toString();
+    }
+
+    @Override
+    public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
+        String msg = event.getRawMessage();
+        long userId = event.getUserId();
+        if (msg.matches(RegexConst.AV_TO_BV)) {
+            String avId = RegexUtils.regex(RegexConst.AV_TO_BV_GET_ID,msg);
+            if (avId != null) {
+                bot.sendPrivateMsg(userId,av2bv(avId),false);
+            } else {
+                bot.sendPrivateMsg(userId,"未获取到AV号，请检查后重新尝试~",false);
+            }
+        }
+        if (msg.matches(RegexConst.BV_TO_AV)) {
+            String bvId = RegexUtils.regex(RegexConst.AV_TO_BV_GET_ID,msg);
+            if (bvId != null) {
+                bot.sendPrivateMsg(userId,bv2av(bvId),false);
+            } else {
+                bot.sendPrivateMsg(userId,"未获取到BV号，请检查后重新尝试~",false);
+            }
+        }
+        return MESSAGE_IGNORE;
+    }
+
+    @Override
+    public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
+        String msg = event.getRawMessage();
+        long userId = event.getUserId();
+        long groupId = event.getGroupId();
+        if (msg.matches(RegexConst.AV_TO_BV)) {
+            String avId = RegexUtils.regex(RegexConst.AV_TO_BV_GET_ID,msg);
+            if (avId != null) {
+                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text(av2bv(avId)).build(),false);
+            } else {
+                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("未获取到AV号，请检查后重新尝试~").build(),false);
+            }
+        }
+        if (msg.matches(RegexConst.BV_TO_AV)) {
+            String bvId = RegexUtils.regex(RegexConst.AV_TO_BV_GET_ID,msg);
+            if (bvId != null) {
+                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text(bv2av(bvId)).build(),false);
+            } else {
+                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("未获取到BV号，请检查后重新尝试~").build(),false);
+            }
+        }
+        return MESSAGE_IGNORE;
     }
 
 }

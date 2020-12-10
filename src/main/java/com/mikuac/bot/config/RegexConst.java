@@ -46,4 +46,10 @@ public class RegexConst {
 
     public final static String GET_HARDWARE_INFO = "^(?i)hardware-info|(获取)?硬件信息";
 
+    public final static String BV_TO_AV = "^(?i)bv[2转]av-.*";
+
+    public final static String AV_TO_BV = "^(?i)av[2转]bv-.*";
+
+    public final static String AV_TO_BV_GET_ID = "(?<=(?i)[ab][v][2转][ab][v]-).*";
+
 }
