@@ -21,7 +21,7 @@ public class BanEntity {
     /**
      * QQ账号，如果封禁为全局封禁，包括群组
      */
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", nullable = false, unique = true)
     private Long userId;
 
     /**
