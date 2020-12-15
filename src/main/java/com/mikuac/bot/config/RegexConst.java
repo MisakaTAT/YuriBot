@@ -52,4 +52,8 @@ public class RegexConst {
 
     public final static String AV_TO_BV_GET_ID = "(?<=(?i)[ab][v][2转][ab][v]-).*";
 
+    public final static String PLUGIN_ENABLE = "(.*)插件启用-(.*)";
+
+    public final static String PLUGIN_DISABLE = "(.*)插件禁用-(.*)";
+
 }
