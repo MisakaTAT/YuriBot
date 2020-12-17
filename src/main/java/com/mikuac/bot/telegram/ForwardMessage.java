@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import java.util.List;
 
 /**
  * @author Zero
@@ -26,8 +27,6 @@ public class ForwardMessage extends TelegramLongPollingBot {
         this.sendMsgUtils = sendMsgUtils;
     }
 
-    @Value("${yuri.telegram.enable}")
-    private Boolean enable;
     @Value("${yuri.telegram.botName}")
     private String botName;
     @Value("${yuri.telegram.botToken}")
@@ -36,19 +35,34 @@ public class ForwardMessage extends TelegramLongPollingBot {
     @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
-        Boolean isGroupChat = update.getMessage().getChat().isGroupChat();
-        if (isGroupChat) {
-            String groupName = update.getMessage().getChat().getTitle();
-            String forwardFrom = update.getMessage().getForwardFromChat().getTitle();
-            String imgFileId = update.getMessage().getPhoto().get(2).getFileId();
-            if (imgFileId != null) {
+        boolean isChannelMessage = update.getChannelPost().isChannelMessage();
+        if (isChannelMessage) {
+            String groupName = update.getChannelPost().getChat().getTitle();
+            String forwardFrom = update.getChannelPost().getForwardFromChat().getTitle();
+            String imgFileId = "";
+            int photoListSize = update.getChannelPost().getPhoto().size();
+            for (int i = 0; i < photoListSize; i++) {
+                imgFileId = update.getChannelPost().getPhoto().get(i).getFileId();
+            }
+            if (imgFileId != null && !imgFileId.isEmpty()) {
                 String imgUrl = TelegramUtils.getImgUrl(botToken, imgFileId);
-                if (imgUrl != null) {
-                    Msg msg = Msg.builder()
-                            .image(imgUrl)
-                            .text("消息来自Telegram群组：" + (forwardFrom != null ? forwardFrom : groupName));
-                    sendMsgUtils.sendGroupMsg(1111L,msg);
+                if (imgUrl != null && !imgUrl.isEmpty()) {
+                    List<Long> groupIdList = sendMsgUtils.getGroupList();
+                    if (groupIdList != null && !groupIdList.isEmpty()) {
+                        for (long groupId : groupIdList) {
+                            Msg msg = Msg.builder()
+                                    .image(imgUrl)
+                                    .text("\nFrom Telegram：" + (forwardFrom != null ? forwardFrom : groupName));
+                            sendMsgUtils.sendGroupMsg(groupId, msg);
+                        }
+                    } else {
+                        log.info("群组列表获取失败");
+                    }
+                } else {
+                    log.info("Telegram imgUrl获取失败");
                 }
+            } else {
+                log.info("Telegram imgFileId获取失败");
             }
         }
     }
