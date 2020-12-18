@@ -11,7 +11,7 @@
 - [x] 群组消息批量推送
 - [x] 解析Bilibili小程序
 - [x] av号与bv号互相转换
-- [ ] Telegram消息转发至QQ [未完成]
+- [x] Telegram消息转发至QQ
 
 # LICENSE
 本项目遵循[MIT](https://opensource.org/licenses/MIT)协议开源
