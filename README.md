@@ -15,10 +15,8 @@
 
 # LICENSE
 本项目遵循[MIT](https://opensource.org/licenses/MIT)协议开源
-* 你可以使用，复制和修改软件
-* 你可以免费使用软件或出售
-* 唯一的限制是必须附有MIT授权协议
-
 # Credits
+* [setu-api](https://api.lolicon.app/#/setu)
+* [heroku-pximg-proxy](https://github.com/Tsuk1ko/heroku-pximg-proxy)
 * [pbbot-spring-boot-starter](https://github.com/ProtobufBot/pbbot-spring-boot-starter)
 * [Go-Mirai-Client](https://github.com/ProtobufBot/Go-Mirai-Client)
