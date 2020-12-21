@@ -6,10 +6,7 @@ import com.mikuac.bot.bean.saucenao.Results;
 import com.mikuac.bot.bean.saucenao.SauceNaoBean;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.RegexConst;
-import com.mikuac.bot.utils.BanUtils;
-import com.mikuac.bot.utils.HttpClientUtils;
-import com.mikuac.bot.utils.RegexUtils;
-import com.mikuac.bot.utils.SearchModeUtils;
+import com.mikuac.bot.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;
@@ -105,6 +102,7 @@ public class SauceNao extends BotPlugin {
                     .text("\n画师："+r.getResultData().getMemberName())
                     .text("\nPixiv：https://pixiv.net/i/"+r.getResultData().getPixivId())
                     .text("\nAuthor：https://pixiv.net/u/"+r.getResultData().getMemberId())
+                    .text("\nProxy：" + PixivProxyUtils.imgProxy(r.getResultData().getPixivId()))
                     .text("\n剩余搜索配额："+sauceNaoBean.getHeader().getLongRemaining())
                     .text("\n数据来源：SauceNao (Pixiv)");
             bot.sendPrivateMsg(userId,sendMsg.build(),false);
@@ -135,6 +133,7 @@ public class SauceNao extends BotPlugin {
                     .text("\n画师："+r.getResultData().getMemberName())
                     .text("\nPixiv：https://pixiv.net/i/"+r.getResultData().getPixivId())
                     .text("\nAuthor：https://pixiv.net/u/"+r.getResultData().getMemberId())
+                    .text("\nProxy：" + PixivProxyUtils.imgProxy(r.getResultData().getPixivId()))
                     .text("\n剩余搜索配额："+sauceNaoBean.getHeader().getLongRemaining())
                     .text("\n数据来源：SauceNao (Pixiv)");
             bot.sendGroupMsg(groupId,sendMsg.build(),false);
