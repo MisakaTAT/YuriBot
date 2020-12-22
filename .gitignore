@@ -1,6 +1,6 @@
 HELP.md
 *.sqlite3
-application.yml
+#application.yml
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
