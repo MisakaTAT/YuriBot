@@ -1,5 +1,6 @@
 # Yuri Bot
 一个QQ群聊机器人
+
 # Features
 - [x] 一言
 - [x] 复读姬
@@ -12,6 +13,9 @@
 - [x] 解析Bilibili小程序
 - [x] av号与bv号互相转换
 - [x] Telegram消息转发至QQ
+
+# Install
+To Be Continued
 
 # LICENSE
 本项目遵循[MIT](https://opensource.org/licenses/MIT)协议开源
