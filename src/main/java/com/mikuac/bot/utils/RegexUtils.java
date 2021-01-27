@@ -21,4 +21,13 @@ public class RegexUtils {
         return null;
     }
 
+    public static String regexGroup (String regex, String msg, int groupId) {
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher =  pattern.matcher(msg);
+        if(matcher.find()){
+            return matcher.group(groupId);
+        }
+        return null;
+    }
+
 }

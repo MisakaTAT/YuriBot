@@ -24,4 +24,8 @@ public class ApiConst {
 
     public final static String BILI_VIDEO_INFO_API = "https://api.bilibili.com/x/web-interface/view?bvid=";
 
+    public final static String BIANCE_USDT_API = "https://api.binance.cc/api/v3/ticker/price?symbol=";
+
+    public final static String BIANCE_MARKET_API = "https://otc-api.huobi.be/v1/data/market/detail";
+
 }

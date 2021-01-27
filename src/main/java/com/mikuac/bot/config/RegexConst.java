@@ -56,4 +56,6 @@ public class RegexConst {
 
     public final static String PLUGIN_DISABLE = "(.*)插件禁用-(.*)";
 
+    public final static String BIANCE_PRICE = "(?i)bc\\s+([a-z]+)\\s?+(.*)";
+
 }
