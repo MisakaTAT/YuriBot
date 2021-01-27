@@ -67,11 +67,9 @@ public class Binance extends BotPlugin {
             msg.text("\n");
         }
         if (exIsNull) {
-            msg.text("-----------兑换-----------");
-            msg.text("\n兑换类型：" + symbol);
+            msg.text("兑换类型：" + symbol);
             msg.text("\n兑换比例：" + "1 : " + price);
-            msg.text("\n-----------市场-----------");
-            msg.text("\n货币名：" + coinName);
+            msg.text("\n\n货币名：" + coinName);
             msg.text("\n买入价：" + buy);
             msg.text("\n卖出价：" + sell);
         } else {

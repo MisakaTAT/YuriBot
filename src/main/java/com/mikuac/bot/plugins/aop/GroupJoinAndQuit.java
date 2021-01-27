@@ -21,13 +21,16 @@ public class GroupJoinAndQuit extends BotPlugin {
     @Value("${yuri.bot.botName}")
     private String botName;
 
+    @Value("${yuri.plugins.prefix.prefix}")
+    private String prefix;
+
     @Override
     public int onGroupIncreaseNotice(@NotNull Bot bot, @NotNull OnebotEvent.GroupIncreaseNoticeEvent event) {
         long groupId = event.getGroupId();
         long userId = event.getUserId();
         Msg msg = Msg.builder()
                 .at(userId)
-                .text("Hi~ 我是"+botName+"，欢迎加入本群，如果想了解我，请发送 #帮助 或 #help获取帮助信息~");
+                .text("Hi~ 我是"+botName+"，欢迎加入本群，如果想了解我，请发送 " +prefix+"帮助 或 "+prefix+"help获取帮助信息~");
         bot.sendGroupMsg(groupId,msg.build(),false);
         return MESSAGE_IGNORE;
     }

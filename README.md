@@ -13,6 +13,7 @@
 - [x] 解析Bilibili小程序
 - [x] av号与bv号互相转换
 - [x] Telegram消息转发至QQ
+- [x] 区块链虚拟货币信息查询
 
 # Install
 To Be Continued
