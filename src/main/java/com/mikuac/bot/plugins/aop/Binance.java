@@ -64,6 +64,7 @@ public class Binance extends BotPlugin {
         Msg msg = Msg.builder();
         if (isGroupMsg){
             msg.at(uerId);
+            msg.text("\n");
         }
         if (exIsNull) {
             msg.text("-----------兑换-----------");
