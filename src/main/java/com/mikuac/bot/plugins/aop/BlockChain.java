@@ -114,8 +114,8 @@ public class BlockChain extends BotPlugin {
         String msg = event.getRawMessage();
         if (msg.matches(RegexConst.BIANCE_PRICE)) {
             long userId = event.getUserId();
-            bot.sendGroupMsg(userId, "币价查询中，请稍后~", false);
-            String bcType = RegexUtils.regexGroup(RegexConst.BIANCE_PRICE, msg, 1);
+            bot.sendPrivateMsg(userId, "币价查询中，请稍后~", false);
+            bcType = RegexUtils.regexGroup(RegexConst.BIANCE_PRICE, msg, 1);
             String number = RegexUtils.regexGroup(RegexConst.BIANCE_PRICE, msg, 2);
             if (bcType != null && !bcType.isEmpty()) {
                 try {
