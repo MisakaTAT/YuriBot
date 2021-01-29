@@ -74,7 +74,7 @@ public class BlockChain extends BotPlugin {
             msg.text("\n" + coinName + " Buy：" + buy);
             msg.text("\n" + coinName + " Sell：" + sell);
             String toCnyPrice = CommonUtils.formatDouble(price * ((buy + sell) / 2));
-            msg.text("\n" + bcType.toUpperCase() + "=>CNY：" + toCnyPrice);
+            msg.text("\n" + bcType.toUpperCase() + " To CNY：" + toCnyPrice);
         } else {
             msg.text("Buy：" + buyPrice);
             msg.text("\nSell：" + sellPrice);
@@ -102,7 +102,7 @@ public class BlockChain extends BotPlugin {
                         bot.sendGroupMsg(groupId, builderMsg(true, true, userId).build(), false);
                     }
                 } catch (Exception e) {
-                    bot.sendGroupMsg(groupId, "查询失败，可能是货币类型输入错误，请检查后重试~", false);
+                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("查询失败，可能是货币类型输入错误，请检查后重试~").build(), false);
                 }
             }
         }
