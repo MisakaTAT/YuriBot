@@ -19,23 +19,25 @@ import org.springframework.stereotype.Component;
  * @date 2021/1/27 12:34
  */
 @Component
-public class Binance extends BotPlugin {
+public class BlockChain extends BotPlugin {
 
     private final static String TO_TYPE = "USDT";
 
     String symbol;
-    String price;
-    String buy;
-    String sell;
+    double price;
+    double buy;
+    double sell;
     String coinName;
-    String buySellPrice;
+    String bcType;
+    String buyPrice;
+    String sellPrice;
 
     public void getPrice(String type) {
         String searchType = type.toUpperCase() + TO_TYPE;
-        String result = HttpClientUtils.httpGetWithJson(ApiConst.BIANCE_USDT_API + searchType,false);
+        String result = HttpClientUtils.httpGetWithJson(ApiConst.BIANCE_USDT_API + searchType, false);
         JSONObject jsonObject = JSONObject.parseObject(result);
         symbol = jsonObject.getString("symbol");
-        price = jsonObject.getString("price").replaceAll("0+?$", "");
+        price = Double.parseDouble(jsonObject.getString("price").replaceAll("0+?$", ""));
     }
 
     public void toCny() {
@@ -47,8 +49,8 @@ public class Binance extends BotPlugin {
             String cname = jb.getString("coinName");
             if (TO_TYPE.equals(cname)) {
                 coinName = cname;
-                buy = jb.getString("buy");
-                sell = jb.getString("sell");
+                buy = Double.parseDouble(jb.getString("buy"));
+                sell = Double.parseDouble(jb.getString("sell"));
                 break;
             }
         }
@@ -56,24 +58,26 @@ public class Binance extends BotPlugin {
 
     public void exchange(String number) {
         double n = Double.parseDouble(number);
-        double p = n * Double.parseDouble(price) * (Double.parseDouble(buy) + Double.parseDouble(sell) / 2);
-        buySellPrice = CommonUtils.formatDouble(p);
+        buyPrice = CommonUtils.formatDouble(n * price * buy);
+        sellPrice = CommonUtils.formatDouble(n * price * sell);
     }
 
     public Msg builderMsg(Boolean exIsNull, Boolean isGroupMsg, long uerId) {
         Msg msg = Msg.builder();
-        if (isGroupMsg){
+        if (isGroupMsg) {
             msg.at(uerId);
             msg.text("\n");
         }
         if (exIsNull) {
-            msg.text("兑换类型：" + symbol);
-            msg.text("\n兑换比例：" + "1 : " + price);
-            msg.text("\n\n货币名：" + coinName);
-            msg.text("\n买入价：" + buy);
-            msg.text("\n卖出价：" + sell);
+            msg.text("Symbol：" + symbol);
+            msg.text("\nPrice：" + price);
+            msg.text("\n" + coinName + " Buy：" + buy);
+            msg.text("\n" + coinName + " Sell：" + sell);
+            String toCnyPrice = CommonUtils.formatDouble(price * ((buy + sell) / 2));
+            msg.text("\n" + bcType.toUpperCase() + "=>CNY：" + toCnyPrice);
         } else {
-            msg.text("买卖均价：" + buySellPrice);
+            msg.text("Buy：" + buyPrice);
+            msg.text("\nSell：" + sellPrice);
         }
         return msg;
     }
@@ -85,7 +89,7 @@ public class Binance extends BotPlugin {
             long groupId = event.getGroupId();
             long userId = event.getUserId();
             bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("币价查询中，请稍后~").build(), false);
-            String bcType = RegexUtils.regexGroup(RegexConst.BIANCE_PRICE, msg, 1);
+            bcType = RegexUtils.regexGroup(RegexConst.BIANCE_PRICE, msg, 1);
             String number = RegexUtils.regexGroup(RegexConst.BIANCE_PRICE, msg, 2);
             if (bcType != null && !bcType.isEmpty()) {
                 try {
@@ -121,7 +125,7 @@ public class Binance extends BotPlugin {
                         exchange(number);
                         bot.sendPrivateMsg(userId, builderMsg(false, false, 0L).build(), false);
                     } else {
-                        bot.sendPrivateMsg(userId, builderMsg(true,false, 0L).build(), false);
+                        bot.sendPrivateMsg(userId, builderMsg(true, false, 0L).build(), false);
                     }
                 } catch (Exception e) {
                     bot.sendPrivateMsg(userId, "查询失败，可能是货币类型输入错误，请检查后重试~", false);
