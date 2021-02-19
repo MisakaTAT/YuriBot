@@ -40,7 +40,7 @@ public class GroupJoinAndQuit extends BotPlugin {
         long groupId = event.getGroupId();
         long userId = event.getUserId();
         Msg msg = Msg.builder()
-            .text(userId + "由于精神失常退出了此群");
+            .text(userId + "退出群聊");
         bot.sendGroupMsg(groupId,msg.build(),false);
         return MESSAGE_IGNORE;
     }

@@ -1,5 +1,4 @@
-# Yuri Bot
-一个QQ群聊机器人
+![YuriBot](https://socialify.git.ci/MisakaTAT/YuriBot/image?description=1&descriptionEditable=A%20QQ%20Bot%2C%20That%27s%20it.&font=Raleway&forks=1&issues=1&language=1&owner=1&pattern=Circuit%20Board&pulls=1&stargazers=1&theme=Light)
 
 # Features
 - [x] 一言
