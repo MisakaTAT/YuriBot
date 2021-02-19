@@ -1,5 +1,6 @@
 HELP.md
 *.sqlite3
+.DS_Store
 src/main/resources/application.yml
 target/
 !.mvn/wrapper/maven-wrapper.jar
