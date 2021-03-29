@@ -17,10 +17,24 @@
 # Install
 To Be Continued
 
-# LICENSE
-本项目遵循[MIT](https://opensource.org/licenses/MIT)协议开源
 # Credits
 * [setu-api](https://api.lolicon.app/#/setu)
 * [heroku-pximg-proxy](https://github.com/Tsuk1ko/heroku-pximg-proxy)
 * [pbbot-spring-boot-starter](https://github.com/ProtobufBot/pbbot-spring-boot-starter)
 * [Go-Mirai-Client](https://github.com/ProtobufBot/Go-Mirai-Client)
+
+# LICENSE
+MIT License
+
+Copyright (c) <year> <copyright holders>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice (including the next paragraph) shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+# Thanks
+Thanks [JetBrains](https://www.jetbrains.com/?from=mirai) Provide Free License Support OpenSource Project
+
+[<img src="https://i.loli.net/2021/03/29/ACgjrTXDNYFGihq.png" width="200"/>](https://www.jetbrains.com/?from=mirai)
