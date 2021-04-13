@@ -48,14 +48,17 @@ public class BanUtils {
         // 判断是否还在限制时间内
         if (startTime + limitTime >= nowTime && userId != adminId) {
             int getMsgCount = msgCountMap.getOrDefault(userId,0);
-            // 如果在限制时间内发送的消息次数大于或等于限制次数则封禁
-            if (getMsgCount >= limitCount) {
+            // 如果在限制时间内发送的消息次数大于限制次数则封禁
+            if (getMsgCount > limitCount) {
                 log.info("用户：[{}]已触发滥用规则被封禁",userId);
                 BanEntity banEntity = new BanEntity();
                 banEntity.setUserId(userId);
                 banEntity.setIsBanned(true);
                 banRepository.save(banEntity);
             }
+        } else {
+            // 如果不在限制时间内则重置搜索次数
+            msgCountMap.clear();
         }
     }
 
