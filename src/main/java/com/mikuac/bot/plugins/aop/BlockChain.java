@@ -85,12 +85,12 @@ public class BlockChain extends BotPlugin {
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
         String msg = event.getRawMessage();
-        if (msg.matches(RegexConst.BIANCE_PRICE)) {
+        if (msg.matches(RegexConst.BINANCE_PRICE)) {
             long groupId = event.getGroupId();
             long userId = event.getUserId();
             bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("币价查询中，请稍后~").build(), false);
-            bcType = RegexUtils.regexGroup(RegexConst.BIANCE_PRICE, msg, 1);
-            String number = RegexUtils.regexGroup(RegexConst.BIANCE_PRICE, msg, 2);
+            bcType = RegexUtils.regexGroup(RegexConst.BINANCE_PRICE, msg, 1);
+            String number = RegexUtils.regexGroup(RegexConst.BINANCE_PRICE, msg, 2);
             if (bcType != null && !bcType.isEmpty()) {
                 try {
                     getPrice(bcType);
@@ -112,11 +112,11 @@ public class BlockChain extends BotPlugin {
     @Override
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
         String msg = event.getRawMessage();
-        if (msg.matches(RegexConst.BIANCE_PRICE)) {
+        if (msg.matches(RegexConst.BINANCE_PRICE)) {
             long userId = event.getUserId();
             bot.sendPrivateMsg(userId, "币价查询中，请稍后~", false);
-            bcType = RegexUtils.regexGroup(RegexConst.BIANCE_PRICE, msg, 1);
-            String number = RegexUtils.regexGroup(RegexConst.BIANCE_PRICE, msg, 2);
+            bcType = RegexUtils.regexGroup(RegexConst.BINANCE_PRICE, msg, 1);
+            String number = RegexUtils.regexGroup(RegexConst.BINANCE_PRICE, msg, 2);
             if (bcType != null && !bcType.isEmpty()) {
                 try {
                     getPrice(bcType);

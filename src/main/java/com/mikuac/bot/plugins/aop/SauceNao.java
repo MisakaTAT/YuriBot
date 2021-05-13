@@ -166,7 +166,7 @@ public class SauceNao extends BotPlugin {
 
         if (msg.matches(RegexConst.SAUCE_NAO)) {
             if (banUtils.isBanned(userId)) {
-                bot.sendPrivateMsg(userId,"您因触发滥用规则已被永久封禁~",false);
+                bot.sendPrivateMsg(userId,"您因触发滥用规则已被封禁~",false);
                 return MESSAGE_IGNORE;
             }
             // 防止重复执行
@@ -243,7 +243,7 @@ public class SauceNao extends BotPlugin {
 
         if (msg.matches(RegexConst.SAUCE_NAO)) {
             if (banUtils.isBanned(userId)) {
-                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("您因触发滥用规则已被永久封禁~").build(),false);
+                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("您因触发滥用规则已被封禁~").build(),false);
                 return MESSAGE_IGNORE;
             }
             // 防止重复执行

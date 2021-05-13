@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 消息正则常量定义类
+ *
  * @author Zero
  * @date 2020/12/3 9:37
  */
@@ -56,6 +57,8 @@ public class RegexConst {
 
     public final static String PLUGIN_DISABLE = "(.*)插件禁用-(.*)";
 
-    public final static String BIANCE_PRICE = "(?i)bc\\s+([a-z]+)\\s?+(.*)";
+    public final static String BINANCE_PRICE = "(?i)bc\\s+([a-z]+)\\s?+(.*)";
+
+    public final static String PHOENIX_WRIGHT = "逆转裁判\\s+(.*)\\s+(.*)";
 
 }
