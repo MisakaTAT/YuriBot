@@ -2,7 +2,6 @@ package com.mikuac.bot.bean.whatanime;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
@@ -10,7 +9,6 @@ import java.util.List;
  * @date 2020/12/1 9:48
  */
 @Data
-@Component
 public class BasicData {
 
     @JSONField(name = "RawDocsCount")

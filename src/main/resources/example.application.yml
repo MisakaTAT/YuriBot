@@ -32,6 +32,7 @@ spring:
       - com.mikuac.bot.plugins.AntiBiliApp
       - com.mikuac.bot.plugins.GroupMsgCount
       - com.mikuac.bot.plugins.aop.Binance
+      - com.mikuac.bot.plugins.aop.PhoenixWright
 
 
 yuri:

@@ -13,6 +13,7 @@
 - [x] av号与bv号互相转换
 - [x] Telegram消息转发至QQ
 - [x] 区块链虚拟货币信息查询
+- [x] 逆转裁判字体风格图片生成
 
 # Install
 To Be Continued

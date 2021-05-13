@@ -16,9 +16,11 @@ public class ApiConst {
 
     public final static String SETU_API = "https://api.lolicon.app/setu/?apikey=";
 
-    public final static String WHATANIME_BASIC_API = "https://trace.moe/api/search";
+    public final static String WHAT_ANIME_BASIC_API = "https://trace.moe/api/search";
 
-    public final static String WHATANIME_INFO_API = "https://trace.moe/info?anilist_id=";
+//    public final static String WHAT_ANIME_BASIC_API = "https://api.trace.moe/search?cutBorders&url=";
+
+    public final static String WHAT_ANIME_INFO_API = "https://graphql.anilist.co";
 
     public final static String SAUCENAO_API = "https://saucenao.com/search.php?";
 
