@@ -79,7 +79,7 @@ public class WhatAnime extends BotPlugin {
 
     public String videoUrl(int aniListId, String fileName, double at, String token) {
         return "https://media.trace.moe/video/" + aniListId + "" +
-                "/" + URLEncoder.encode(fileName, StandardCharsets.UTF_8) + "?t=" + at + "&token=" + token + "&size=l";
+                "/" + fileName + "?t=" + at + "&token=" + token + "&size=l";
     }
 
     @Override
@@ -154,8 +154,8 @@ public class WhatAnime extends BotPlugin {
                             .text("\n今日配额剩余：" + basicData.getQuota())
                             .text("\n数据来源：WhatAnime");
                     String videoUrl = videoUrl(docs.getAniListId(), docs.getFilename(), docs.getAt(), docs.getTokenThumb());
-                    bot.sendGroupMsg(groupId, Msg.builder().video(videoUrl, picUrl, false).build(), false);
                     bot.sendGroupMsg(groupId, msgSend.build(), false);
+                    bot.sendGroupMsg(groupId, Msg.builder().video(videoUrl, picUrl, true).build(), false);
                 } catch (Exception e) {
                     bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("WhatAnime番剧检索失败，请稍后重试~").build(), false);
                     log.info("WhatAnime插件检索异常", e);
@@ -234,7 +234,7 @@ public class WhatAnime extends BotPlugin {
                             .text("\n数据来源：WhatAnime");
                     String videoUrl = videoUrl(docs.getAniListId(), docs.getFilename(), docs.getAt(), docs.getTokenThumb());
                     bot.sendPrivateMsg(userId, msgSend.build(), false);
-                    bot.sendPrivateMsg(userId, Msg.builder().video(videoUrl, picUrl, false).build(), false);
+                    bot.sendPrivateMsg(userId, Msg.builder().video(videoUrl, picUrl, true).build(), false);
                 } catch (Exception e) {
                     bot.sendPrivateMsg(userId, "WhatAnime检索服务出现异常，请稍后重试~", false);
                     log.info("WhatAnime插件检索异常", e);
