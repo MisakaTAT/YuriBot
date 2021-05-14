@@ -61,4 +61,6 @@ public class RegexConst {
 
     public final static String PHOENIX_WRIGHT = "逆转裁判\\s+(.*)\\s+(.*)";
 
+    public final static String STEAM_REP = "SteamRep\\s(.*)";
+
 }
