@@ -12,6 +12,7 @@ import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotContainer;
 import net.lz1998.pbbot.bot.BotPlugin;
 import net.lz1998.pbbot.utils.Msg;
+import onebot.OnebotApi;
 import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,9 +124,12 @@ public class SeTu extends BotPlugin {
                             picUrl = data.getUrl();
                         }
                         bot.sendPrivateMsg(userId, stInfoMsg.build(), false);
-                        bot.sendPrivateMsg(userId, Msg.builder().flash(picUrl).build(), false);
-                        // int msgId = bot.sendPrivateMsg(userId, Msg.builder().image(picUrl).build(), false).getMessageId();
-                        // deleteMsg(msgId);
+                        // 构建闪照图片消息
+                        Msg flashPic = Msg.builder().flash(picUrl);
+                        OnebotApi.SendPrivateMsgResp picMsg = bot.sendPrivateMsg(userId, flashPic.build(), false);
+                        if (picMsg != null) {
+                            deleteMsg(picMsg.getMessageId());
+                        }
                     } catch (Exception e) {
                         lastGetTimeMap.put(userId, 0L);
                         bot.sendPrivateMsg(userId, "图片获取失败，请稍后重试~", false);
@@ -174,9 +178,12 @@ public class SeTu extends BotPlugin {
                             picUrl = data.getUrl();
                         }
                         bot.sendGroupMsg(groupId, stInfoMsg.build(), false);
-                        bot.sendGroupMsg(groupId, Msg.builder().flash(picUrl).build(), false);
-                        // int msgId = bot.sendGroupMsg(groupId, Msg.builder().image(picUrl).build(), false).getMessageId();
-                        // deleteMsg(msgId);
+                        // 构建闪照图片消息
+                        Msg flashPic = Msg.builder().flash(picUrl);
+                        OnebotApi.SendGroupMsgResp picMsg = bot.sendGroupMsg(groupId, flashPic.build(), false);
+                        if (picMsg != null) {
+                            deleteMsg(picMsg.getMessageId());
+                        }
                     } catch (Exception e) {
                         getCountMap.put(userId, getCountMap.get(userId) - 1);
                         lastGetTimeMap.put(userId + groupId, 0L);
