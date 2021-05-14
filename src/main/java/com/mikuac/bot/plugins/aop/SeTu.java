@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -76,7 +77,7 @@ public class SeTu extends BotPlugin {
     }
 
     public void getData(String r18) {
-        String result = HttpClientUtils.httpGetWithJson(ApiConst.SETU_API + apiKey + r18,false);
+        String result = HttpClientUtils.httpGetWithJson(ApiConst.SETU_API + apiKey + r18, false);
         seTuBean = JSON.parseObject(result, SetuBean.class);
     }
 
@@ -85,7 +86,7 @@ public class SeTu extends BotPlugin {
         Bot bot = botContainer.getBots().get(botId);
         if (msgId != 0) {
             try {
-                Thread.sleep(delTime*1000);
+                Thread.sleep(delTime * 1000L);
                 bot.deleteMsg(msgId);
                 log.info("色图撤回成功，消息ID：[{}]", msgId);
             } catch (InterruptedException e) {
@@ -105,10 +106,10 @@ public class SeTu extends BotPlugin {
             if (isPrivateDisable && isGlobalDisable) {
                 long getNowTime = Instant.now().getEpochSecond();
                 long lastGetTime = lastGetTimeMap.getOrDefault(userId, 0L);
-                long rCd = Math.abs((getNowTime - lastGetTime)-cdTime);
+                long rCd = Math.abs((getNowTime - lastGetTime) - cdTime);
                 // 逻辑处理
                 if (getNowTime >= lastGetTime + cdTime) {
-                    bot.sendPrivateMsg(userId, "少女祈祷中~",false);
+                    bot.sendPrivateMsg(userId, "少女祈祷中~", false);
                     try {
                         getData(msg.matches("(.*?)[rR]18(.*)") ? "&r18=1" : "&r18=0");
                         lastGetTimeMap.put(userId, Instant.now().getEpochSecond());
@@ -121,19 +122,20 @@ public class SeTu extends BotPlugin {
                             stInfoMsg.text("\n反代链接：" + data.getUrl());
                             picUrl = data.getUrl();
                         }
-                        bot.sendPrivateMsg(userId, stInfoMsg.build(),false);
-                        int msgId = bot.sendPrivateMsg(userId,Msg.builder().image(picUrl).build(),false).getMessageId();
-                        deleteMsg(msgId);
+                        bot.sendPrivateMsg(userId, stInfoMsg.build(), false);
+                        bot.sendPrivateMsg(userId, Msg.builder().flash(picUrl).build(), false);
+                        // int msgId = bot.sendPrivateMsg(userId, Msg.builder().image(picUrl).build(), false).getMessageId();
+                        // deleteMsg(msgId);
                     } catch (Exception e) {
                         lastGetTimeMap.put(userId, 0L);
                         bot.sendPrivateMsg(userId, "图片获取失败，请稍后重试~", false);
                         log.info("色图私聊发送异常", e);
                     }
                 } else {
-                    bot.sendPrivateMsg(userId,"请求过于频繁~ 剩余CD时间为" + rCd + "秒",false);
+                    bot.sendPrivateMsg(userId, "请求过于频繁~ 剩余CD时间为" + rCd + "秒", false);
                 }
             } else {
-                bot.sendPrivateMsg(userId,"此模块被停用",false);
+                bot.sendPrivateMsg(userId, "此模块被停用", false);
             }
         }
         return MESSAGE_IGNORE;
@@ -150,16 +152,16 @@ public class SeTu extends BotPlugin {
             Boolean isGlobalDisable = !pluginSwitchRepository.isGlobalDisable("SeTu");
             if (isGroupDisable && isGlobalDisable) {
                 long getNowTime = Instant.now().getEpochSecond();
-                long lastGetTime = lastGetTimeMap.getOrDefault(userId+groupId, 0L);
-                long rCd = Math.abs((getNowTime - lastGetTime)-cdTime);
+                long lastGetTime = lastGetTimeMap.getOrDefault(userId + groupId, 0L);
+                long rCd = Math.abs((getNowTime - lastGetTime) - cdTime);
                 // 逻辑处理
                 int count = getCountMap.get(userId) == null ? 0 : getCountMap.get(userId);
                 if (getNowTime >= lastGetTime + cdTime && count < maxGet) {
-                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("少女祈祷中~").build(),false);
+                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("少女祈祷中~").build(), false);
                     try {
                         getData(msg.matches("(.*?)[rR]18(.*)") ? "&r18=1" : "&r18=0");
                         getCountMap.put(userId, count + 1);
-                        lastGetTimeMap.put(userId+groupId, Instant.now().getEpochSecond());
+                        lastGetTimeMap.put(userId + groupId, Instant.now().getEpochSecond());
                         Msg stInfoMsg = Msg.builder();
                         for (Data data : seTuBean.getData()) {
                             stInfoMsg.at(userId);
@@ -171,22 +173,23 @@ public class SeTu extends BotPlugin {
                             stInfoMsg.text("\n今日剩余次数：" + (maxGet - getCountMap.get(userId)));
                             picUrl = data.getUrl();
                         }
-                        bot.sendGroupMsg(groupId, stInfoMsg.build(),false);
-                        int msgId = bot.sendGroupMsg(groupId,Msg.builder().image(picUrl).build(),false).getMessageId();
-                        deleteMsg(msgId);
+                        bot.sendGroupMsg(groupId, stInfoMsg.build(), false);
+                        bot.sendGroupMsg(groupId, Msg.builder().flash(picUrl).build(), false);
+                        // int msgId = bot.sendGroupMsg(groupId, Msg.builder().image(picUrl).build(), false).getMessageId();
+                        // deleteMsg(msgId);
                     } catch (Exception e) {
-                        getCountMap.put(userId, getCountMap.get(userId)-1);
+                        getCountMap.put(userId, getCountMap.get(userId) - 1);
                         lastGetTimeMap.put(userId + groupId, 0L);
                         bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("图片获取失败，请稍后重试~").build(), false);
                         log.info("色图私聊发送异常", e);
                     }
                 } else if (count == maxGet) {
-                    bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("今日获取次数已达上限，每晚24点重置~").build(),false);
+                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("今日获取次数已达上限，每晚24点重置~").build(), false);
                 } else {
-                    bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("请求过于频繁~ 剩余CD时间为" + rCd + "秒").build(),false);
+                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("请求过于频繁~ 剩余CD时间为" + rCd + "秒").build(), false);
                 }
             } else {
-                bot.sendGroupMsg(groupId,Msg.builder().at(userId).text("此模块被停用").build(),false);
+                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("此模块被停用").build(), false);
             }
         }
         return MESSAGE_IGNORE;
