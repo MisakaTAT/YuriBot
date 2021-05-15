@@ -1,4 +1,21 @@
-![YuriBot](https://socialify.git.ci/MisakaTAT/YuriBot/image?description=1&descriptionEditable=A%20QQ%20Bot%2C%20That%27s%20it.&font=Raleway&forks=1&issues=1&language=1&owner=1&pattern=Circuit%20Board&pulls=1&stargazers=1&theme=Light)
+<p align="center">
+  <a href="https://mikuac.com/archives/675"><img src="https://i.jpg.dog/img/1fd60121da93e8a3ab516a234d2345e9.jpg" width="200" height="200" alt="Yuri"></a>
+</p>
+
+<div align="center">
+
+# YuriBot
+
+</div>
+
+<p align="center">
+    <img src="https://img.shields.io/github/stars/MisakaTAT/YuriBot?style=flat-square" alt="stars">
+    <img src="https://img.shields.io/github/forks/MisakaTAT/YuriBot?style=flat-square" alt="forks">
+    <img src="https://img.shields.io/github/issues/MisakaTAT/YuriBot?style=flat-square" alt="issues">
+    <img src="https://img.shields.io/github/downloads/MisakaTAT/YuriBot/total?style=flat-square?style=flat-square" alt="downloads">
+    <img src="https://img.shields.io/github/license/MisakaTAT/YuriBot?style=flat-square" alt="license">
+    <img src="https://img.shields.io/badge/jdk-1.8+-brightgreen.svg?style=flat-square" alt="jdk-version">
+</p>
 
 # Features
 - [x] 一言
@@ -14,6 +31,7 @@
 - [x] Telegram消息转发至QQ
 - [x] 区块链虚拟货币信息查询
 - [x] 逆转裁判字体风格图片生成
+- [x] Steam Rep信息查询
 
 # Install
 To Be Continued
@@ -24,7 +42,7 @@ To Be Continued
 * [pbbot-spring-boot-starter](https://github.com/ProtobufBot/pbbot-spring-boot-starter)
 * [Go-Mirai-Client](https://github.com/ProtobufBot/Go-Mirai-Client)
 
-# LICENSE
+# License
 MIT License
 
 Copyright (c) <year> <copyright holders>
@@ -38,4 +56,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 # Thanks
 Thanks [JetBrains](https://www.jetbrains.com/?from=mirai) Provide Free License Support OpenSource Project
 
-[<img src="https://i.loli.net/2021/03/29/ACgjrTXDNYFGihq.png" width="200"/>](https://www.jetbrains.com/?from=mirai)
+[<img src="https://i.jpg.dog/img/b8f6b6324e5d48dae707aeb7334d35df.png" width="200"/>](https://www.jetbrains.com/?from=mirai)
