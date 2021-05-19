@@ -4,8 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mikuac.bot.bean.SearchBean;
 import com.mikuac.bot.bean.whatanime.AnimeInfo;
-import com.mikuac.bot.bean.whatanime.BasicData;
-import com.mikuac.bot.bean.whatanime.Docs;
+import com.mikuac.bot.bean.whatanime.BasicInfo;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.RegexConst;
 import com.mikuac.bot.utils.*;
@@ -18,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Map;
@@ -32,7 +32,7 @@ import java.util.Map;
 @Component
 public class WhatAnime extends BotPlugin {
 
-    private BasicData basicData;
+    private BasicInfo basicInfo;
 
     private AnimeInfo animeInfo;
 
@@ -47,45 +47,50 @@ public class WhatAnime extends BotPlugin {
     private int limitTime;
     @Value("${yuri.plugins.banUtils.limitCount}")
     private int limitCount;
-    @Value("${yuri.plugins.whatAnime.apiKey}")
-    private String apiKey;
 
     String graphqlQuery = """
-        query ($id: Int) {
-          Media (id: $id, type: ANIME) {
-            type
-            format
-            status
-            episodes
-            season
-            startDate {
-              year
-              month
-              day
-            }
-            endDate {
-              year
-              month
-              day
-            }
-            coverImage {
-              large
-            }
-          }
-        }
-    """;
+                query ($id: Int) {
+                  Media (id: $id, type: ANIME) {
+                    id
+                    type
+                    format
+                    status
+                    episodes
+                    season
+                    synonyms
+                    title {
+                      native
+                      romaji
+                      english
+                    }
+                    startDate {
+                      year
+                      month
+                      day
+                    }
+                    endDate {
+                      year
+                      month
+                      day
+                    }
+                    coverImage {
+                      large
+                    }
+                  }
+                }
+            """;
 
-    public void getBasicData(String picUrl) throws IOException {
-        String result = HttpClientUtils.httpGetWithJson(ApiConst.WHAT_ANIME_BASIC_API + "?token=" + apiKey + "&url=" + picUrl, false);
-        basicData = JSON.parseObject(result, BasicData.class);
+    public void getBasicInfo(String picUrl) throws IOException {
+        String result = HttpClientUtils.httpGetWithJson(ApiConst.WHAT_ANIME_BASIC_API + picUrl, false);
+        basicInfo = JSON.parseObject(result, BasicInfo.class);
         // 取得基本信息后调用getDetailedData方法取得详细信息
         // api docs返回结果按相似性排序，从最相似到最不相似，所以取list第一个即可
-        if (basicData != null && !basicData.getDocs().isEmpty()) {
-            int aniListId = basicData.getDocs().get(0).getAniListId();
+        if (basicInfo != null && !basicInfo.getResult().isEmpty()) {
+            long aniListId = basicInfo.getResult().get(0).getAnilist();
             doSearch(aniListId);
-            log.info("getDetailedData方法调用成功，AniListId为[{}]", aniListId);
+            log.info("doSearch方法调用成功，AniListId为[{}]", aniListId);
         } else {
-            log.info("WhatAnime调用getDetailedData方法失败，可能基本信息获取失败或者docs为空");
+            log.info("WhatAnime调用doSearch方法失败，可能基本信息获取失败或者aniListId为空");
         }
     }
 
@@ -99,9 +104,29 @@ public class WhatAnime extends BotPlugin {
         animeInfo = JSON.parseObject(result, AnimeInfo.class);
     }
 
-    public String videoUrl(int aniListId, String fileName, double at, String token) {
-        return "https://media.trace.moe/video/" + aniListId + "" +
-                "/" + fileName + "?t=" + at + "&token=" + token + "&size=l";
+    public Msg buildMsg(Boolean isGroupMsg, long userId, AnimeInfo.Media data, BasicInfo.Result result) {
+        String startTime = data.getStartDate().getYear() + "年" + data.getStartDate().getMonth() + "月" + data.getStartDate().getDay() + "日";
+        String endTime = data.getEndDate().getYear() + "年" + data.getEndDate().getMonth() + "月" + data.getEndDate().getDay() + "日";
+        // 构建Msg
+        Msg sendMsg = Msg.builder();
+        if (isGroupMsg) {
+            sendMsg.at(userId).text("\n");
+        }
+        sendMsg.image(data.getCoverImage().getLarge());
+        String animeName = data.getTitle().getChinese();
+        if ("".equals(animeName)) {
+            animeName = data.getTitle().getNativeName();
+        }
+        sendMsg.text("\n该截图出自番剧" + animeName + "第" + result.getEpisode() + "集");
+        sendMsg.text("\n截图位于" + CommonUtils.sFormat(result.getFrom()) + "至" + CommonUtils.sFormat(result.getTo()) + "附近");
+        sendMsg.text("\n番剧类型：" + data.getType() + "-" + data.getFormat());
+        sendMsg.text("\n状态：" + data.getStatus());
+        sendMsg.text("\n总集数：" + data.getEpisodes());
+        sendMsg.text("\n开播季节：" + data.getSeason());
+        sendMsg.text("\n开播时间：" + startTime);
+        sendMsg.text("\n完结时间：" + endTime);
+        sendMsg.text("\n数据来源：WhatAnime");
+        return sendMsg;
     }
 
     @Override
@@ -154,32 +179,17 @@ public class WhatAnime extends BotPlugin {
                 banUtils.setBan(userId);
                 bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("番剧检索中，请稍后~").build(), false);
                 try {
-                    getBasicData(picUrl);
-                    Docs docs = basicData.getDocs().get(0);
+                    getBasicInfo(picUrl);
+                    BasicInfo.Result result = basicInfo.getResult().get(0);
                     // 获取详细信息
                     AnimeInfo.Media data = animeInfo.getGetData().getMedia();
-                    String startTime = data.getStartDate().getYear() + "年" + data.getStartDate().getMonth() + "月" + data.getStartDate().getDay() + "日";
-                    String endTime = data.getEndDate().getYear() + "年" + data.getEndDate().getMonth() + "月" + data.getEndDate().getDay() + "日";
-                    Msg msgSend = Msg.builder()
-                            .at(userId)
-                            .image(data.getCoverImage().getLarge())
-                            .text("\n该截图出自番剧" + docs.getTitleChinese() + "第" + docs.getEpisode() + "集")
-                            .text("\n截图位于" + CommonUtils.sFormat(docs.getFrom()) + "至" + CommonUtils.sFormat(docs.getTo()) + "附近")
-                            .text("\n精确位置大约位于：" + CommonUtils.sFormat(docs.getAt()))
-                            .text("\n番剧类型：" + data.getType() + "-" + data.getFormat())
-                            .text("\n状态：" + data.getStatus())
-                            .text("\n总集数：" + data.getEpisodes())
-                            .text("\n开播季节：" + data.getSeason())
-                            .text("\n开播时间：" + startTime)
-                            .text("\n完结时间：" + endTime)
-                            .text("\n在" + basicData.getLimitTtl() + "秒内剩余" + basicData.getLimit() + "次搜索次数")
-                            .text("\n今日配额剩余：" + basicData.getQuota())
-                            .text("\n数据来源：WhatAnime");
-                    String videoUrl = videoUrl(docs.getAniListId(), docs.getFilename(), docs.getAt(), docs.getTokenThumb());
-                    bot.sendGroupMsg(groupId, msgSend.build(), false);
-                    bot.sendGroupMsg(groupId, Msg.builder().video(videoUrl, picUrl, true).build(), false);
+                    // 构建消息
+                    Msg send = buildMsg(true, userId, data, result);
+                    // 发送视频
+                    bot.sendGroupMsg(groupId, send.build(), false);
+                    bot.sendGroupMsg(groupId, Msg.builder().video(result.getVideo(), picUrl, true).build(), false);
                 } catch (Exception e) {
-                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("WhatAnime番剧检索失败，请稍后重试~").build(), false);
+                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("WhatAnime番剧检索失败，请更换图片或稍后重试~").build(), false);
                     log.info("WhatAnime插件检索异常", e);
                 }
             }
@@ -235,34 +245,22 @@ public class WhatAnime extends BotPlugin {
                 banUtils.setBan(userId);
                 bot.sendPrivateMsg(userId, "番剧搜索中，请稍后~", false);
                 try {
-                    getBasicData(picUrl);
-                    Docs docs = basicData.getDocs().get(0);
+                    getBasicInfo(picUrl);
+                    BasicInfo.Result result = basicInfo.getResult().get(0);
                     // 获取详细信息
                     AnimeInfo.Media data = animeInfo.getGetData().getMedia();
-                    String startTime = data.getStartDate().getYear() + "年" + data.getStartDate().getMonth() + "月" + data.getStartDate().getDay() + "日";
-                    String endTime = data.getEndDate().getYear() + "年" + data.getEndDate().getMonth() + "月" + data.getEndDate().getDay() + "日";
-                    Msg msgSend = Msg.builder()
-                            .image(data.getCoverImage().getLarge())
-                            .text("\n该截图出自番剧" + docs.getTitleChinese() + "第" + docs.getEpisode() + "集")
-                            .text("\n截图位于" + CommonUtils.sFormat(docs.getFrom()) + "至" + CommonUtils.sFormat(docs.getTo()) + "附近")
-                            .text("\n番剧类型：" + data.getType() + "-" + data.getFormat())
-                            .text("\n状态：" + data.getStatus())
-                            .text("\n总集数：" + data.getEpisodes())
-                            .text("\n开播季节：" + data.getSeason())
-                            .text("\n开播时间：" + startTime)
-                            .text("\n完结时间：" + endTime)
-                            .text("\n在" + basicData.getLimitTtl() + "秒内剩余" + basicData.getLimit() + "次搜索次数")
-                            .text("\n今日配额剩余：" + basicData.getQuota())
-                            .text("\n数据来源：WhatAnime");
-                    String videoUrl = videoUrl(docs.getAniListId(), docs.getFilename(), docs.getAt(), docs.getTokenThumb());
-                    bot.sendPrivateMsg(userId, msgSend.build(), false);
-                    bot.sendPrivateMsg(userId, Msg.builder().video(videoUrl, picUrl, true).build(), false);
+                    // 构建消息
+                    Msg send = buildMsg(false, userId, data, result);
+                    bot.sendPrivateMsg(userId, send.build(), false);
+                    // 发送视频
+                    bot.sendPrivateMsg(userId, Msg.builder().video(result.getVideo(), picUrl, true).build(), false);
                 } catch (Exception e) {
-                    bot.sendPrivateMsg(userId, "WhatAnime检索服务出现异常，请稍后重试~", false);
+                    bot.sendPrivateMsg(userId, "WhatAnime番剧检索失败，请更换图片或稍后重试~", false);
                     log.info("WhatAnime插件检索异常", e);
                 }
             }
         }
+
         return MESSAGE_IGNORE;
     }
 

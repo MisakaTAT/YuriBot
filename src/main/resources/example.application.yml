@@ -47,7 +47,7 @@ yuri:
     botToken: "key_value"
   plugins:
     prefix:
-      prefix: "#"
+      prefix: "."
     maintenance:
       isMaintenance: false
       maintenanceMsg: "yuri维护中,请稍后再试~"
@@ -60,8 +60,6 @@ yuri:
       cdTime: 120
       delTime: 30
       maxGet: 15
-    whatAnime:
-      apiKey: "key_value"
     sauceNao:
       apiKey: "key_value"
     banUtils:
