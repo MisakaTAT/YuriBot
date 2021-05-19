@@ -18,7 +18,7 @@ spring:
       - com.mikuac.bot.plugins.aop.Maintenance
       - com.mikuac.bot.plugins.aop.SendHelp
       - com.mikuac.bot.plugins.aop.Hitokoto
-      - com.mikuac.bot.plugins.aop.GroupJoinAndQuit
+      - com.mikuac.bot.plugins.GroupJoinAndQuit
       - com.mikuac.bot.plugins.aop.RainbowSixStats
       - com.mikuac.bot.plugins.aop.SeTu
       - com.mikuac.bot.plugins.aop.SendAllGroup

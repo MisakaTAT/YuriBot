@@ -1,4 +1,4 @@
-package com.mikuac.bot.plugins.aop;
+package com.mikuac.bot.plugins;
 
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 入群欢迎 & 退群提醒
+ *
  * @author Zero
  * @date 2020/11/4 14:48
  */
@@ -30,8 +31,8 @@ public class GroupJoinAndQuit extends BotPlugin {
         long userId = event.getUserId();
         Msg msg = Msg.builder()
                 .at(userId)
-                .text("Hi~ 我是"+botName+"，欢迎加入本群，如果想了解我，请发送 " +prefix+"帮助 或 "+prefix+"help获取帮助信息~");
-        bot.sendGroupMsg(groupId,msg.build(),false);
+                .text("Hi~ 我是" + botName + "，欢迎加入本群，如果想了解我，请发送 " + prefix + "帮助 或 " + prefix + "help获取帮助信息~");
+        bot.sendGroupMsg(groupId, msg.build(), false);
         return MESSAGE_IGNORE;
     }
 
@@ -40,8 +41,8 @@ public class GroupJoinAndQuit extends BotPlugin {
         long groupId = event.getGroupId();
         long userId = event.getUserId();
         Msg msg = Msg.builder()
-            .text(userId + "退出群聊");
-        bot.sendGroupMsg(groupId,msg.build(),false);
+                .text(userId + "退出群聊");
+        bot.sendGroupMsg(groupId, msg.build(), false);
         return MESSAGE_IGNORE;
     }
 

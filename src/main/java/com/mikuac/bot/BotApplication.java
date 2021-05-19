@@ -1,5 +1,6 @@
 package com.mikuac.bot;
 
+import com.mikuac.bot.utils.TrieUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,8 +31,10 @@ public class BotApplication {
 
     public static void main(String[] args) {
         String welcome = "你好~ 我是悠里⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄";
-        // Telegram框架初始化
+        // 初始化Telegram框架
         ApiContextInitializer.init();
+        // 初始化Trie
+        TrieUtils.trie();
         SpringApplication.run(BotApplication.class, args);
         log.info(welcome);
     }
