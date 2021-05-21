@@ -11,8 +11,10 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: false
+    open-in-view: false
   bot:
     plugin-list:
+      - com.mikuac.bot.plugins.SensitiveWords
       - com.mikuac.bot.plugins.filter.TcBotFilter
       - com.mikuac.bot.plugins.aop.EventLog
       - com.mikuac.bot.plugins.aop.Maintenance
@@ -34,7 +36,6 @@ spring:
       - com.mikuac.bot.plugins.aop.BlockChain
       - com.mikuac.bot.plugins.aop.PhoenixWright
       - com.mikuac.bot.plugins.aop.SteamRep
-      - com.mikuac.bot.plugins.SensitiveWords
       - com.mikuac.bot.plugins.aop.AddSensitiveWord
 
 yuri:
@@ -66,4 +67,4 @@ yuri:
       apiKey: "key_value"
     banUtils:
       limitTime: 30
-      limitCount: 5
+      limitCount: 10
