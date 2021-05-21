@@ -40,6 +40,8 @@ public class SensitiveWords extends BotPlugin {
 
     private final static String ADMIN_ROLE = "admin";
 
+    private final static String OWNER_ROLE = "owner";
+
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
         String msg = event.getRawMessage().replaceAll("\\s*", "");
@@ -53,10 +55,11 @@ public class SensitiveWords extends BotPlugin {
                 return MESSAGE_IGNORE;
             }
         }
-        // 检查发送者是否为管理员
+        // 检查发送者是否为管理员或群主或者Bot管理员
         OnebotApi.GetGroupMemberInfoResp groupMemberInfo = bot.getGroupMemberInfo(groupId, userId, false);
         if (groupMemberInfo != null) {
-            if (ADMIN_ROLE.equals(groupMemberInfo.getRole()) || adminId == userId) {
+            String getRole = groupMemberInfo.getRole();
+            if (ADMIN_ROLE.equals(getRole) || adminId == userId || OWNER_ROLE.equals(getRole)) {
                 return MESSAGE_IGNORE;
             }
         }
