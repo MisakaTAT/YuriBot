@@ -57,7 +57,7 @@ public class AddSensitiveWord extends BotPlugin {
                 return MESSAGE_BLOCK;
             }
             if (sensitiveWordRepository.findWord(word).isPresent()) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("敏感词已存在,请勿重复添加"), false);
+                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("敏感词已存在，请勿重复添加"), false);
                 return MESSAGE_BLOCK;
             }
             SensitiveWordEntity sensitiveWordEntity = new SensitiveWordEntity();
@@ -82,7 +82,7 @@ public class AddSensitiveWord extends BotPlugin {
                 return MESSAGE_BLOCK;
             }
             if (sensitiveWordRepository.findWord(word).isPresent()) {
-                bot.sendPrivateMsg(userId, "敏感词已存在,请勿重复添加", false);
+                bot.sendPrivateMsg(userId, "敏感词已存在，请勿重复添加", false);
                 return MESSAGE_BLOCK;
             }
             SensitiveWordEntity sensitiveWordEntity = new SensitiveWordEntity();
