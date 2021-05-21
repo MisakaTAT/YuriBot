@@ -3,10 +3,12 @@ package com.mikuac.bot.bean.r6s;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import org.springframework.stereotype.Component;
+
 import java.util.Date;
 
 /**
  * 当前赛季基本数据
+ *
  * @author Zero
  * @date 2020/11/4 23:00
  */

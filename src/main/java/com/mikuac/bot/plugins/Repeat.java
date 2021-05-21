@@ -7,12 +7,14 @@ import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 复读插件
+ *
  * @author Zero
  * @date 2020/10/24 20:27
  */
@@ -29,9 +31,10 @@ public class Repeat extends BotPlugin {
     /**
      * 产生一个min-max之间的随机数
      * result为2排除正常指令，并且max+1
+     *
      * @return 返回一个int值
      */
-    public int randomCount () {
+    public int randomCount() {
         int max = randomCountSize + 1;
         int min = 2;
         Random random = new Random();

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 发送帮助链接
+ *
  * @author Zero
  * @date 2020/12/2 11:09
  */
@@ -21,7 +22,7 @@ public class SendHelp extends BotPlugin {
         long userId = event.getUserId();
         String msg = event.getRawMessage();
         if (msg.matches(RegexConst.SEND_HELP)) {
-            bot.sendPrivateMsg(userId,"https://mikuac.com/archives/675",false);
+            bot.sendPrivateMsg(userId, "https://mikuac.com/archives/675", false);
         }
         return MESSAGE_IGNORE;
     }
@@ -32,7 +33,7 @@ public class SendHelp extends BotPlugin {
         long userId = event.getUserId();
         long groupId = event.getGroupId();
         if (msg.matches(RegexConst.SEND_HELP)) {
-            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("https://mikuac.com/archives/675/").build(),false);
+            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("https://mikuac.com/archives/675/").build(), false);
         }
         return MESSAGE_IGNORE;
     }

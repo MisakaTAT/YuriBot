@@ -1,4 +1,4 @@
-package com.mikuac.bot.utils;
+package com.mikuac.bot.common.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpResponse;
@@ -13,8 +13,9 @@ import java.io.IOException;
 
 /**
  * Http请求工具类
+ *
  * @author Zero
- * @date  2020/10/23 22:50
+ * @date 2020/10/23 22:50
  */
 @Slf4j
 @Component
@@ -22,11 +23,12 @@ public class HttpClientUtils {
 
     /**
      * Get请求并返回Json数据
+     *
      * @param url api地址
      * @return
      * @throws Exception
      */
-    public static String httpGetWithJson(String url,Boolean noReferer) {
+    public static String httpGetWithJson(String url, Boolean noReferer) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         RequestConfig requestConfig = RequestConfig.custom()
                 // 设置连接超时时间
@@ -40,16 +42,16 @@ public class HttpClientUtils {
         HttpGet httpGet = new HttpGet(url);
         // 设置请求头
         if (noReferer) {
-            httpGet.setHeader("referer","no-referer");
+            httpGet.setHeader("referer", "no-referer");
         }
         httpGet.setConfig(requestConfig);
         try {
             HttpResponse httpResponse = httpClient.execute(httpGet);
             // 获得返回的结果
-            return EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
+            return EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
         } catch (IOException e) {
             log.info("HttpGetWithJson请求异常", e);
-        }finally {
+        } finally {
             try {
                 httpClient.close();
             } catch (IOException e) {

@@ -32,6 +32,7 @@
 - [x] 区块链虚拟货币信息查询
 - [x] 逆转裁判字体风格图片生成
 - [x] Steam Rep信息查询
+- [x] 撤回含有敏感词的消息
 
 # Install
 To Be Continued

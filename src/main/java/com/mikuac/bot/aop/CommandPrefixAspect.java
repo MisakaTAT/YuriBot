@@ -1,6 +1,6 @@
 package com.mikuac.bot.aop;
 
-import com.mikuac.bot.utils.SearchModeUtils;
+import com.mikuac.bot.common.utils.SearchModeUtils;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.BotPlugin;
 import onebot.OnebotEvent;
@@ -13,13 +13,14 @@ import org.springframework.stereotype.Component;
 
 /**
  * AOP前缀处理
+ *
  * @author Zero
- * @date  2020/10/23 22:50
+ * @date 2020/10/23 22:50
  */
 @Slf4j
 @Aspect
 @Component
-public class CommandPrefix {
+public class CommandPrefixAspect {
 
     @Value("${yuri.plugins.prefix.prefix}")
     private String prefix;
@@ -30,10 +31,12 @@ public class CommandPrefix {
      * 声明切点
      */
     @Pointcut("execution(* com.mikuac.bot.plugins.aop.*.on*Message(..)))")
-    private void prefixPoint() {}
+    private void prefixPoint() {
+    }
 
     /**
      * Around为环绕通知，方法前后各执行一次
+     *
      * @param pjp
      * @return
      * @throws Throwable
@@ -43,10 +46,10 @@ public class CommandPrefix {
 
         Object[] args = pjp.getArgs();
 
-        for (int i = 0; i < args.length; i++){
+        for (int i = 0; i < args.length; i++) {
             // 处理群组消息
             if (args[i] instanceof OnebotEvent.GroupMessageEvent) {
-                OnebotEvent.GroupMessageEvent event = (OnebotEvent.GroupMessageEvent)args[i];
+                OnebotEvent.GroupMessageEvent event = (OnebotEvent.GroupMessageEvent) args[i];
                 String msg = event.getRawMessage();
                 // 如果消息未携带prefix，且未匹配到纯图片信息则拦截
                 if (!msg.startsWith(prefix) && !msg.matches(imgMsgRegex)) {
@@ -70,7 +73,7 @@ public class CommandPrefix {
             }
             // 处理私聊消息
             if (args[i] instanceof OnebotEvent.PrivateMessageEvent) {
-                OnebotEvent.PrivateMessageEvent event = (OnebotEvent.PrivateMessageEvent)args[i];
+                OnebotEvent.PrivateMessageEvent event = (OnebotEvent.PrivateMessageEvent) args[i];
                 String msg = event.getRawMessage();
                 // 如果消息未携带prefix，且未匹配到img标签则拦截（用于搜图模式）
                 if (!msg.startsWith(prefix) && !msg.matches(imgMsgRegex)) {

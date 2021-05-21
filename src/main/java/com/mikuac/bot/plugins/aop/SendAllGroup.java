@@ -1,8 +1,8 @@
 package com.mikuac.bot.plugins.aop;
 
+import com.mikuac.bot.common.utils.RegexUtils;
+import com.mikuac.bot.common.utils.SendMsgUtils;
 import com.mikuac.bot.config.RegexConst;
-import com.mikuac.bot.utils.RegexUtils;
-import com.mikuac.bot.utils.SendMsgUtils;
 import lombok.SneakyThrows;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;
@@ -12,10 +12,12 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 /**
  * 推送至所有群
+ *
  * @author Zero
  * @date 2020/11/18 16:58
  */
@@ -39,7 +41,7 @@ public class SendAllGroup extends BotPlugin {
         String msg = event.getRawMessage();
         if (userId == adminId && msg.matches(RegexConst.SEND_ALL_GROUP)) {
             List<Long> groupIdList = sendMsgUtils.getGroupList();
-            String regMsg = RegexUtils.regex(RegexConst.GET_SEND_ALL_GROUP_MSG,msg);
+            String regMsg = RegexUtils.regex(RegexConst.GET_SEND_ALL_GROUP_MSG, msg);
             if (groupIdList != null && !groupIdList.isEmpty() && regMsg != null) {
                 for (long groupId : groupIdList) {
                     sendMsgUtils.sendGroupMsg(groupId, Msg.builder().text(regMsg));

@@ -13,6 +13,7 @@ import oshi.SystemInfo;
 import oshi.hardware.Baseboard;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.GlobalMemory;
+
 import java.text.DecimalFormat;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -33,26 +34,26 @@ public class GetSysInfo extends BotPlugin {
 
     SystemInfo systemInfo = new SystemInfo();
 
-    public String formatByte(long byteNumber){
+    public String formatByte(long byteNumber) {
         //换算单位
         double FORMAT = 1024.0;
-        double kbNumber = byteNumber/FORMAT;
-        if(kbNumber<FORMAT){
+        double kbNumber = byteNumber / FORMAT;
+        if (kbNumber < FORMAT) {
             return new DecimalFormat("#.##KB").format(kbNumber);
         }
-        double mbNumber = kbNumber/FORMAT;
-        if(mbNumber<FORMAT){
+        double mbNumber = kbNumber / FORMAT;
+        if (mbNumber < FORMAT) {
             return new DecimalFormat("#.##MB").format(mbNumber);
         }
-        double gbNumber = mbNumber/FORMAT;
-        if(gbNumber<FORMAT){
+        double gbNumber = mbNumber / FORMAT;
+        if (gbNumber < FORMAT) {
             return new DecimalFormat("#.##GB").format(gbNumber);
         }
-        double tbNumber = gbNumber/FORMAT;
+        double tbNumber = gbNumber / FORMAT;
         return new DecimalFormat("#.##TB").format(tbNumber);
     }
 
-    public Msg sendSysInfoMsg(boolean isGroup,long  userId) {
+    public Msg sendSysInfoMsg(boolean isGroup, long userId) {
         Msg msg = Msg.builder();
         if (isGroup) {
             msg.at(userId);
@@ -78,7 +79,7 @@ public class GetSysInfo extends BotPlugin {
         return msg;
     }
 
-    public Msg sendHardwareInfoMsg(boolean isGroup,long  userId) {
+    public Msg sendHardwareInfoMsg(boolean isGroup, long userId) {
         Msg msg = Msg.builder();
         if (isGroup) {
             msg.at(userId);
@@ -98,7 +99,7 @@ public class GetSysInfo extends BotPlugin {
         return msg;
     }
 
-    public void getCpuInfo () throws InterruptedException {
+    public void getCpuInfo() throws InterruptedException {
         CentralProcessor processor = systemInfo.getHardware().getProcessor();
         long[] prevTicks = processor.getSystemCpuLoadTicks();
         TimeUnit.SECONDS.sleep(1);
@@ -115,7 +116,7 @@ public class GetSysInfo extends BotPlugin {
         long totalCpu = user + nice + cSys + idle + ioWait + irq + softIrq + steal;
 
         cpu.setTotalCore(processor.getLogicalProcessorCount());
-        cpu.setTotalUse(new DecimalFormat("#.##%").format(1.0-(idle * 1.0 / totalCpu)));
+        cpu.setTotalUse(new DecimalFormat("#.##%").format(1.0 - (idle * 1.0 / totalCpu)));
         cpu.setCpuMode(processor.getProcessorIdentifier().getName());
         cpu.setStepping(processor.getProcessorIdentifier().getStepping());
         cpu.setPackageCount(processor.getPhysicalPackageCount());
@@ -133,8 +134,8 @@ public class GetSysInfo extends BotPlugin {
         long freeMem = memory.getAvailable();
 
         mem.setTotalMem(formatByte(totalMem));
-        mem.setMemTotalUse(formatByte(totalMem-freeMem));
-        mem.setMemUseRate(new DecimalFormat("#.##%").format((totalMem-freeMem)*1.0/totalMem));
+        mem.setMemTotalUse(formatByte(totalMem - freeMem));
+        mem.setMemUseRate(new DecimalFormat("#.##%").format((totalMem - freeMem) * 1.0 / totalMem));
         mem.setFreeMem(formatByte(freeMem));
     }
 
@@ -150,9 +151,9 @@ public class GetSysInfo extends BotPlugin {
 
         jvm.setJdkVersion(jdkVersion);
         jvm.setJvmTotalMem(formatByte(totalMemory));
-        jvm.setJvmUseMem(formatByte(totalMemory-freeMemory));
+        jvm.setJvmUseMem(formatByte(totalMemory - freeMemory));
         jvm.setJvmFreeMem(formatByte(freeMemory));
-        jvm.setJvmMemUseRate(new DecimalFormat("#.##%").format((totalMemory-freeMemory)*1.0/totalMemory));
+        jvm.setJvmMemUseRate(new DecimalFormat("#.##%").format((totalMemory - freeMemory) * 1.0 / totalMemory));
     }
 
     public void getSysInfo() {
@@ -173,7 +174,7 @@ public class GetSysInfo extends BotPlugin {
         bd.setVersion(baseboard.getVersion());
     }
 
-    public void doGet () throws InterruptedException {
+    public void doGet() throws InterruptedException {
         getCpuInfo();
         getMemInfo();
         getJvmInfo();
@@ -188,24 +189,24 @@ public class GetSysInfo extends BotPlugin {
         if (msg.matches(RegexConst.GET_SYS_INFO)) {
             long uerId = event.getUserId();
             try {
-                bot.sendPrivateMsg(uerId,"⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ 需要一点时间来为您收集系统信息，请稍后~",false);
+                bot.sendPrivateMsg(uerId, "⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ 需要一点时间来为您收集系统信息，请稍后~", false);
                 doGet();
-                bot.sendPrivateMsg(uerId,sendSysInfoMsg(false,0L).build(),false);
+                bot.sendPrivateMsg(uerId, sendSysInfoMsg(false, 0L).build(), false);
             } catch (Exception e) {
-                log.info("系统信息收集异常",e);
-                bot.sendPrivateMsg(uerId,"系统信息收集异常~",false);
-           }
+                log.info("系统信息收集异常", e);
+                bot.sendPrivateMsg(uerId, "系统信息收集异常~", false);
+            }
         }
         // 获取硬件信息
         if (msg.matches(RegexConst.GET_HARDWARE_INFO)) {
             long uerId = event.getUserId();
             try {
-                bot.sendPrivateMsg(uerId,"⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ 需要一点时间来为您收集硬件信息，请稍后~",false);
+                bot.sendPrivateMsg(uerId, "⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ 需要一点时间来为您收集硬件信息，请稍后~", false);
                 doGet();
-                bot.sendPrivateMsg(uerId,sendHardwareInfoMsg(false,0L).build(),false);
+                bot.sendPrivateMsg(uerId, sendHardwareInfoMsg(false, 0L).build(), false);
             } catch (Exception e) {
-                log.info("硬件信息收集异常",e);
-                bot.sendPrivateMsg(uerId,"硬件信息收集异常~",false);
+                log.info("硬件信息收集异常", e);
+                bot.sendPrivateMsg(uerId, "硬件信息收集异常~", false);
             }
         }
         return MESSAGE_IGNORE;
@@ -218,24 +219,24 @@ public class GetSysInfo extends BotPlugin {
             long uerId = event.getUserId();
             long groupId = event.getGroupId();
             try {
-                bot.sendGroupMsg(groupId,Msg.builder().at(uerId).text("⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ 需要一点时间来为您收集系统信息，请稍后~").build(),false);
+                bot.sendGroupMsg(groupId, Msg.builder().at(uerId).text("⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ 需要一点时间来为您收集系统信息，请稍后~").build(), false);
                 doGet();
-                bot.sendGroupMsg(groupId,sendSysInfoMsg(true,uerId).build(),false);
+                bot.sendGroupMsg(groupId, sendSysInfoMsg(true, uerId).build(), false);
             } catch (Exception e) {
-                log.info("系统信息收集异常",e);
-                bot.sendGroupMsg(groupId,Msg.builder().at(uerId).text("系统信息收集异常~").build(),false);
+                log.info("系统信息收集异常", e);
+                bot.sendGroupMsg(groupId, Msg.builder().at(uerId).text("系统信息收集异常~").build(), false);
             }
         }
         if (msg.matches(RegexConst.GET_HARDWARE_INFO)) {
             long uerId = event.getUserId();
             long groupId = event.getGroupId();
             try {
-                bot.sendGroupMsg(groupId,Msg.builder().at(uerId).text("⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ 需要一点时间来为您收集硬件信息，请稍后~").build(),false);
+                bot.sendGroupMsg(groupId, Msg.builder().at(uerId).text("⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ 需要一点时间来为您收集硬件信息，请稍后~").build(), false);
                 doGet();
-                bot.sendGroupMsg(groupId,sendHardwareInfoMsg(true,uerId).build(),false);
+                bot.sendGroupMsg(groupId, sendHardwareInfoMsg(true, uerId).build(), false);
             } catch (Exception e) {
-                log.info("硬件信息收集异常",e);
-                bot.sendGroupMsg(groupId,Msg.builder().at(uerId).text("硬件信息收集异常~").build(),false);
+                log.info("硬件信息收集异常", e);
+                bot.sendGroupMsg(groupId, Msg.builder().at(uerId).text("硬件信息收集异常~").build(), false);
             }
         }
         return MESSAGE_IGNORE;

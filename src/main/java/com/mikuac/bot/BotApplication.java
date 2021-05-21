@@ -1,6 +1,5 @@
 package com.mikuac.bot;
 
-import com.mikuac.bot.plugins.SensitiveWords;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,10 +29,10 @@ public class BotApplication {
     }
 
     public static void main(String[] args) {
+        SpringApplication.run(BotApplication.class, args);
         String welcome = "你好~ 我是悠里⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄";
         // 初始化Telegram框架
         ApiContextInitializer.init();
-        SpringApplication.run(BotApplication.class, args);
         log.info(welcome);
     }
 

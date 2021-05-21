@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 
 /**
@@ -13,10 +14,11 @@ import java.util.Optional;
  * @date 2020/11/18 9:50
  */
 @Repository
-public interface MsgCountRepository extends JpaRepository<MsgCountEntity,Integer> {
+public interface MsgCountRepository extends JpaRepository<MsgCountEntity, Integer> {
 
     /**
      * 更新字段
+     *
      * @param groupId
      * @param userId
      * @param todayMsgCount
@@ -29,6 +31,7 @@ public interface MsgCountRepository extends JpaRepository<MsgCountEntity,Integer
 
     /**
      * 查询群组当日发言次数最大值
+     *
      * @param groupId
      * @return
      */
@@ -37,6 +40,7 @@ public interface MsgCountRepository extends JpaRepository<MsgCountEntity,Integer
 
     /**
      * 根据群组与用户ID查询
+     *
      * @param groupId
      * @param userId
      * @return
@@ -50,6 +54,6 @@ public interface MsgCountRepository extends JpaRepository<MsgCountEntity,Integer
     @Modifying
     @Transactional(rollbackFor = Exception.class)
     @Query(value = "UPDATE msg_count SET today_msg_count = 0", nativeQuery = true)
-    void setDefaultTodayMsgCount ();
+    void setDefaultTodayMsgCount();
 
 }

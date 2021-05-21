@@ -2,6 +2,7 @@ package com.mikuac.bot.bean.saucenao;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 /**

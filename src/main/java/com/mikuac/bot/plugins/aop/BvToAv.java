@@ -1,7 +1,7 @@
 package com.mikuac.bot.plugins.aop;
 
+import com.mikuac.bot.common.utils.RegexUtils;
 import com.mikuac.bot.config.RegexConst;
-import com.mikuac.bot.utils.RegexUtils;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;
 import net.lz1998.pbbot.utils.Msg;

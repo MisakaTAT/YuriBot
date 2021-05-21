@@ -3,8 +3,8 @@ package com.mikuac.bot.plugins.aop;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.mikuac.bot.common.utils.HttpClientUtils;
 import com.mikuac.bot.config.ApiConst;
-import com.mikuac.bot.utils.HttpClientUtils;
 import com.mikuac.bot.config.RegexConst;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
@@ -14,12 +14,14 @@ import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 一言
+ *
  * @author Zero
  * @date 2020/11/3 9:34
  */
@@ -50,19 +52,19 @@ public class Hitokoto extends BotPlugin {
     @Value("${yuri.plugins.hitokoto.cdTime}")
     private int cdTime;
 
-    private String types = "abcdefghijkl";
+    private final String types = "abcdefghijkl";
 
-    @JSONField(serialzeFeatures= {SerializerFeature.WriteMapNullValue})
+    @JSONField(serialzeFeatures = {SerializerFeature.WriteMapNullValue})
     private String hitokoto;
-    @JSONField(serialzeFeatures= {SerializerFeature.WriteMapNullValue})
+    @JSONField(serialzeFeatures = {SerializerFeature.WriteMapNullValue})
     private String from;
-    @JSONField(serialzeFeatures= {SerializerFeature.WriteMapNullValue})
+    @JSONField(serialzeFeatures = {SerializerFeature.WriteMapNullValue})
     private char getType;
 
     Map<Long, Long> lastGetTimeMap = new ConcurrentHashMap<>();
 
     public void getData(char type) {
-        String result = HttpClientUtils.httpGetWithJson(ApiConst.HITOKOTO_API + type,false);
+        String result = HttpClientUtils.httpGetWithJson(ApiConst.HITOKOTO_API + type, false);
         JSONObject jsonObject = JSONObject.parseObject(result);
         hitokoto = jsonObject.getString("hitokoto");
         from = jsonObject.getString("from");
@@ -78,11 +80,11 @@ public class Hitokoto extends BotPlugin {
             long userId = event.getUserId();
             long getNowTime = Instant.now().getEpochSecond();
             long lastGetTime = lastGetTimeMap.getOrDefault(groupId + userId, 0L);
-            long rCd = Math.abs((getNowTime - lastGetTime)-cdTime);
+            long rCd = Math.abs((getNowTime - lastGetTime) - cdTime);
             // 逻辑处理
             if (getNowTime >= lastGetTime + cdTime) {
                 try {
-                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("一言获取中~").build(),true);
+                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("一言获取中~").build(), true);
                     String msgType = msg.replaceAll("(.*?)-", "");
                     if (msgType.matches("[a-l]")) {
                         getData(msgType.charAt(0));
@@ -96,11 +98,11 @@ public class Hitokoto extends BotPlugin {
                     bot.sendGroupMsg(groupId, msgBuilder.build(), false);
                     lastGetTimeMap.put(groupId + userId, Instant.now().getEpochSecond());
                 } catch (Exception e) {
-                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("一言获取失败,请稍后重试~").build(),false);
+                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("一言获取失败,请稍后重试~").build(), false);
                     log.info("一言群组发送异常", e);
                 }
-            }else {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("请求过于频繁~ 剩余CD时间为" + rCd + "秒").build(),false);
+            } else {
+                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("请求过于频繁~ 剩余CD时间为" + rCd + "秒").build(), false);
             }
         }
         return MESSAGE_IGNORE;
@@ -114,10 +116,10 @@ public class Hitokoto extends BotPlugin {
             long userId = event.getUserId();
             long getNowTime = Instant.now().getEpochSecond();
             long lastGetTime = lastGetTimeMap.getOrDefault(userId, 0L);
-            long rCd = Math.abs((getNowTime - lastGetTime)-cdTime);
+            long rCd = Math.abs((getNowTime - lastGetTime) - cdTime);
             // 逻辑处理
             if (getNowTime >= lastGetTime + cdTime) {
-                bot.sendPrivateMsg(userId,"一言获取中~",false);
+                bot.sendPrivateMsg(userId, "一言获取中~", false);
                 String msgType = msg.replaceAll("(.*?)-", "");
                 try {
                     if (msgType.matches("[a-l]")) {
@@ -131,11 +133,11 @@ public class Hitokoto extends BotPlugin {
                     bot.sendPrivateMsg(userId, msgBuilder.build(), false);
                     lastGetTimeMap.put(userId, Instant.now().getEpochSecond());
                 } catch (Exception e) {
-                    bot.sendPrivateMsg(userId,"一言获取失败,请稍后重试~",false);
+                    bot.sendPrivateMsg(userId, "一言获取失败,请稍后重试~", false);
                     log.info("一言私聊发送异常", e);
                 }
-            }else {
-                bot.sendPrivateMsg(userId,"请求过于频繁~ 剩余CD时间为" + rCd + "秒",false);
+            } else {
+                bot.sendPrivateMsg(userId, "请求过于频繁~ 剩余CD时间为" + rCd + "秒", false);
             }
         }
         return MESSAGE_IGNORE;

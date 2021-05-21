@@ -63,4 +63,6 @@ public class RegexConst {
 
     public final static String STEAM_REP = "SteamRep\\s(.*)";
 
+    public final static String SENSITIVE_WORD = "^添加敏感词\\s(.*)|^(?i)AddSensitiveWord\\s(.*)|^(?i)AddSW\\s(.*)";
+
 }

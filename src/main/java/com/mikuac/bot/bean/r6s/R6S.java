@@ -1,12 +1,14 @@
 package com.mikuac.bot.bean.r6s;
 
-import java.util.List;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * R6S战绩实体类
+ *
  * @author Zero
  * @date 2020/11/4 23:00
  */

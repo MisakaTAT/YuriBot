@@ -1,6 +1,7 @@
 package com.mikuac.bot.bean.whatanime;
 
 import lombok.Data;
+
 import java.util.List;
 
 /**

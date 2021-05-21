@@ -1,6 +1,7 @@
 package com.mikuac.bot.entity;
 
 import lombok.Data;
+
 import javax.persistence.*;
 
 /**

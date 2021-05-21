@@ -1,7 +1,8 @@
 package com.mikuac.bot.bean.setu;
 
-import java.util.List;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author Zero

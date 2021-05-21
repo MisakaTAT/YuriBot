@@ -1,9 +1,12 @@
 package com.mikuac.bot.entity;
 
 import lombok.Data;
+
 import javax.persistence.*;
 
-/**插件开关
+/**
+ * 插件开关
+ *
  * @author Zero
  * @date 2020/11/20 10:52
  */

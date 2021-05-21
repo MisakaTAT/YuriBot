@@ -5,6 +5,7 @@ import lombok.Data;
 
 /**
  * 武器数据
+ *
  * @author Zero
  * @date 2020/11/5 24:00
  */

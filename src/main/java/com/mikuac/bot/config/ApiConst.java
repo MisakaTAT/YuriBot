@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * api常量
+ *
  * @author Zero
  * @date 2020/12/3 12:04
  */

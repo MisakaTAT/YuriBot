@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 消息监听日志
+ *
  * @author Zero
  * @date 2020/10/23 22:50
  */

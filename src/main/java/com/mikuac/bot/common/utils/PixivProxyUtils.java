@@ -1,4 +1,4 @@
-package com.mikuac.bot.utils;
+package com.mikuac.bot.common.utils;
 
 /**
  * @author Zero
