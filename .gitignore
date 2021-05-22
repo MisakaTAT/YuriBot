@@ -2,6 +2,7 @@ HELP.md
 *.sqlite3
 .DS_Store
 logs
+GroupMsgCountCache.json
 src/main/resources/application.yml
 target/
 !.mvn/wrapper/maven-wrapper.jar
