@@ -34,8 +34,32 @@
 - [x] Steam Rep信息查询
 - [x] 撤回含有敏感词的消息
 
-# Install
-To Be Continued
+# Install Maven For Centos
+```shell
+wget http://mirrors.hust.edu.cn/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+tar -zxvf  apache-maven-3.6.3-bin.tar.gz
+# rename dir
+mv apache-maven-3.6.3 maven
+# edite /etc/profile add
+export MAVEN_HOME=/root/maven
+export PATH=$MAVEN_HOME/bin:$PATH
+# update profile
+source /etc/profile
+# check mvn install success
+mvn -version
+```
+
+# Build Jar Package
+```shell
+# get source
+git clone https://github.com/MisakaTAT/YuriBot.git
+# rename config file (you can custom this config file)
+mv YuriBot-main/src/main/resources/example.application.yml application.yml
+# build and skip test
+mvn clean package -Dmaven.test.skip=true
+# output to target dir
+java -jar YuriBot-main/target/Yuri-Bot-v1.0.1-Alpha.jar
+```
 
 # Credits
 * [setu-api](https://api.lolicon.app/#/setu)
