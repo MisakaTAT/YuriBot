@@ -17,12 +17,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class SendHelp extends BotPlugin {
 
+
+    public Msg buildMsg(Boolean isGroupMsg, long userId) {
+        Msg sendMsg = Msg.builder();
+        if (isGroupMsg) {
+            sendMsg.at(userId).text("\n");
+        }
+        sendMsg.text("操作文档: https://mikuac.com/archives/675");
+        sendMsg.text("\n项目地址: https://github.com/MisakaTAT/YuriBot");
+        return sendMsg;
+    }
+
     @Override
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
         long userId = event.getUserId();
         String msg = event.getRawMessage();
         if (msg.matches(RegexConst.SEND_HELP)) {
-            bot.sendPrivateMsg(userId, "https://mikuac.com/archives/675", false);
+            bot.sendPrivateMsg(userId, buildMsg(false, userId).build(), false);
         }
         return MESSAGE_IGNORE;
     }
@@ -33,7 +44,7 @@ public class SendHelp extends BotPlugin {
         long userId = event.getUserId();
         long groupId = event.getGroupId();
         if (msg.matches(RegexConst.SEND_HELP)) {
-            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("https://mikuac.com/archives/675/").build(), false);
+            bot.sendGroupMsg(groupId, buildMsg(true, userId).build(), false);
         }
         return MESSAGE_IGNORE;
     }
