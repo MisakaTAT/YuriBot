@@ -30,10 +30,9 @@ public class BotApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BotApplication.class, args);
-        String welcome = "你好~ 我是悠里⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄";
         // 初始化Telegram框架
         ApiContextInitializer.init();
-        log.info(welcome);
+        log.info("你好~ 我是悠里⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄");
     }
 
 }

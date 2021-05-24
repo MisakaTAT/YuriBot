@@ -3,6 +3,7 @@ HELP.md
 .DS_Store
 logs
 GroupMsgCountCache.json
+config.json
 src/main/resources/application.yml
 target/
 !.mvn/wrapper/maven-wrapper.jar
