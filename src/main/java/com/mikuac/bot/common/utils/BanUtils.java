@@ -1,10 +1,10 @@
 package com.mikuac.bot.common.utils;
 
+import com.mikuac.bot.config.Global;
 import com.mikuac.bot.entity.BanEntity;
 import com.mikuac.bot.repository.BanRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -29,12 +29,9 @@ public class BanUtils {
         this.banRepository = banRepository;
     }
 
-    @Value("${yuri.bot.adminId}")
-    private long adminId;
-    @Value("${yuri.plugins.banUtils.limitTime}")
-    private int limitTime;
-    @Value("${yuri.plugins.banUtils.limitCount}")
-    private int limitCount;
+    long adminId = Global.config.getBot().getAdminId();
+    int limitTime = Global.config.getBanUtils().getLimitTime();
+    int limitCount = Global.config.getBanUtils().getLimitCount();
 
     Map<Long, Integer> msgCountMap = new ConcurrentHashMap<>();
 

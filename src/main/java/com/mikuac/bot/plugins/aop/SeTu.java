@@ -5,6 +5,7 @@ import com.mikuac.bot.bean.setu.Data;
 import com.mikuac.bot.bean.setu.SetuBean;
 import com.mikuac.bot.common.utils.HttpClientUtils;
 import com.mikuac.bot.config.ApiConst;
+import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
 import com.mikuac.bot.repository.PluginSwitchRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,6 @@ import onebot.OnebotApi;
 import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -54,17 +54,6 @@ public class SeTu extends BotPlugin {
         this.pluginSwitchRepository = pluginSwitchRepository;
     }
 
-    @Value("${yuri.bot.selfId}")
-    private Long botId;
-    @Value("${yuri.plugins.setu.apiKey}")
-    private String apiKey;
-    @Value("${yuri.plugins.setu.cdTime}")
-    private int cdTime;
-    @Value("${yuri.plugins.setu.delTime}")
-    private int delTime;
-    @Value("${yuri.plugins.setu.maxGet}")
-    private int maxGet;
-
     private String picUrl;
 
     Map<Long, Long> lastGetTimeMap = new ConcurrentHashMap<>();
@@ -78,12 +67,15 @@ public class SeTu extends BotPlugin {
     }
 
     public void getData(String r18) {
+        String apiKey = Global.config.getSetu().getApiKey();
         String result = HttpClientUtils.httpGetWithJson(ApiConst.SETU_API + apiKey + r18, false);
         seTuBean = JSON.parseObject(result, SetuBean.class);
     }
 
     @Async
     public void deleteMsg(int msgId) {
+        int delTime = Global.config.getSetu().getDelTime();
+        long botId = Global.config.getBot().getSelfId();
         Bot bot = botContainer.getBots().get(botId);
         if (msgId != 0) {
             try {
@@ -98,6 +90,7 @@ public class SeTu extends BotPlugin {
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
+        int cdTime = Global.config.getSetu().getCdTime();
         String msg = event.getRawMessage();
         // 私聊消息处理
         if (msg.matches(RegexConst.SETU)) {
@@ -147,6 +140,8 @@ public class SeTu extends BotPlugin {
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
+        int maxGet = Global.config.getSetu().getMaxGet();
+        int cdTime = Global.config.getSetu().getCdTime();
         String msg = event.getRawMessage();
         // 私聊消息处理
         if (msg.matches(RegexConst.SETU)) {

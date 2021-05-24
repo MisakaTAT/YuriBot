@@ -1,6 +1,7 @@
 package com.mikuac.bot.plugins.aop;
 
 import com.mikuac.bot.common.utils.RegexUtils;
+import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
 import com.mikuac.bot.entity.SensitiveWordEntity;
 import com.mikuac.bot.repository.SensitiveWordRepository;
@@ -10,7 +11,6 @@ import net.lz1998.pbbot.utils.Msg;
 import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,8 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AddSensitiveWord extends BotPlugin {
 
-    @Value("${yuri.bot.adminId}")
-    private long adminId;
+    long adminId = Global.config.getBot().getAdminId();
 
     private SensitiveWordRepository sensitiveWordRepository;
 

@@ -1,11 +1,11 @@
 package com.mikuac.bot.plugins.aop;
 
+import com.mikuac.bot.config.Global;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;
 import net.lz1998.pbbot.utils.Msg;
 import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,10 +17,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class Maintenance extends BotPlugin {
 
-    @Value("${yuri.plugins.maintenance.isMaintenance}")
-    private Boolean isMaintenance;
-    @Value("${yuri.plugins.maintenance.maintenanceMsg}")
-    private String maintenanceMsg;
+    boolean isMaintenance = Global.config.getMaintenance().isMaintenance();
+    String maintenanceMsg = Global.config.getMaintenance().getMaintenanceMsg();
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {

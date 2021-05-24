@@ -7,6 +7,7 @@ import com.mikuac.bot.bean.whatanime.AnimeInfo;
 import com.mikuac.bot.bean.whatanime.BasicInfo;
 import com.mikuac.bot.common.utils.*;
 import com.mikuac.bot.config.ApiConst;
+import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
@@ -15,7 +16,6 @@ import net.lz1998.pbbot.utils.Msg;
 import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -42,11 +42,6 @@ public class WhatAnime extends BotPlugin {
     public void setBanUtils(BanUtils banUtils) {
         this.banUtils = banUtils;
     }
-
-    @Value("${yuri.plugins.banUtils.limitTime}")
-    private int limitTime;
-    @Value("${yuri.plugins.banUtils.limitCount}")
-    private int limitCount;
 
     String graphqlQuery = """
                 query ($id: Int) {
@@ -131,6 +126,8 @@ public class WhatAnime extends BotPlugin {
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
+        int limitTime = Global.config.getBanUtils().getLimitTime();
+        int limitCount = Global.config.getBanUtils().getLimitCount();
         long groupId = event.getGroupId();
         long userId = event.getUserId();
         String msg = event.getRawMessage();
@@ -200,6 +197,8 @@ public class WhatAnime extends BotPlugin {
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
+        int limitTime = Global.config.getBanUtils().getLimitTime();
+        int limitCount = Global.config.getBanUtils().getLimitCount();
         long userId = event.getUserId();
         String msg = event.getRawMessage();
         // key加1以区分其它搜图模式

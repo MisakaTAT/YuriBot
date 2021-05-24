@@ -6,6 +6,7 @@ import com.mikuac.bot.bean.saucenao.Results;
 import com.mikuac.bot.bean.saucenao.SauceNaoBean;
 import com.mikuac.bot.common.utils.*;
 import com.mikuac.bot.config.ApiConst;
+import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
@@ -14,7 +15,6 @@ import net.lz1998.pbbot.utils.Msg;
 import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -44,12 +44,9 @@ public class SauceNao extends BotPlugin {
         this.banUtils = banUtils;
     }
 
-    @Value("${yuri.plugins.banUtils.limitTime}")
-    private int limitTime;
-    @Value("${yuri.plugins.banUtils.limitCount}")
-    private int limitCount;
-    @Value("${yuri.plugins.sauceNao.apiKey}")
-    private String apiKey;
+    int limitTime = Global.config.getBanUtils().getLimitTime();
+    int limitCount = Global.config.getBanUtils().getLimitCount();
+    String apiKey = Global.config.getSauceNao().getApiKey();
 
     public void searchResult(String picUrl) {
         String param = "api_key=" + apiKey + "&output_type=2&numres=3&db=999&url=" + picUrl;

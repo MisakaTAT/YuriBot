@@ -1,5 +1,6 @@
 package com.mikuac.bot.plugins.aop;
 
+import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
 import com.mikuac.bot.entity.PluginSwitchEntity;
 import com.mikuac.bot.repository.PluginSwitchRepository;
@@ -9,7 +10,6 @@ import net.lz1998.pbbot.bot.BotPlugin;
 import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -64,8 +64,7 @@ public class PluginSwitch extends BotPlugin {
 
     }
 
-    @Value("${yuri.bot.adminId}")
-    private long adminId;
+    long adminId = Global.config.getBot().getAdminId();
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {

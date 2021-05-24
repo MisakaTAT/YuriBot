@@ -1,11 +1,11 @@
 package com.mikuac.bot.common.utils;
 
+import com.mikuac.bot.config.Global;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotContainer;
 import net.lz1998.pbbot.utils.Msg;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -29,9 +29,6 @@ public class SendMsgUtils {
         this.botContainer = botContainer;
     }
 
-    @Value("${yuri.bot.selfId}")
-    private Long botId;
-
     /**
      * 私聊消息发送
      *
@@ -39,6 +36,7 @@ public class SendMsgUtils {
      * @param msg
      */
     public void sendPrivateMsg(long userId, Msg msg) throws InterruptedException {
+        long botId = Global.config.getBot().getSelfId();
         Bot bot = botContainer.getBots().get(botId);
         // 限制发送速度
         Thread.sleep(1000);
@@ -52,6 +50,7 @@ public class SendMsgUtils {
      * @param msg
      */
     public void sendGroupMsg(long groupId, Msg msg) throws InterruptedException {
+        long botId = Global.config.getBot().getSelfId();
         Bot bot = botContainer.getBots().get(botId);
         // 限制发送速度
         Thread.sleep(1000);
@@ -65,7 +64,7 @@ public class SendMsgUtils {
      * @throws InterruptedException
      */
     public List<Long> getGroupList() throws InterruptedException {
-
+        long botId = Global.config.getBot().getSelfId();
         int retryCount = 6;
         int retryDelay = 10000;
 

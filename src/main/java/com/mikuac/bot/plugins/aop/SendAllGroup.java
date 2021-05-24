@@ -2,6 +2,7 @@ package com.mikuac.bot.plugins.aop;
 
 import com.mikuac.bot.common.utils.RegexUtils;
 import com.mikuac.bot.common.utils.SendMsgUtils;
+import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
 import lombok.SneakyThrows;
 import net.lz1998.pbbot.bot.Bot;
@@ -10,7 +11,6 @@ import net.lz1998.pbbot.utils.Msg;
 import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,8 +31,7 @@ public class SendAllGroup extends BotPlugin {
         this.sendMsgUtils = sendMsgUtils;
     }
 
-    @Value("${yuri.bot.adminId}")
-    private long adminId;
+    long adminId = Global.config.getBot().getAdminId();
 
     @SneakyThrows
     @Override

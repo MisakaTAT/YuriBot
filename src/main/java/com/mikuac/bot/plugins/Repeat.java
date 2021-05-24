@@ -1,11 +1,11 @@
 package com.mikuac.bot.plugins;
 
+import com.mikuac.bot.config.Global;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;
 import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -25,8 +25,7 @@ public class Repeat extends BotPlugin {
     Map<Long, String> lastMsgMap = new ConcurrentHashMap<>();
     Map<Long, Integer> countMap = new ConcurrentHashMap<>();
 
-    @Value("${yuri.plugins.repeat.randomCountSize}")
-    private int randomCountSize;
+    int randomCountSize = Global.config.getRepeat().getRandomCountSize();
 
     /**
      * 产生一个min-max之间的随机数

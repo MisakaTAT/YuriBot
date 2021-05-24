@@ -24,32 +24,32 @@ public class SearchModeUtils {
         this.sendMsgUtils = sendMsgUtils;
     }
 
-    private static final Map<Long, SearchBean> searchMode = new ConcurrentHashMap<>();
+    private static final Map<Long, SearchBean> SEARCH_MODE = new ConcurrentHashMap<>();
 
     @Scheduled(cron = "0/5 * * * * ?", zone = "Asia/Shanghai")
     public void timeOutRemove() throws InterruptedException {
         // 迭代出Map中所有的Key
-        for (long key : searchMode.keySet()) {
-            String msgType = searchMode.get(key).getMsgType();
-            if ("group".equals(msgType) && searchMode.get(key) != null) {
-                long groupId = searchMode.get(key).getGroupId();
-                long userId = searchMode.get(key).getUserId();
+        for (long key : SEARCH_MODE.keySet()) {
+            String msgType = SEARCH_MODE.get(key).getMsgType();
+            if ("group".equals(msgType) && SEARCH_MODE.get(key) != null) {
+                long groupId = SEARCH_MODE.get(key).getGroupId();
+                long userId = SEARCH_MODE.get(key).getUserId();
                 int ttl = 30;
-                long startTime = searchMode.get(key).getStartTime();
+                long startTime = SEARCH_MODE.get(key).getStartTime();
                 long nowTime = Instant.now().getEpochSecond();
                 // 超时删除
                 if (nowTime - startTime >= ttl) {
-                    searchMode.remove(key);
+                    SEARCH_MODE.remove(key);
                     sendMsgUtils.sendGroupMsg(groupId, Msg.builder().at(userId).text("您已超过" + ttl + "秒未发送图片，已为您退出搜(番/图/本)模式~"));
                 }
-            } else if ("private".equals(msgType) && searchMode.get(key) != null) {
-                long userId = searchMode.get(key).getUserId();
+            } else if ("private".equals(msgType) && SEARCH_MODE.get(key) != null) {
+                long userId = SEARCH_MODE.get(key).getUserId();
                 int ttl = 30;
-                long startTime = searchMode.get(key).getStartTime();
+                long startTime = SEARCH_MODE.get(key).getStartTime();
                 long nowTime = Instant.now().getEpochSecond();
                 // 超时删除
                 if (nowTime - startTime >= ttl) {
-                    searchMode.remove(key);
+                    SEARCH_MODE.remove(key);
                     sendMsgUtils.sendPrivateMsg(userId, Msg.builder().text("您已超过" + ttl + "秒未发送图片，已为您退出搜(番/图/本)模式~"));
                 }
             }
@@ -64,7 +64,7 @@ public class SearchModeUtils {
         searchBean.setEnable(true);
         searchBean.setStartTime(Instant.now().getEpochSecond());
         searchBean.setMsgType(msgType);
-        searchMode.put(key, searchBean);
+        SEARCH_MODE.put(key, searchBean);
     }
 
     public static void setMap(long key, long userId, String msgType) {
@@ -74,15 +74,15 @@ public class SearchModeUtils {
         searchBean.setEnable(true);
         searchBean.setStartTime(Instant.now().getEpochSecond());
         searchBean.setMsgType(msgType);
-        searchMode.put(key, searchBean);
+        SEARCH_MODE.put(key, searchBean);
     }
 
     public static Map<Long, SearchBean> getMap() {
-        return searchMode;
+        return SEARCH_MODE;
     }
 
     public static void quitSearch(long key) {
-        searchMode.remove(key);
+        SEARCH_MODE.remove(key);
     }
 
 }

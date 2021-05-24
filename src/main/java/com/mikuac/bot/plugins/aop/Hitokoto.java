@@ -5,6 +5,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.mikuac.bot.common.utils.HttpClientUtils;
 import com.mikuac.bot.config.ApiConst;
+import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
@@ -12,7 +13,6 @@ import net.lz1998.pbbot.bot.BotPlugin;
 import net.lz1998.pbbot.utils.Msg;
 import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -49,8 +49,7 @@ public class Hitokoto extends BotPlugin {
         }
     };
 
-    @Value("${yuri.plugins.hitokoto.cdTime}")
-    private int cdTime;
+    int cdTime = Global.config.getHitokoto().getCdTime();
 
     private final String types = "abcdefghijkl";
 

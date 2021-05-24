@@ -1,6 +1,7 @@
 package com.mikuac.bot.aop;
 
 import com.mikuac.bot.common.utils.SearchModeUtils;
+import com.mikuac.bot.config.Global;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.BotPlugin;
 import onebot.OnebotEvent;
@@ -8,7 +9,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -22,10 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommandPrefixAspect {
 
-    @Value("${yuri.plugins.prefix.prefix}")
-    private String prefix;
-
-    final String imgMsgRegex = "<image.*>";
+    private final static String IMG_MSG_REGEX = "<image.*>";
 
     /**
      * 声明切点
@@ -34,29 +31,21 @@ public class CommandPrefixAspect {
     private void prefixPoint() {
     }
 
-    /**
-     * Around为环绕通知，方法前后各执行一次
-     *
-     * @param pjp
-     * @return
-     * @throws Throwable
-     */
     @Around(value = "prefixPoint()")
     public Object prefixCheck(ProceedingJoinPoint pjp) throws Throwable {
-
+        String prefix = Global.config.getPrefix().getPrefix();
         Object[] args = pjp.getArgs();
-
         for (int i = 0; i < args.length; i++) {
             // 处理群组消息
             if (args[i] instanceof OnebotEvent.GroupMessageEvent) {
                 OnebotEvent.GroupMessageEvent event = (OnebotEvent.GroupMessageEvent) args[i];
                 String msg = event.getRawMessage();
                 // 如果消息未携带prefix，且未匹配到纯图片信息则拦截
-                if (!msg.startsWith(prefix) && !msg.matches(imgMsgRegex)) {
+                if (!msg.startsWith(prefix) && !msg.matches(IMG_MSG_REGEX)) {
                     return BotPlugin.MESSAGE_IGNORE;
                 }
                 // 匹配到纯图片信息判断用户是否处于搜(图/番/本)模式，否则拦截
-                if (msg.matches(imgMsgRegex)) {
+                if (msg.matches(IMG_MSG_REGEX)) {
                     long waKey = event.getUserId() + event.getGroupId() + 1;
                     long snKey = event.getUserId() + event.getGroupId() + 2;
                     if (SearchModeUtils.getMap().get(waKey) == null && SearchModeUtils.getMap().get(snKey) == null) {
@@ -76,11 +65,11 @@ public class CommandPrefixAspect {
                 OnebotEvent.PrivateMessageEvent event = (OnebotEvent.PrivateMessageEvent) args[i];
                 String msg = event.getRawMessage();
                 // 如果消息未携带prefix，且未匹配到img标签则拦截（用于搜图模式）
-                if (!msg.startsWith(prefix) && !msg.matches(imgMsgRegex)) {
+                if (!msg.startsWith(prefix) && !msg.matches(IMG_MSG_REGEX)) {
                     return BotPlugin.MESSAGE_IGNORE;
                 }
                 // 匹配到纯图片信息判断用户是否处于搜(图/番/本)模式，否则拦截
-                if (msg.matches(imgMsgRegex)) {
+                if (msg.matches(IMG_MSG_REGEX)) {
                     long waKey = event.getUserId() + 1;
                     long snKey = event.getUserId() + 2;
                     if (SearchModeUtils.getMap().get(waKey) == null && SearchModeUtils.getMap().get(snKey) == null) {

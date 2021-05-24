@@ -1,6 +1,7 @@
 package com.mikuac.bot.plugins;
 
 import com.mikuac.bot.common.utils.TrieUtils;
+import com.mikuac.bot.config.Global;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;
@@ -9,7 +10,6 @@ import onebot.OnebotApi;
 import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,15 +21,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class SensitiveWords extends BotPlugin {
 
-
-    @Value("${yuri.bot.botName}")
-    private String botName;
-
-    @Value("${yuri.bot.selfId}")
-    private long selfId;
-
-    @Value("${yuri.bot.adminId}")
-    private long adminId;
+    String botName = Global.config.getBot().getBotName();
+    long selfId = Global.config.getBot().getSelfId();
+    long adminId = Global.config.getBot().getAdminId();
 
     private TrieUtils trieUtils;
 

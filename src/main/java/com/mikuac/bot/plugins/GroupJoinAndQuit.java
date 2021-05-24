@@ -1,12 +1,12 @@
 package com.mikuac.bot.plugins;
 
+import com.mikuac.bot.config.Global;
 import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;
 import net.lz1998.pbbot.utils.Msg;
 import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,11 +19,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class GroupJoinAndQuit extends BotPlugin {
 
-    @Value("${yuri.bot.botName}")
-    private String botName;
+    String botName = Global.config.getBot().getBotName();
 
-    @Value("${yuri.plugins.prefix.prefix}")
-    private String prefix;
+    String prefix = Global.config.getPrefix().getPrefix();
 
     @Override
     public int onGroupIncreaseNotice(@NotNull Bot bot, @NotNull OnebotEvent.GroupIncreaseNoticeEvent event) {
