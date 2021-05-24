@@ -36,8 +36,11 @@ public class ConfigUtils {
         return sb.toString();
     }
 
-    private static void checkConfigFileExists() throws IOException {
+    private static void checkConfigFileExists(boolean isReload) throws IOException {
         File file = new File("config.json");
+        if (isReload) {
+            return;
+        }
         if (file.isFile() && file.exists()) {
             log.info("检测到配置文件已存在，将解析现有配置文件");
             return;
@@ -112,25 +115,30 @@ public class ConfigUtils {
             @Override
             public void onModify(WatchEvent<?> event, Path currentPath) {
                 if ("config.json".equals(event.context().toString())) {
-                    log.info("检测到配置文件修改，即将重载配置文件");
-                    init();
+                    init(true);
                 }
             }
         }, 500));
         monitor.start();
     }
 
-    @PostConstruct
-    public static ConfigBean init() {
+    public static ConfigBean init(boolean isReload) {
         try {
-            checkConfigFileExists();
+            checkConfigFileExists(isReload);
             ConfigBean configBean = JSON.parseObject(readConfigFile(), ConfigBean.class);
+            if (isReload) {
+                log.info("检测到配置文件修改，即将重载配置文件");
+                Global.config = configBean;
+                Global.set();
+                log.info("配置文件已重载");
+                return configBean;
+            }
             log.info("配置文件解析完毕");
             Global.config = configBean;
             Global.set();
             return configBean;
         } catch (Exception e) {
-            log.error("配置文件解析失败且生成默认配置文件失败，即将退出: {}", e.getMessage());
+            log.error("配置文件解析失败或生成默认配置文件失败，即将退出: {}", e.getMessage());
             System.exit(0);
             return null;
         }

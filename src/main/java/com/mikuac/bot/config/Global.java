@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Global {
 
-    public static ConfigBean config = ConfigUtils.init();
+    public static ConfigBean config = ConfigUtils.init(false);
 
     public static String server_address;
     public static int server_port;
