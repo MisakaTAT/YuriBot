@@ -33,7 +33,6 @@ public class CommandPrefixAspect {
 
     @Around(value = "prefixPoint()")
     public Object prefixCheck(ProceedingJoinPoint pjp) throws Throwable {
-        String prefix = Global.config.getPrefix().getPrefix();
         Object[] args = pjp.getArgs();
         for (int i = 0; i < args.length; i++) {
             // 处理群组消息
@@ -41,7 +40,7 @@ public class CommandPrefixAspect {
                 OnebotEvent.GroupMessageEvent event = (OnebotEvent.GroupMessageEvent) args[i];
                 String msg = event.getRawMessage();
                 // 如果消息未携带prefix，且未匹配到纯图片信息则拦截
-                if (!msg.startsWith(prefix) && !msg.matches(IMG_MSG_REGEX)) {
+                if (!msg.startsWith(Global.prefix_prefix) && !msg.matches(IMG_MSG_REGEX)) {
                     return BotPlugin.MESSAGE_IGNORE;
                 }
                 // 匹配到纯图片信息判断用户是否处于搜(图/番/本)模式，否则拦截
@@ -53,9 +52,9 @@ public class CommandPrefixAspect {
                     }
                 }
                 // 如果消息携带prefix则去除prefix并放行
-                if (msg.startsWith(prefix)) {
+                if (msg.startsWith(Global.prefix_prefix)) {
                     var eventBuilder = event.toBuilder();
-                    msg = msg.substring(prefix.length());
+                    msg = msg.substring(Global.prefix_prefix.length());
                     eventBuilder.setRawMessage(msg);
                     args[i] = eventBuilder.build();
                 }
@@ -65,7 +64,7 @@ public class CommandPrefixAspect {
                 OnebotEvent.PrivateMessageEvent event = (OnebotEvent.PrivateMessageEvent) args[i];
                 String msg = event.getRawMessage();
                 // 如果消息未携带prefix，且未匹配到img标签则拦截（用于搜图模式）
-                if (!msg.startsWith(prefix) && !msg.matches(IMG_MSG_REGEX)) {
+                if (!msg.startsWith(Global.prefix_prefix) && !msg.matches(IMG_MSG_REGEX)) {
                     return BotPlugin.MESSAGE_IGNORE;
                 }
                 // 匹配到纯图片信息判断用户是否处于搜(图/番/本)模式，否则拦截
@@ -77,9 +76,9 @@ public class CommandPrefixAspect {
                     }
                 }
                 // 如果消息携带prefix则去除prefix并放行
-                if (msg.startsWith(prefix)) {
+                if (msg.startsWith(Global.prefix_prefix)) {
                     var eventBuilder = event.toBuilder();
-                    msg = msg.substring(prefix.length());
+                    msg = msg.substring(Global.prefix_prefix.length());
                     eventBuilder.setRawMessage(msg);
                     args[i] = eventBuilder.build();
                 }

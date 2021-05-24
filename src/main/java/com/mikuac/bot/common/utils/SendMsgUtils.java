@@ -36,8 +36,7 @@ public class SendMsgUtils {
      * @param msg
      */
     public void sendPrivateMsg(long userId, Msg msg) throws InterruptedException {
-        long botId = Global.config.getBot().getSelfId();
-        Bot bot = botContainer.getBots().get(botId);
+        Bot bot = botContainer.getBots().get(Global.bot_selfId);
         // 限制发送速度
         Thread.sleep(1000);
         bot.sendPrivateMsg(userId, msg.build(), false);
@@ -50,8 +49,7 @@ public class SendMsgUtils {
      * @param msg
      */
     public void sendGroupMsg(long groupId, Msg msg) throws InterruptedException {
-        long botId = Global.config.getBot().getSelfId();
-        Bot bot = botContainer.getBots().get(botId);
+        Bot bot = botContainer.getBots().get(Global.bot_selfId);
         // 限制发送速度
         Thread.sleep(1000);
         bot.sendGroupMsg(groupId, msg.build(), false);
@@ -64,19 +62,18 @@ public class SendMsgUtils {
      * @throws InterruptedException
      */
     public List<Long> getGroupList() throws InterruptedException {
-        long botId = Global.config.getBot().getSelfId();
         int retryCount = 6;
         int retryDelay = 10000;
 
         List<Long> groupIdList = new ArrayList<>();
 
         //获取Bot对象
-        Bot bot = botContainer.getBots().get(botId);
+        Bot bot = botContainer.getBots().get(Global.bot_selfId);
         if (bot == null) {
             for (int i = 1; i < retryCount; i++) {
                 log.info("Bot对象获取失败，当前失败[{}]次，剩余重试次数[{}]，将在" + (retryDelay / 1000) + "秒后重试~", i, retryCount - i - 1);
                 Thread.sleep(retryDelay);
-                bot = botContainer.getBots().get(botId);
+                bot = botContainer.getBots().get(Global.bot_selfId);
                 if (bot != null) {
                     log.info("Bot对象获取成功[{}]", bot);
                     break;

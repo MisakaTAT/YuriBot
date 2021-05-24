@@ -49,8 +49,8 @@ public class ConfigBean {
 
     @Data
     public static class Maintenance {
-        private boolean isMaintenance;
-        private String maintenanceMsg;
+        private boolean enable;
+        private String alertMsg;
     }
 
     @Data

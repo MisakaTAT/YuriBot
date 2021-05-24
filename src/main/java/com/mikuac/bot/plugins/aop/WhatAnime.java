@@ -126,8 +126,6 @@ public class WhatAnime extends BotPlugin {
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
-        int limitTime = Global.config.getBanUtils().getLimitTime();
-        int limitCount = Global.config.getBanUtils().getLimitCount();
         long groupId = event.getGroupId();
         long userId = event.getUserId();
         String msg = event.getRawMessage();
@@ -152,7 +150,7 @@ public class WhatAnime extends BotPlugin {
                 return MESSAGE_IGNORE;
             }
             SearchModeUtils.setMap(key, groupId, userId, "group");
-            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("您已进入搜番模式，请发送番剧截图来帮您检索~ (注意：" + limitTime + "秒内发送超过" + limitCount + "张图片将会触发滥用规则被封禁)").build(), false);
+            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("您已进入搜番模式，请发送番剧截图来帮您检索~ (注意：" + Global.banUtils_limitTime + "秒内发送超过" + Global.banUtils_limitCount + "张图片将会触发滥用规则被封禁)").build(), false);
             return MESSAGE_IGNORE;
         }
 
@@ -197,8 +195,6 @@ public class WhatAnime extends BotPlugin {
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
-        int limitTime = Global.config.getBanUtils().getLimitTime();
-        int limitCount = Global.config.getBanUtils().getLimitCount();
         long userId = event.getUserId();
         String msg = event.getRawMessage();
         // key加1以区分其它搜图模式
@@ -221,7 +217,7 @@ public class WhatAnime extends BotPlugin {
                 return MESSAGE_IGNORE;
             }
             SearchModeUtils.setMap(key, userId, "private");
-            bot.sendPrivateMsg(userId, "您已进入搜番模式，请发送番剧截图来帮您检索~ (注意：" + limitTime + "秒内发送超过" + limitCount + "张图片将会触发滥用规则被封禁)", false);
+            bot.sendPrivateMsg(userId, "您已进入搜番模式，请发送番剧截图来帮您检索~ (注意：" + Global.banUtils_limitTime + "秒内发送超过" + Global.banUtils_limitCount + "张图片将会触发滥用规则被封禁)", false);
             return MESSAGE_IGNORE;
         }
 

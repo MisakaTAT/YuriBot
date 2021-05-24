@@ -19,17 +19,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class GroupJoinAndQuit extends BotPlugin {
 
-    String botName = Global.config.getBot().getBotName();
-
-    String prefix = Global.config.getPrefix().getPrefix();
-
     @Override
     public int onGroupIncreaseNotice(@NotNull Bot bot, @NotNull OnebotEvent.GroupIncreaseNoticeEvent event) {
         long groupId = event.getGroupId();
         long userId = event.getUserId();
         Msg msg = Msg.builder()
                 .at(userId)
-                .text("Hi~ 我是" + botName + "，欢迎加入本群，如果想了解我，请发送 " + prefix + "帮助 或 " + prefix + "help获取帮助信息~");
+                .text("Hi~ 我是" + Global.bot_botName + "，欢迎加入本群，如果想了解我，请发送 " + Global.prefix_prefix + "帮助 或 " + Global.prefix_prefix + "help获取帮助信息~");
         bot.sendGroupMsg(groupId, msg.build(), false);
         return MESSAGE_IGNORE;
     }

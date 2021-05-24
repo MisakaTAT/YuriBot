@@ -25,8 +25,6 @@ public class Repeat extends BotPlugin {
     Map<Long, String> lastMsgMap = new ConcurrentHashMap<>();
     Map<Long, Integer> countMap = new ConcurrentHashMap<>();
 
-    int randomCountSize = Global.config.getRepeat().getRandomCountSize();
-
     /**
      * 产生一个min-max之间的随机数
      * result为2排除正常指令，并且max+1
@@ -34,7 +32,7 @@ public class Repeat extends BotPlugin {
      * @return 返回一个int值
      */
     public int randomCount() {
-        int max = randomCountSize + 1;
+        int max = Global.repeat_randomCountSize + 1;
         int min = 2;
         Random random = new Random();
         return random.nextInt(max) % (max - min + 1) + min;

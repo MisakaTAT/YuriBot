@@ -17,16 +17,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class Maintenance extends BotPlugin {
 
-    boolean isMaintenance = Global.config.getMaintenance().isMaintenance();
-    String maintenanceMsg = Global.config.getMaintenance().getMaintenanceMsg();
-
     @Override
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
         long userId = event.getUserId();
-        if (isMaintenance) {
+        if (Global.maintenance_enable) {
             Msg msgBuilder = Msg.builder()
                     .at(userId)
-                    .text(maintenanceMsg);
+                    .text(Global.maintenance_alertMsg);
             bot.sendGroupMsg(userId, msgBuilder.build(), false);
             return MESSAGE_BLOCK;
         } else {
@@ -38,10 +35,10 @@ public class Maintenance extends BotPlugin {
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
         long userId = event.getUserId();
         long groupId = event.getGroupId();
-        if (isMaintenance) {
+        if (Global.maintenance_enable) {
             Msg msgBuilder = Msg.builder()
                     .at(userId)
-                    .text(maintenanceMsg);
+                    .text(Global.maintenance_alertMsg);
             bot.sendGroupMsg(groupId, msgBuilder.build(), false);
             return MESSAGE_BLOCK;
         } else {

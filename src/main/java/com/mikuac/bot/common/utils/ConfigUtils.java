@@ -1,19 +1,20 @@
 package com.mikuac.bot.common.utils;
 
+import cn.hutool.core.io.watch.SimpleWatcher;
+import cn.hutool.core.io.watch.WatchMonitor;
+import cn.hutool.core.io.watch.watchers.DelayWatcher;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mikuac.bot.bean.ConfigBean;
 import com.mikuac.bot.config.Global;
-import com.sun.nio.file.SensitivityWatchEventModifier;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
-import java.util.concurrent.TimeUnit;
+import java.nio.file.Path;
+import java.nio.file.WatchEvent;
 
 /**
  * Created on 2021/5/24.
@@ -67,8 +68,8 @@ public class ConfigUtils {
         configBean.setPrefix(prefix);
 
         ConfigBean.Maintenance maintenance = new ConfigBean.Maintenance();
-        maintenance.setMaintenance(false);
-        maintenance.setMaintenanceMsg("yuri维护中,请稍后再试~");
+        maintenance.setEnable(false);
+        maintenance.setAlertMsg("yuri维护中,请稍后再试~");
         configBean.setMaintenance(maintenance);
 
         ConfigBean.Repeat repeat = new ConfigBean.Repeat();
@@ -106,40 +107,17 @@ public class ConfigUtils {
     }
 
     @PostConstruct
-    @SuppressWarnings("InfiniteLoopStatement")
     public void watchFile() {
-        new Thread() {
-            @SneakyThrows
+        WatchMonitor monitor = WatchMonitor.createAll("./", new DelayWatcher(new SimpleWatcher() {
             @Override
-            public void run() {
-                // 构造监听服务
-                WatchService watcher = FileSystems.getDefault().newWatchService();
-                //监听注册，监听实体的创建、修改、删除事件，并以高频率(每隔2秒一次，默认是10秒)监听
-                Paths.get("./").register(watcher,
-                        new WatchEvent.Kind[]{StandardWatchEventKinds.ENTRY_CREATE,
-                                StandardWatchEventKinds.ENTRY_MODIFY,
-                                StandardWatchEventKinds.ENTRY_DELETE},
-                        SensitivityWatchEventModifier.HIGH);
-                while (true) {
-                    // 每隔3秒拉取监听key
-                    WatchKey key = watcher.poll(3, TimeUnit.SECONDS);
-                    // 监听key为null,则跳过
-                    if (key == null) {
-                        continue;
-                    }
-                    //获取监听事件
-                    for (WatchEvent<?> event : key.pollEvents()) {
-                        if (StandardWatchEventKinds.ENTRY_MODIFY == event.kind() && "config.json".equals(event.context().toString())) {
-                            log.info("检测到配置文件修改，即将重载配置文件");
-                            init();
-                        }
-                    }
-                    //处理监听key后(即处理监听事件后)，监听key需要复位，便于下次监听
-                    key.reset();
+            public void onModify(WatchEvent<?> event, Path currentPath) {
+                if ("config.json".equals(event.context().toString())) {
+                    log.info("检测到配置文件修改，即将重载配置文件");
+                    init();
                 }
             }
-        }.start();
-
+        }, 500));
+        monitor.start();
     }
 
     @PostConstruct
@@ -149,6 +127,7 @@ public class ConfigUtils {
             ConfigBean configBean = JSON.parseObject(readConfigFile(), ConfigBean.class);
             log.info("配置文件解析完毕");
             Global.config = configBean;
+            Global.set();
             return configBean;
         } catch (Exception e) {
             log.error("配置文件解析失败且生成默认配置文件失败，即将退出: {}", e.getMessage());

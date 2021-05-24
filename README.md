@@ -38,27 +38,27 @@
 ```shell
 wget http://mirrors.hust.edu.cn/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
 tar -zxvf  apache-maven-3.6.3-bin.tar.gz
-# rename dir
+# Rename dir
 mv apache-maven-3.6.3 maven
-# edite /etc/profile add
+# Edit /etc/profile add
 export MAVEN_HOME=/root/maven
 export PATH=$MAVEN_HOME/bin:$PATH
-# update profile
+# Update profile
 source /etc/profile
-# check mvn install success
+# Check mvn install success
 mvn -version
 ```
 
 # Build Jar Package
 ```shell
-# get source
+# Get source
 git clone https://github.com/MisakaTAT/YuriBot.git
-# rename config file (you can custom this config file)
-mv YuriBot-main/src/main/resources/example.application.yml application.yml
-# build and skip test
+# Build and skip test
 mvn clean package -Dmaven.test.skip=true
-# output to target dir
+# Output to target dir
 java -jar YuriBot-main/target/Yuri-Bot-v1.0.1-Alpha.jar
+# The first run generates a default config file (you can custom this config file)
+vim config.json
 ```
 
 # Credits

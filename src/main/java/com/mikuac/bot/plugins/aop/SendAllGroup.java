@@ -31,14 +31,12 @@ public class SendAllGroup extends BotPlugin {
         this.sendMsgUtils = sendMsgUtils;
     }
 
-    long adminId = Global.config.getBot().getAdminId();
-
     @SneakyThrows
     @Override
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
         long userId = event.getUserId();
         String msg = event.getRawMessage();
-        if (userId == adminId && msg.matches(RegexConst.SEND_ALL_GROUP)) {
+        if (userId == Global.bot_adminId && msg.matches(RegexConst.SEND_ALL_GROUP)) {
             List<Long> groupIdList = sendMsgUtils.getGroupList();
             String regMsg = RegexUtils.regex(RegexConst.GET_SEND_ALL_GROUP_MSG, msg);
             if (groupIdList != null && !groupIdList.isEmpty() && regMsg != null) {

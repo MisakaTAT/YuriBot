@@ -64,8 +64,6 @@ public class PluginSwitch extends BotPlugin {
 
     }
 
-    long adminId = Global.config.getBot().getAdminId();
-
     @Override
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
 
@@ -75,7 +73,7 @@ public class PluginSwitch extends BotPlugin {
         String pluginName = msg.replaceAll("(.*)插件(.*)用-", "");
         String type = msg.replaceAll("插件(.*)用-(.*)", "");
 
-        if (msg.matches(RegexConst.PLUGIN_DISABLE) && userId == adminId) {
+        if (msg.matches(RegexConst.PLUGIN_DISABLE) && userId == Global.bot_adminId) {
             switch (type) {
                 case "群组":
                     pluginSwitchRepository.groupDisable(pluginName, true);
@@ -96,7 +94,7 @@ public class PluginSwitch extends BotPlugin {
             }
         }
 
-        if (msg.matches(RegexConst.PLUGIN_ENABLE) && userId == adminId) {
+        if (msg.matches(RegexConst.PLUGIN_ENABLE) && userId == Global.bot_adminId) {
             switch (type) {
                 case "群组":
                     pluginSwitchRepository.groupDisable(pluginName, false);

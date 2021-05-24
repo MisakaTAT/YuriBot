@@ -19,8 +19,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class AddSensitiveWord extends BotPlugin {
 
-    long adminId = Global.config.getBot().getAdminId();
-
     private SensitiveWordRepository sensitiveWordRepository;
 
     @Autowired
@@ -47,7 +45,7 @@ public class AddSensitiveWord extends BotPlugin {
         long groupId = event.getGroupId();
         long userId = event.getUserId();
         if (msg.matches(RegexConst.SENSITIVE_WORD)) {
-            if (adminId != userId) {
+            if (Global.bot_adminId != userId) {
                 bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("此操作仅管理员可执行").build(), false);
                 return MESSAGE_BLOCK;
             }
@@ -72,7 +70,7 @@ public class AddSensitiveWord extends BotPlugin {
         String msg = event.getRawMessage();
         long userId = event.getUserId();
         if (msg.matches(RegexConst.SENSITIVE_WORD)) {
-            if (adminId != userId) {
+            if (Global.bot_adminId != userId) {
                 bot.sendPrivateMsg(userId, "此操作仅管理员可执行", false);
                 return MESSAGE_BLOCK;
             }

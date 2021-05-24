@@ -1,7 +1,3 @@
-server:
-  address: 127.0.0.1
-  port: 5000
-
 spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
@@ -37,34 +33,3 @@ spring:
       - com.mikuac.bot.plugins.aop.PhoenixWright
       - com.mikuac.bot.plugins.aop.SteamRep
       - com.mikuac.bot.plugins.aop.AddSensitiveWord
-
-yuri:
-  bot:
-    botName: "悠里"
-    adminId: 123456
-    selfId: 123456
-  telegram:
-    proxyHost: "127.0.0.1"
-    proxyPort: 1080
-    botName: "@bot"
-    botToken: "key_value"
-  plugins:
-    prefix:
-      prefix: "."
-    maintenance:
-      isMaintenance: false
-      maintenanceMsg: "yuri维护中,请稍后再试~"
-    repeat:
-      randomCountSize: 5
-    hitokoto:
-      cdTime: 10
-    setu:
-      apiKey: "key_value"
-      cdTime: 120
-      delTime: 30
-      maxGet: 15
-    sauceNao:
-      apiKey: "key_value"
-    banUtils:
-      limitTime: 30
-      limitCount: 10

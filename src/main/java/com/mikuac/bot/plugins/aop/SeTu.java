@@ -67,19 +67,16 @@ public class SeTu extends BotPlugin {
     }
 
     public void getData(String r18) {
-        String apiKey = Global.config.getSetu().getApiKey();
-        String result = HttpClientUtils.httpGetWithJson(ApiConst.SETU_API + apiKey + r18, false);
+        String result = HttpClientUtils.httpGetWithJson(ApiConst.SETU_API + Global.setu_apiKey + r18, false);
         seTuBean = JSON.parseObject(result, SetuBean.class);
     }
 
     @Async
     public void deleteMsg(int msgId) {
-        int delTime = Global.config.getSetu().getDelTime();
-        long botId = Global.config.getBot().getSelfId();
-        Bot bot = botContainer.getBots().get(botId);
+        Bot bot = botContainer.getBots().get(Global.bot_selfId);
         if (msgId != 0) {
             try {
-                Thread.sleep(delTime * 1000L);
+                Thread.sleep(Global.setu_delTime * 1000L);
                 bot.deleteMsg(msgId);
                 log.info("色图撤回成功，消息ID：[{}]", msgId);
             } catch (InterruptedException e) {
@@ -90,7 +87,6 @@ public class SeTu extends BotPlugin {
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
-        int cdTime = Global.config.getSetu().getCdTime();
         String msg = event.getRawMessage();
         // 私聊消息处理
         if (msg.matches(RegexConst.SETU)) {
@@ -100,9 +96,9 @@ public class SeTu extends BotPlugin {
             if (isPrivateDisable && isGlobalDisable) {
                 long getNowTime = Instant.now().getEpochSecond();
                 long lastGetTime = lastGetTimeMap.getOrDefault(userId, 0L);
-                long rCd = Math.abs((getNowTime - lastGetTime) - cdTime);
+                long rCd = Math.abs((getNowTime - lastGetTime) - Global.setu_cdTime);
                 // 逻辑处理
-                if (getNowTime >= lastGetTime + cdTime) {
+                if (getNowTime >= lastGetTime + Global.setu_cdTime) {
                     bot.sendPrivateMsg(userId, "少女祈祷中~", false);
                     try {
                         getData(msg.matches("(.*?)[rR]18(.*)") ? "&r18=1" : "&r18=0");
@@ -140,8 +136,6 @@ public class SeTu extends BotPlugin {
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
-        int maxGet = Global.config.getSetu().getMaxGet();
-        int cdTime = Global.config.getSetu().getCdTime();
         String msg = event.getRawMessage();
         // 私聊消息处理
         if (msg.matches(RegexConst.SETU)) {
@@ -152,10 +146,10 @@ public class SeTu extends BotPlugin {
             if (isGroupDisable && isGlobalDisable) {
                 long getNowTime = Instant.now().getEpochSecond();
                 long lastGetTime = lastGetTimeMap.getOrDefault(userId + groupId, 0L);
-                long rCd = Math.abs((getNowTime - lastGetTime) - cdTime);
+                long rCd = Math.abs((getNowTime - lastGetTime) - Global.setu_cdTime);
                 // 逻辑处理
                 int count = getCountMap.get(userId) == null ? 0 : getCountMap.get(userId);
-                if (getNowTime >= lastGetTime + cdTime && count < maxGet) {
+                if (getNowTime >= lastGetTime + Global.setu_cdTime && count < Global.setu_maxGet) {
                     bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("少女祈祷中~").build(), false);
                     try {
                         getData(msg.matches("(.*?)[rR]18(.*)") ? "&r18=1" : "&r18=0");
@@ -169,7 +163,7 @@ public class SeTu extends BotPlugin {
                             stInfoMsg.text("\n作者：" + data.getAuthor());
                             stInfoMsg.text("\n链接：" + "https://www.pixiv.net/artworks/" + data.getPid());
                             stInfoMsg.text("\n反代链接：" + data.getUrl());
-                            stInfoMsg.text("\n今日剩余次数：" + (maxGet - getCountMap.get(userId)));
+                            stInfoMsg.text("\n今日剩余次数：" + (Global.setu_maxGet - getCountMap.get(userId)));
                             picUrl = data.getUrl();
                         }
                         bot.sendGroupMsg(groupId, stInfoMsg.build(), false);
@@ -185,7 +179,7 @@ public class SeTu extends BotPlugin {
                         bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("图片获取失败，请稍后重试~").build(), false);
                         log.info("色图私聊发送异常", e);
                     }
-                } else if (count == maxGet) {
+                } else if (count == Global.setu_maxGet) {
                     bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("今日获取次数已达上限，每晚24点重置~").build(), false);
                 } else {
                     bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("请求过于频繁~ 剩余CD时间为" + rCd + "秒").build(), false);

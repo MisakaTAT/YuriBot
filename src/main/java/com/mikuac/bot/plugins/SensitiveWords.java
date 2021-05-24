@@ -21,10 +21,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class SensitiveWords extends BotPlugin {
 
-    String botName = Global.config.getBot().getBotName();
-    long selfId = Global.config.getBot().getSelfId();
-    long adminId = Global.config.getBot().getAdminId();
-
     private TrieUtils trieUtils;
 
     @Autowired
@@ -43,7 +39,7 @@ public class SensitiveWords extends BotPlugin {
         long groupId = event.getGroupId();
         int msgId = event.getMessageId();
         // 检查Bot是否有管理员权限
-        OnebotApi.GetGroupMemberInfoResp groupBotInfo = bot.getGroupMemberInfo(groupId, selfId, false);
+        OnebotApi.GetGroupMemberInfoResp groupBotInfo = bot.getGroupMemberInfo(groupId, Global.bot_selfId, false);
         if (groupBotInfo != null) {
             if (!ADMIN_ROLE.equals(groupBotInfo.getRole())) {
                 return MESSAGE_IGNORE;
@@ -53,7 +49,7 @@ public class SensitiveWords extends BotPlugin {
         OnebotApi.GetGroupMemberInfoResp groupMemberInfo = bot.getGroupMemberInfo(groupId, userId, false);
         if (groupMemberInfo != null) {
             String getRole = groupMemberInfo.getRole();
-            if (ADMIN_ROLE.equals(getRole) || adminId == userId || OWNER_ROLE.equals(getRole)) {
+            if (ADMIN_ROLE.equals(getRole) || Global.bot_adminId == userId || OWNER_ROLE.equals(getRole)) {
                 return MESSAGE_IGNORE;
             }
         }
@@ -66,7 +62,7 @@ public class SensitiveWords extends BotPlugin {
             bot.deleteMsg(msgId);
             Msg sendMsg = Msg.builder()
                     .at(userId)
-                    .text(botName + "注意到您发送到内容存在不适当的内容，已撤回处理，请注意言行哟～");
+                    .text(Global.bot_botName + "注意到您发送到内容存在不适当的内容，已撤回处理，请注意言行哟～");
             bot.sendGroupMsg(groupId, sendMsg.build(), false);
             log.info("检测到敏感词: [{}], 来自群: [{}], 发送者: [{}]", msg, groupId, userId);
         }
