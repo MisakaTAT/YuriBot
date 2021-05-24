@@ -17,7 +17,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * 发言统计
@@ -75,30 +77,53 @@ public class GroupMsgCount extends BotPlugin {
         try {
             // 读取现有Cache File
             msgCountCacheBean = JSONObject.parseObject(readJsonCache(), MsgCountCacheBean.class);
-            List<MsgCountCacheBean.CacheData> data = msgCountCacheBean.getCacheData();
-            // 创建CacheData
-            MsgCountCacheBean.CacheData cacheData = new MsgCountCacheBean.CacheData();
-            cacheData.setGroupId(String.valueOf(groupId));
-            cacheData.setUserId(String.valueOf(userId));
-            // 追加数据
-            data.add(cacheData);
+            List<MsgCountCacheBean.CacheData> dataList = msgCountCacheBean.getCacheData();
+            boolean hasCache = false;
+            for (MsgCountCacheBean.CacheData data : dataList) {
+                long getGroupId = Long.parseLong(data.getGroupId());
+                long getUserId = Long.parseLong(data.getUserId());
+                // 如果缓存中已存在数据
+                if (groupId == getGroupId && userId == getUserId) {
+                    int getCount = data.getCount();
+                    data.setCount(++getCount);
+                    hasCache = true;
+                    break;
+                }
+            }
+            // 如果不存在缓存数据
+            if (!hasCache) {
+                MsgCountCacheBean.CacheData cacheData = new MsgCountCacheBean.CacheData();
+                cacheData.setGroupId(String.valueOf(groupId));
+                cacheData.setUserId(String.valueOf(userId));
+                cacheData.setCount(1);
+                // 追加数据
+                dataList.add(cacheData);
+            }
             // Obj转为json
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("data", msgCountCacheBean.getCacheData());
+            jsonObject.put("data", dataList);
             // 写入Cache File
             OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("GroupMsgCountCache.json"), StandardCharsets.UTF_8);
             osw.write(jsonObject.toString());
             osw.flush();
             osw.close();
         } catch (Exception e) {
+            File file = new File("GroupMsgCountCache.json");
+            if (file.isFile() && file.exists()) {
+                log.warn("发言统计缓存文件解析异常，即将删除缓存文件: {}", e.getMessage());
+                deleteCache();
+            }
             log.warn("发言统计缓存文件不存在或缓存文件为空，即将创建缓存文件");
+            List<MsgCountCacheBean.CacheData> dataList = new ArrayList<>();
             // 创建CacheData
             MsgCountCacheBean.CacheData cacheData = new MsgCountCacheBean.CacheData();
             cacheData.setGroupId(String.valueOf(groupId));
             cacheData.setUserId(String.valueOf(userId));
+            cacheData.setCount(1);
+            dataList.add(cacheData);
             // Obj转为json
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("data", cacheData);
+            jsonObject.put("data", dataList);
             // 写入Cache File
             OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("GroupMsgCountCache.json"), StandardCharsets.UTF_8);
             osw.write(jsonObject.toString());
@@ -118,56 +143,47 @@ public class GroupMsgCount extends BotPlugin {
         return sb.toString();
     }
 
+    public void deleteCache() {
+        File file = new File("GroupMsgCountCache.json");
+        if (file.isFile() && file.exists()) {
+            boolean flag = file.delete();
+            log.info("发言统计缓存文件删除成功，Flag = {}", flag);
+        } else {
+            boolean flag = file.delete();
+            int tryCount = 0;
+            while (!flag && tryCount++ < 5) {
+                // 回收资源
+                System.gc();
+                flag = file.delete();
+                log.error("发言统计缓存文件删除失败，当前重试次数[{}]", tryCount);
+                if (flag) {
+                    log.info("发言统计缓存文件删除成功，Flag = {}", true);
+                    return;
+                }
+            }
+            log.error("发言统计缓存文件删除失败，文件可能不存在或被占用");
+        }
+
+    }
+
     public void cacheToDataBase() {
         // 读取Cache File
         try {
             msgCountCacheBean = JSONObject.parseObject(readJsonCache(), MsgCountCacheBean.class);
-            Map<String, Integer> msgCountMap = new HashMap<>();
             // 从Cache统计发言次数
             for (MsgCountCacheBean.CacheData cacheData : msgCountCacheBean.getCacheData()) {
-                String groupId = cacheData.getGroupId();
-                String userId = cacheData.getUserId();
-                String mapKey = groupId + "-" + userId;
-                int msgCount = msgCountMap.getOrDefault(mapKey, 0);
-                if (msgCount > 0) {
-                    msgCountMap.put(mapKey, ++msgCount);
-                } else {
-                    msgCountMap.put(mapKey, 1);
-                }
-            }
-            // 取出所有的key值
-            Set<String> set = msgCountMap.keySet();
-            for (String key : set) {
-                String[] keys = key.split("-");
-                long groupId = Long.parseLong(keys[0]);
-                long userId = Long.parseLong(keys[1]);
+                long groupId = Long.parseLong(cacheData.getGroupId());
+                long userId = Long.parseLong(cacheData.getUserId());
                 // 写入数据库
                 Optional<MsgCountEntity> msgCount = msgCountRepository.findByGroupAndUserId(groupId, userId);
                 if (msgCount.isPresent()) {
-                    int todayMsgCount = msgCountMap.get(key);
+                    int todayMsgCount = cacheData.getCount();
                     int allMsgCount = msgCount.get().getAllMsgCount() + todayMsgCount;
                     msgCountRepository.update(groupId, userId, todayMsgCount, allMsgCount);
                 }
             }
-            File file = new File("GroupMsgCountCache.json");
-            if (file.isFile() && file.exists()) {
-                boolean flag = file.delete();
-                log.info("发言统计缓存文件删除成功，Flag = {}", flag);
-            } else {
-                boolean flag = file.delete();
-                int tryCount = 0;
-                while (!flag && tryCount++ < 5) {
-                    // 回收资源
-                    System.gc();
-                    flag = file.delete();
-                    log.error("发言统计缓存文件删除失败，当前重试次数[{}]", tryCount);
-                    if (flag) {
-                        log.info("发言统计缓存文件删除成功，Flag = {}", true);
-                        return;
-                    }
-                }
-                log.error("发言统计缓存文件删除失败，文件可能不存在或被占用");
-            }
+            // 删除缓存
+            deleteCache();
         } catch (Exception e) {
             log.warn("发言统计缓存数据写入数据库失败，可能是缓存不存在或缓存文件为空: {}", e.getMessage());
         }

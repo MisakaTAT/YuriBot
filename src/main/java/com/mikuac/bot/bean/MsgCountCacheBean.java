@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * @author Zero
+ */
 @Data
 public class MsgCountCacheBean {
 
@@ -15,8 +18,7 @@ public class MsgCountCacheBean {
     public static class CacheData {
         private String groupId;
         private String userId;
+        private Integer count;
     }
 
 }
-
-
