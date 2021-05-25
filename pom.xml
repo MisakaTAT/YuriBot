@@ -25,9 +25,9 @@
         <relativePath/>
     </parent>
     <groupId>com.mikuac</groupId>
-    <artifactId>Yuri-Bot</artifactId>
-    <version>v1.0.1-Alpha</version>
-    <name>Yuri Bot</name>
+    <artifactId>YuriBot</artifactId>
+    <version>v1.0.0</version>
+    <name>YuriBot</name>
     <description>你好~ 我是悠里⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄</description>
 
     <properties>

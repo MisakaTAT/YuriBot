@@ -25,8 +25,10 @@ import java.nio.file.WatchEvent;
 @Component
 public class ConfigUtils {
 
+    private final static String FILE_NAME = "config.json";
+
     private static String readConfigFile() throws IOException {
-        InputStreamReader isr = new InputStreamReader(new FileInputStream("config.json"), StandardCharsets.UTF_8);
+        InputStreamReader isr = new InputStreamReader(new FileInputStream(FILE_NAME), StandardCharsets.UTF_8);
         int ch = 0;
         StringBuilder sb = new StringBuilder();
         while ((ch = isr.read()) != -1) {
@@ -37,7 +39,7 @@ public class ConfigUtils {
     }
 
     private static void checkConfigFileExists(boolean isReload) throws IOException {
-        File file = new File("config.json");
+        File file = new File(FILE_NAME);
         if (isReload) {
             return;
         }
@@ -102,7 +104,7 @@ public class ConfigUtils {
         // Obj转为json
         JSONObject jsonObject = (JSONObject) JSONObject.toJSON(configBean);
         // 写入Cache File
-        OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("config.json"), StandardCharsets.UTF_8);
+        OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(FILE_NAME), StandardCharsets.UTF_8);
         osw.write(jsonObject.toString());
         osw.flush();
         osw.close();
@@ -114,7 +116,7 @@ public class ConfigUtils {
         WatchMonitor monitor = WatchMonitor.createAll("./", new DelayWatcher(new SimpleWatcher() {
             @Override
             public void onModify(WatchEvent<?> event, Path currentPath) {
-                if ("config.json".equals(event.context().toString())) {
+                if (FILE_NAME.equals(event.context().toString())) {
                     init(true);
                 }
             }
