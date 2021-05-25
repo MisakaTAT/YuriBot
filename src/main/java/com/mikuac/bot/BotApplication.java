@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -25,6 +26,12 @@ import java.net.UnknownHostException;
 @EnableScheduling
 @SpringBootApplication
 public class BotApplication {
+
+    private final static String START_MSG = "你好~ 我是悠里⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄";
+
+    private static String[] args;
+
+    private static ConfigurableApplicationContext context;
 
     @Bean
     public TaskScheduler taskScheduler() {
@@ -47,11 +54,21 @@ public class BotApplication {
         };
     }
 
-    public static void main(String[] args) {
-        SpringApplication.run(BotApplication.class, args);
+    public static void reboot() {
+        log.info("开始重启悠里");
+        context.close();
+        BotApplication.context = SpringApplication.run(BotApplication.class, args);
         // 初始化Telegram框架
         ApiContextInitializer.init();
-        log.info("你好~ 我是悠里⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄");
+        log.info("悠里重启完毕");
+    }
+
+    public static void main(String[] args) {
+        BotApplication.args = args;
+        BotApplication.context = SpringApplication.run(BotApplication.class, args);
+        // 初始化Telegram框架
+        ApiContextInitializer.init();
+        log.info(START_MSG);
     }
 
 }

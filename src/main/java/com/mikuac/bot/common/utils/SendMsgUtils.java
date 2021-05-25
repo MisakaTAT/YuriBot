@@ -6,6 +6,7 @@ import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotContainer;
 import net.lz1998.pbbot.utils.Msg;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -32,9 +33,10 @@ public class SendMsgUtils {
     /**
      * 私聊消息发送
      *
-     * @param userId
-     * @param msg
+     * @param userId 用户ID
+     * @param msg    消息
      */
+    @Async("taskExecutor")
     public void sendPrivateMsg(long userId, Msg msg) throws InterruptedException {
         Bot bot = botContainer.getBots().get(Global.bot_selfId);
         // 限制发送速度
@@ -45,9 +47,10 @@ public class SendMsgUtils {
     /**
      * 群组消息发送
      *
-     * @param groupId
-     * @param msg
+     * @param groupId 群组ID
+     * @param msg     消息
      */
+    @Async("taskExecutor")
     public void sendGroupMsg(long groupId, Msg msg) throws InterruptedException {
         Bot bot = botContainer.getBots().get(Global.bot_selfId);
         // 限制发送速度

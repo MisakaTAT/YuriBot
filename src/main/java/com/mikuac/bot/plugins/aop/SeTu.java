@@ -3,6 +3,7 @@ package com.mikuac.bot.plugins.aop;
 import com.alibaba.fastjson.JSON;
 import com.mikuac.bot.bean.setu.Data;
 import com.mikuac.bot.bean.setu.SetuBean;
+import com.mikuac.bot.common.task.AsyncTask;
 import com.mikuac.bot.common.utils.HttpClientUtils;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.Global;
@@ -17,7 +18,6 @@ import onebot.OnebotApi;
 import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -54,6 +54,13 @@ public class SeTu extends BotPlugin {
         this.pluginSwitchRepository = pluginSwitchRepository;
     }
 
+    private AsyncTask asyncTask;
+
+    @Autowired
+    public void setAsyncTask(AsyncTask asyncTask) {
+        this.asyncTask = asyncTask;
+    }
+
     private String picUrl;
 
     Map<Long, Long> lastGetTimeMap = new ConcurrentHashMap<>();
@@ -71,19 +78,6 @@ public class SeTu extends BotPlugin {
         seTuBean = JSON.parseObject(result, SetuBean.class);
     }
 
-    @Async
-    public void deleteMsg(int msgId) {
-        Bot bot = botContainer.getBots().get(Global.bot_selfId);
-        if (msgId != 0) {
-            try {
-                Thread.sleep(Global.setu_delTime * 1000L);
-                bot.deleteMsg(msgId);
-                log.info("色图撤回成功，消息ID：[{}]", msgId);
-            } catch (InterruptedException e) {
-                log.info("色图撤回异常", e);
-            }
-        }
-    }
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
@@ -117,7 +111,7 @@ public class SeTu extends BotPlugin {
                         Msg flashPic = Msg.builder().flash(picUrl);
                         OnebotApi.SendPrivateMsgResp picMsg = bot.sendPrivateMsg(userId, flashPic.build(), false);
                         if (picMsg != null) {
-                            deleteMsg(picMsg.getMessageId());
+                            asyncTask.deleteMsg(picMsg.getMessageId(), botContainer.getBots().get(Global.bot_selfId));
                         }
                     } catch (Exception e) {
                         lastGetTimeMap.put(userId, 0L);
@@ -171,7 +165,7 @@ public class SeTu extends BotPlugin {
                         Msg flashPic = Msg.builder().flash(picUrl);
                         OnebotApi.SendGroupMsgResp picMsg = bot.sendGroupMsg(groupId, flashPic.build(), false);
                         if (picMsg != null) {
-                            deleteMsg(picMsg.getMessageId());
+                            asyncTask.deleteMsg(picMsg.getMessageId(), botContainer.getBots().get(Global.bot_selfId));
                         }
                     } catch (Exception e) {
                         getCountMap.put(userId, getCountMap.get(userId) - 1);

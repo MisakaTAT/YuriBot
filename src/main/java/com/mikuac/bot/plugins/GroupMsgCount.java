@@ -163,7 +163,6 @@ public class GroupMsgCount extends BotPlugin {
             }
             log.error("发言统计缓存文件删除失败，文件可能不存在或被占用");
         }
-
     }
 
     public void cacheToDataBase() {
