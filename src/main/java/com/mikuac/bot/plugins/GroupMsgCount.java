@@ -2,6 +2,7 @@ package com.mikuac.bot.plugins;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mikuac.bot.bean.MsgCountCacheBean;
+import com.mikuac.bot.common.utils.FileUtils;
 import com.mikuac.bot.common.utils.SendMsgUtils;
 import com.mikuac.bot.entity.MsgCountEntity;
 import com.mikuac.bot.repository.MsgCountRepository;
@@ -15,7 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +34,8 @@ import java.util.Optional;
 @Slf4j
 @Component
 public class GroupMsgCount extends BotPlugin {
+
+    private static final String CACHE_FILE = "GroupMsgCountCache.json";
 
     private SendMsgUtils sendMsgUtils;
 
@@ -74,9 +80,33 @@ public class GroupMsgCount extends BotPlugin {
     }
 
     public void writeJsonCache(long groupId, long userId) throws IOException {
-        try {
-            // 读取现有Cache File
-            msgCountCacheBean = JSONObject.parseObject(readJsonCache(), MsgCountCacheBean.class);
+        File file = new File(CACHE_FILE);
+        // 缓存文件不存在则创建
+        if (!file.exists()) {
+            log.warn("发言统计缓存文件不存在，即将创建缓存文件");
+            List<MsgCountCacheBean.CacheData> dataList = new ArrayList<>();
+            // 创建CacheData
+            MsgCountCacheBean.CacheData cacheData = new MsgCountCacheBean.CacheData();
+            cacheData.setGroupId(String.valueOf(groupId));
+            cacheData.setUserId(String.valueOf(userId));
+            cacheData.setCount(1);
+            dataList.add(cacheData);
+            // Obj转为json
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("data", dataList);
+            // 写入Cache File
+            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(CACHE_FILE), StandardCharsets.UTF_8);
+            osw.write(jsonObject.toString());
+            osw.flush();
+            osw.close();
+        }
+        if (!file.isFile() && !file.exists()) {
+            return;
+        }
+        // 读取文件内容
+        String readCache = FileUtils.readFile(CACHE_FILE);
+        if (readCache != null && !readCache.isEmpty()) {
+            msgCountCacheBean = JSONObject.parseObject(readCache, MsgCountCacheBean.class);
             List<MsgCountCacheBean.CacheData> dataList = msgCountCacheBean.getCacheData();
             boolean hasCache = false;
             for (MsgCountCacheBean.CacheData data : dataList) {
@@ -103,48 +133,17 @@ public class GroupMsgCount extends BotPlugin {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("data", dataList);
             // 写入Cache File
-            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("GroupMsgCountCache.json"), StandardCharsets.UTF_8);
+            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(CACHE_FILE), StandardCharsets.UTF_8);
             osw.write(jsonObject.toString());
             osw.flush();
             osw.close();
-        } catch (Exception e) {
-            File file = new File("GroupMsgCountCache.json");
-            if (file.isFile() && file.exists()) {
-                log.warn("发言统计缓存文件解析异常，即将删除缓存文件: {}", e.getMessage());
-                deleteCache();
-            }
-            log.warn("发言统计缓存文件不存在或缓存文件为空，即将创建缓存文件");
-            List<MsgCountCacheBean.CacheData> dataList = new ArrayList<>();
-            // 创建CacheData
-            MsgCountCacheBean.CacheData cacheData = new MsgCountCacheBean.CacheData();
-            cacheData.setGroupId(String.valueOf(groupId));
-            cacheData.setUserId(String.valueOf(userId));
-            cacheData.setCount(1);
-            dataList.add(cacheData);
-            // Obj转为json
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("data", dataList);
-            // 写入Cache File
-            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("GroupMsgCountCache.json"), StandardCharsets.UTF_8);
-            osw.write(jsonObject.toString());
-            osw.flush();
-            osw.close();
+        } else {
+            log.warn("发言统计缓存文件解析失败，文件可能被占用");
         }
-    }
-
-    public String readJsonCache() throws IOException {
-        InputStreamReader isr = new InputStreamReader(new FileInputStream("GroupMsgCountCache.json"), StandardCharsets.UTF_8);
-        int ch = 0;
-        StringBuilder sb = new StringBuilder();
-        while ((ch = isr.read()) != -1) {
-            sb.append((char) ch);
-        }
-        isr.close();
-        return sb.toString();
     }
 
     public void deleteCache() {
-        File file = new File("GroupMsgCountCache.json");
+        File file = new File(CACHE_FILE);
         if (file.isFile() && file.exists()) {
             boolean flag = file.delete();
             log.info("发言统计缓存文件删除成功，Flag = {}", flag);
@@ -168,7 +167,7 @@ public class GroupMsgCount extends BotPlugin {
     public void cacheToDataBase() {
         // 读取Cache File
         try {
-            msgCountCacheBean = JSONObject.parseObject(readJsonCache(), MsgCountCacheBean.class);
+            msgCountCacheBean = JSONObject.parseObject(FileUtils.readFile(CACHE_FILE), MsgCountCacheBean.class);
             // 从Cache统计发言次数
             for (MsgCountCacheBean.CacheData cacheData : msgCountCacheBean.getCacheData()) {
                 long groupId = Long.parseLong(cacheData.getGroupId());

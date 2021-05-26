@@ -11,7 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
@@ -26,17 +29,6 @@ import java.nio.file.WatchEvent;
 public class ConfigUtils {
 
     private final static String FILE_NAME = "config.json";
-
-    private static String readConfigFile() throws IOException {
-        InputStreamReader isr = new InputStreamReader(new FileInputStream(FILE_NAME), StandardCharsets.UTF_8);
-        int ch = 0;
-        StringBuilder sb = new StringBuilder();
-        while ((ch = isr.read()) != -1) {
-            sb.append((char) ch);
-        }
-        isr.close();
-        return sb.toString();
-    }
 
     private static void checkConfigFileExists(boolean isReload) throws IOException {
         File file = new File(FILE_NAME);
@@ -127,7 +119,7 @@ public class ConfigUtils {
     public static ConfigBean init(boolean isReload) {
         try {
             checkConfigFileExists(isReload);
-            ConfigBean configBean = JSON.parseObject(readConfigFile(), ConfigBean.class);
+            ConfigBean configBean = JSON.parseObject(FileUtils.readFile(FILE_NAME), ConfigBean.class);
             if (isReload) {
                 log.info("检测到配置文件修改，即将重载配置文件");
                 Global.config = configBean;
