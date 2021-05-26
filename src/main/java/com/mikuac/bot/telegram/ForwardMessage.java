@@ -53,7 +53,7 @@ public class ForwardMessage extends TelegramLongPollingBot {
                             Msg msg = Msg.builder()
                                     .image(imgUrl)
                                     .text("\nFrom Telegram：" + (forwardFrom != null ? forwardFrom : groupName));
-                            sendMsgUtils.sendGroupMsg(groupId, msg);
+                            sendMsgUtils.sendGroupMsgForMsg(groupId, msg);
                         }
                     } else {
                         log.info("群组列表获取失败");

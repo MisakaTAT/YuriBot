@@ -30,40 +30,38 @@ public class SendMsgUtils {
         this.botContainer = botContainer;
     }
 
-    /**
-     * 私聊消息发送
-     *
-     * @param userId 用户ID
-     * @param msg    消息
-     */
     @Async("taskExecutor")
-    public void sendPrivateMsg(long userId, Msg msg) throws InterruptedException {
+    public void sendPrivateMsgForMsg(long userId, Msg msg) throws InterruptedException {
         Bot bot = botContainer.getBots().get(Global.bot_selfId);
         // 限制发送速度
         Thread.sleep(1000);
         bot.sendPrivateMsg(userId, msg.build(), false);
     }
 
-    /**
-     * 群组消息发送
-     *
-     * @param groupId 群组ID
-     * @param msg     消息
-     */
     @Async("taskExecutor")
-    public void sendGroupMsg(long groupId, Msg msg) throws InterruptedException {
+    public void sendGroupMsgForMsg(long groupId, Msg msg) throws InterruptedException {
         Bot bot = botContainer.getBots().get(Global.bot_selfId);
         // 限制发送速度
         Thread.sleep(1000);
         bot.sendGroupMsg(groupId, msg.build(), false);
     }
 
-    /**
-     * 获取群号列表
-     *
-     * @return
-     * @throws InterruptedException
-     */
+    @Async("taskExecutor")
+    public void sendPrivateMsgForText(long userId, String msg) throws InterruptedException {
+        Bot bot = botContainer.getBots().get(Global.bot_selfId);
+        // 限制发送速度
+        Thread.sleep(1000);
+        bot.sendPrivateMsg(userId, msg, false);
+    }
+
+    @Async("taskExecutor")
+    public void sendGroupMsgForText(long groupId, String msg) throws InterruptedException {
+        Bot bot = botContainer.getBots().get(Global.bot_selfId);
+        // 限制发送速度
+        Thread.sleep(1000);
+        bot.sendGroupMsg(groupId, msg, false);
+    }
+
     public List<Long> getGroupList() throws InterruptedException {
         int retryCount = 6;
         int retryDelay = 10000;

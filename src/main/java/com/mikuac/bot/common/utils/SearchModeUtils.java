@@ -40,7 +40,7 @@ public class SearchModeUtils {
                 // 超时删除
                 if (nowTime - startTime >= ttl) {
                     SEARCH_MODE.remove(key);
-                    sendMsgUtils.sendGroupMsg(groupId, Msg.builder().at(userId).text("您已超过" + ttl + "秒未发送图片，已为您退出搜(番/图/本)模式~"));
+                    sendMsgUtils.sendGroupMsgForMsg(groupId, Msg.builder().at(userId).text("您已超过" + ttl + "秒未发送图片，已为您退出搜(番/图/本)模式~"));
                 }
             } else if ("private".equals(msgType) && SEARCH_MODE.get(key) != null) {
                 long userId = SEARCH_MODE.get(key).getUserId();
@@ -50,7 +50,7 @@ public class SearchModeUtils {
                 // 超时删除
                 if (nowTime - startTime >= ttl) {
                     SEARCH_MODE.remove(key);
-                    sendMsgUtils.sendPrivateMsg(userId, Msg.builder().text("您已超过" + ttl + "秒未发送图片，已为您退出搜(番/图/本)模式~"));
+                    sendMsgUtils.sendPrivateMsgForMsg(userId, Msg.builder().text("您已超过" + ttl + "秒未发送图片，已为您退出搜(番/图/本)模式~"));
                 }
             }
         }

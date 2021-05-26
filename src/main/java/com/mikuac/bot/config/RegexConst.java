@@ -25,17 +25,13 @@ public class RegexConst {
 
     public final static String SAUCE_NAO_QUIT = "^(退出搜[图本](子)?(模式)?)$";
 
-    public final static String SEND_ALL_GROUP = "^(SendAllGroup)-(.*)$";
+    public final static String SEND_ALL_GROUP = "^(公告)\\n([\\s\\S]+)";
 
     public final static String SEND_HELP = "^(?i)help|帮助";
 
     public final static String GET_MSG_PIC_URL = "(http|https)://[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-.,@?^=%&:/~+#]*[\\w\\-@?^=%&/~+#])?";
 
     public final static String GET_R6_ID = "(?<=询-).*";
-
-    public final static String GET_SEND_ALL_GROUP_MSG = "(?<=SendAllGroup-).*";
-
-    public final static String AT_ME = "(?<=<at qq=\").*?(?=\"/>)";
 
     public final static String GET_QQ_DOC_URL = "(?<=\"qqdocurl\":\").*?(?=\\?share_medium)";
 

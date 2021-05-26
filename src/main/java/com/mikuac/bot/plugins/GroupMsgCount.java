@@ -60,12 +60,12 @@ public class GroupMsgCount extends BotPlugin {
                             .text("\n恭喜获得今日群龙王称号~")
                             .text("\n今日发言次数：" + msgCount.get().getTodayMsgCount())
                             .text("\n历史统计次数：" + msgCount.get().getAllMsgCount());
-                    sendMsgUtils.sendGroupMsg(groupId, msg);
+                    sendMsgUtils.sendPrivateMsgForMsg(groupId, msg);
                 } else {
                     log.info("群组[{}]发言次数获取异常或者无人发言", groupId);
                     Msg msg = Msg.builder()
                             .text("今日群内无人发言，暂无龙王诞生~");
-                    sendMsgUtils.sendGroupMsg(groupId, msg);
+                    sendMsgUtils.sendGroupMsgForMsg(groupId, msg);
                 }
             }
             //重置每日统计次数为0

@@ -7,7 +7,6 @@ import com.mikuac.bot.config.RegexConst;
 import lombok.SneakyThrows;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotPlugin;
-import net.lz1998.pbbot.utils.Msg;
 import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +35,19 @@ public class SendAllGroup extends BotPlugin {
     public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
         long userId = event.getUserId();
         String msg = event.getRawMessage();
-        if (userId == Global.bot_adminId && msg.matches(RegexConst.SEND_ALL_GROUP)) {
+        if (userId != Global.bot_adminId) {
+            bot.sendPrivateMsg(userId, "此操作仅管理员可执行哟～", false);
+            return MESSAGE_IGNORE;
+        }
+        if (msg.matches(RegexConst.SEND_ALL_GROUP)) {
             List<Long> groupIdList = sendMsgUtils.getGroupList();
-            String regMsg = RegexUtils.regex(RegexConst.GET_SEND_ALL_GROUP_MSG, msg);
-            if (groupIdList != null && !groupIdList.isEmpty() && regMsg != null) {
+            String regMsg = RegexUtils.regexGroup(RegexConst.SEND_ALL_GROUP, msg, 2);
+            if (regMsg == null || regMsg.isEmpty()) {
+                return MESSAGE_IGNORE;
+            }
+            if (groupIdList != null && !groupIdList.isEmpty()) {
                 for (long groupId : groupIdList) {
-                    sendMsgUtils.sendGroupMsg(groupId, Msg.builder().text(regMsg));
+                    sendMsgUtils.sendGroupMsgForText(groupId, regMsg);
                 }
             }
         }
