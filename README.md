@@ -15,6 +15,7 @@
     <img src="https://img.shields.io/github/downloads/MisakaTAT/YuriBot/total?style=flat-square?style=flat-square" alt="downloads">
     <img src="https://img.shields.io/github/license/MisakaTAT/YuriBot?style=flat-square" alt="license">
     <img src="https://img.shields.io/badge/jdk-15+-brightgreen.svg?style=flat-square" alt="jdk-version">
+    <img src="https://img.shields.io/badge/QQ群-204219849-brightgreen.svg?style=flat-square" alt="qq-group">
 </p>
 
 # Features
