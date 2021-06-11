@@ -1,5 +1,7 @@
 package com.mikuac.bot.plugins;
 
+import cn.hutool.cache.CacheUtil;
+import cn.hutool.cache.impl.TimedCache;
 import com.mikuac.bot.common.utils.CommonUtils;
 import com.mikuac.bot.config.Global;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,8 @@ import java.util.List;
 @Component
 public class GroupAtMe extends BotPlugin {
 
+    TimedCache<Long, Boolean> timedCache = CacheUtil.newTimedCache(5000);
+
     private final static String MSG_TYPE = "at";
 
     private CommonUtils commonUtils;
@@ -33,6 +37,12 @@ public class GroupAtMe extends BotPlugin {
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
+        long userId = event.getUserId();
+        long groupId = event.getGroupId();
+        // 判断是否已经回复过
+        if (timedCache.get(userId + groupId) != null || timedCache.get(userId + groupId)) {
+            return MESSAGE_IGNORE;
+        }
         // 判断是否为回复
         OnebotBase.Message reply = event.getMessageList().stream().filter(message -> "reply".equals(message.getType())).findFirst().orElse(null);
         if (reply != null) {
@@ -51,9 +61,8 @@ public class GroupAtMe extends BotPlugin {
             long botId = Long.parseLong(message.getDataMap().get("qq"));
             if (Global.bot_selfId == botId) {
                 String imgUrl = commonUtils.getHostAndPort() + "/img/atme.jpg";
-                long userId = event.getUserId();
-                long groupId = event.getGroupId();
                 bot.sendGroupMsg(groupId, Msg.builder().at(userId).image(imgUrl).build(), false);
+                timedCache.put(userId + groupId, true);
                 log.info("@BOT 来自群组：[{}]的用户：[{}]", groupId, userId);
             }
         }
