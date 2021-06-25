@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://mikuac.com/archives/675"><img src="https://i.jpg.dog/img/1fd60121da93e8a3ab516a234d2345e9.jpg" width="200" height="200" alt="Yuri"></a>
+  <a href="https://mikuac.com/archives/675"><img src="https://mikuac.com/images/yuri.png" width="200" height="200" alt="Yuri"></a>
 </p>
 
 <div align="center">
@@ -82,4 +82,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 # Thanks
 Thanks [JetBrains](https://www.jetbrains.com/?from=mirai) Provide Free License Support OpenSource Project
 
-[<img src="https://i.jpg.dog/img/b8f6b6324e5d48dae707aeb7334d35df.png" width="200"/>](https://www.jetbrains.com/?from=mirai)
+[<img src="https://mikuac.com/images/jetbrains-variant-3.png" width="200"/>](https://www.jetbrains.com/?from=mirai)
