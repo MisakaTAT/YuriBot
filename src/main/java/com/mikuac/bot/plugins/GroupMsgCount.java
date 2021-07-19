@@ -169,6 +169,9 @@ public class GroupMsgCount extends BotPlugin {
         try {
             msgCountCacheBean = JSONObject.parseObject(FileUtils.readFile(CACHE_FILE), MsgCountCacheBean.class);
             // 从Cache统计发言次数
+            if (msgCountCacheBean == null) {
+                throw new RuntimeException("msgCountCacheBean is null");
+            }
             for (MsgCountCacheBean.CacheData cacheData : msgCountCacheBean.getCacheData()) {
                 long groupId = Long.parseLong(cacheData.getGroupId());
                 long userId = Long.parseLong(cacheData.getUserId());

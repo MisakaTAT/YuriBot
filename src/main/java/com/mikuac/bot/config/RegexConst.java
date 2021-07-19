@@ -63,4 +63,6 @@ public class RegexConst {
 
     public final static String REBOOT_BOT = "^(?i)reboot|重启|restart";
 
+    public final static String SHUTDOWN_BOT = "^(?i)shutdown|关闭|停止服务";
+
 }

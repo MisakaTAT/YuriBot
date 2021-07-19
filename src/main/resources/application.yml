@@ -15,6 +15,7 @@ spring:
       - com.mikuac.bot.plugins.aop.EventLog
       - com.mikuac.bot.plugins.aop.Maintenance
       - com.mikuac.bot.plugins.aop.RebootBot
+      - com.mikuac.bot.plugins.aop.ShutdownBot
       - com.mikuac.bot.plugins.aop.SendHelp
       - com.mikuac.bot.plugins.aop.Hitokoto
       - com.mikuac.bot.plugins.GroupJoinAndQuit

@@ -63,6 +63,16 @@ public class BotApplication {
         log.info("悠里重启完毕");
     }
 
+    public static void shutdown() {
+        try {
+            log.info("正在停止SpringBoot服务～");
+            context.close();
+            log.info("服务已停止～");
+        } catch (Exception e) {
+            log.error("服务停止失败: {}", e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         BotApplication.args = args;
         BotApplication.context = SpringApplication.run(BotApplication.class, args);
