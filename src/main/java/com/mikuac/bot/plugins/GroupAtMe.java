@@ -40,7 +40,7 @@ public class GroupAtMe extends BotPlugin {
         long userId = event.getUserId();
         long groupId = event.getGroupId();
         // 判断是否已经回复过
-        if (timedCache.get(userId + groupId) != null || timedCache.get(userId + groupId)) {
+        if (timedCache.get(userId + groupId) != null) {
             return MESSAGE_IGNORE;
         }
         // 判断是否为回复

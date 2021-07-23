@@ -1,5 +1,8 @@
 package com.mikuac.bot.plugins;
 
+import cn.hutool.core.io.file.FileReader;
+import cn.hutool.core.io.file.FileWriter;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.mikuac.bot.bean.MsgCountCacheBean;
 import com.mikuac.bot.common.utils.FileUtils;
@@ -23,6 +26,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -190,6 +194,18 @@ public class GroupMsgCount extends BotPlugin {
         }
     }
 
+    public void fixCache(){
+        log.info("JsonCache解析异常，准备修复Cache文件");
+        // 读取数据
+        File file = new File(CACHE_FILE);
+        FileReader fileReader = new FileReader(file);
+        String jsonData = fileReader.readString();
+        // 写回数据
+        String fixStr = jsonData.substring(0, jsonData.length() - 1);
+        FileWriter writer = new FileWriter(file);
+        writer.write(fixStr);
+    }
+
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
         long userId = event.getUserId();
@@ -198,6 +214,7 @@ public class GroupMsgCount extends BotPlugin {
             writeJsonCache(groupId, userId);
         } catch (Exception e) {
             log.error("群组发言统计Json Cache写入异常: {}", e.getMessage());
+            fixCache();
         }
         return MESSAGE_IGNORE;
     }
