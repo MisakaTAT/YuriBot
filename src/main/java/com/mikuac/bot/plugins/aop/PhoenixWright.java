@@ -10,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
  * 逆转裁判字体图片生成
@@ -26,8 +28,8 @@ public class PhoenixWright extends BotPlugin {
         long groupId = event.getGroupId();
         long userId = event.getUserId();
         if (msg.matches(RegexConst.PHOENIX_WRIGHT)) {
-            String topText = URLEncoder.encode(RegexUtils.regexGroup(RegexConst.PHOENIX_WRIGHT, msg, 1));
-            String bottomText = URLEncoder.encode(RegexUtils.regexGroup(RegexConst.PHOENIX_WRIGHT, msg, 2));
+            String topText = URLEncoder.encode(Objects.requireNonNull(RegexUtils.regexGroup(RegexConst.PHOENIX_WRIGHT, msg, 1)), StandardCharsets.UTF_8);
+            String bottomText = URLEncoder.encode(Objects.requireNonNull(RegexUtils.regexGroup(RegexConst.PHOENIX_WRIGHT, msg, 2)), StandardCharsets.UTF_8);
             Msg sendMsg = Msg.builder()
                     .at(userId)
                     .image("https://gsapi.cyberrex.ml/image?top=" + topText + "&bottom=" + bottomText);
@@ -41,8 +43,8 @@ public class PhoenixWright extends BotPlugin {
         String msg = event.getRawMessage();
         long userId = event.getUserId();
         if (msg.matches(RegexConst.PHOENIX_WRIGHT)) {
-            String topText = URLEncoder.encode(RegexUtils.regexGroup(RegexConst.PHOENIX_WRIGHT, msg, 1));
-            String bottomText = URLEncoder.encode(RegexUtils.regexGroup(RegexConst.PHOENIX_WRIGHT, msg, 2));
+            String topText = URLEncoder.encode(Objects.requireNonNull(RegexUtils.regexGroup(RegexConst.PHOENIX_WRIGHT, msg, 1)), StandardCharsets.UTF_8);
+            String bottomText = URLEncoder.encode(Objects.requireNonNull(RegexUtils.regexGroup(RegexConst.PHOENIX_WRIGHT, msg, 2)), StandardCharsets.UTF_8);
             Msg sendMsg = Msg.builder().image("https://gsapi.cyberrex.ml/image?top=" + topText + "&bottom=" + bottomText);
             bot.sendPrivateMsg(userId, sendMsg.build(), false);
         }
