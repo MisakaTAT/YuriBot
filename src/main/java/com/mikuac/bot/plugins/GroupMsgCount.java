@@ -86,7 +86,6 @@ public class GroupMsgCount extends BotPlugin {
                 }
             }
             cache.clear();
-            log.info("发言统计缓存数据持久化完成");
         } catch (Exception e) {
             log.error("发言统计缓存持久化失败: {}", e.getMessage());
         }
