@@ -1,11 +1,6 @@
 package com.mikuac.bot.plugins;
 
-import cn.hutool.core.io.file.FileReader;
-import cn.hutool.core.io.file.FileWriter;
-import cn.hutool.json.JSONUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.mikuac.bot.bean.MsgCountCacheBean;
-import com.mikuac.bot.common.utils.FileUtils;
 import com.mikuac.bot.common.utils.SendMsgUtils;
 import com.mikuac.bot.entity.MsgCountEntity;
 import com.mikuac.bot.repository.MsgCountRepository;
@@ -15,19 +10,14 @@ import net.lz1998.pbbot.bot.BotPlugin;
 import net.lz1998.pbbot.utils.Msg;
 import onebot.OnebotEvent;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+import javax.annotation.Resource;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 发言统计
@@ -39,27 +29,16 @@ import java.util.Optional;
 @Component
 public class GroupMsgCount extends BotPlugin {
 
-    private static final String CACHE_FILE = "GroupMsgCountCache.json";
-
+    @Resource
     private SendMsgUtils sendMsgUtils;
 
-    private MsgCountCacheBean msgCountCacheBean;
-
-    @Autowired
-    public void setSendMsgUtils(SendMsgUtils sendMsgUtils) {
-        this.sendMsgUtils = sendMsgUtils;
-    }
-
+    @Resource
     private MsgCountRepository msgCountRepository;
 
-    @Autowired
-    public void setMsgCountRepository(MsgCountRepository msgCountRepository) {
-        this.msgCountRepository = msgCountRepository;
-    }
+    Map<Long, MsgCountCacheBean> cache = new ConcurrentHashMap<>();
 
     @Scheduled(cron = "0 0 00 * * ?", zone = "Asia/Shanghai")
-    public void sendMsg() throws InterruptedException {
-        cacheToDataBase();
+    private void sendMsg() throws InterruptedException {
         List<Long> groupIdList = sendMsgUtils.getGroupList();
         if (groupIdList != null && !groupIdList.isEmpty()) {
             for (long groupId : groupIdList) {
@@ -83,138 +62,52 @@ public class GroupMsgCount extends BotPlugin {
         }
     }
 
-    public void writeJsonCache(long groupId, long userId) throws IOException {
-        File file = new File(CACHE_FILE);
-        // 缓存文件不存在则创建
-        if (!file.exists()) {
-            log.warn("发言统计缓存文件不存在，即将创建缓存文件");
-            List<MsgCountCacheBean.CacheData> dataList = new ArrayList<>();
-            // 创建CacheData
-            MsgCountCacheBean.CacheData cacheData = new MsgCountCacheBean.CacheData();
-            cacheData.setGroupId(String.valueOf(groupId));
-            cacheData.setUserId(String.valueOf(userId));
-            cacheData.setCount(1);
-            dataList.add(cacheData);
-            // Obj转为json
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("data", dataList);
-            // 写入Cache File
-            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(CACHE_FILE), StandardCharsets.UTF_8);
-            osw.write(jsonObject.toString());
-            osw.flush();
-            osw.close();
-        }
-        if (!file.isFile() && !file.exists()) {
-            return;
-        }
-        // 读取文件内容
-        String readCache = FileUtils.readFile(CACHE_FILE);
-        if (readCache != null && !readCache.isEmpty()) {
-            msgCountCacheBean = JSONObject.parseObject(readCache, MsgCountCacheBean.class);
-            List<MsgCountCacheBean.CacheData> dataList = msgCountCacheBean.getCacheData();
-            boolean hasCache = false;
-            for (MsgCountCacheBean.CacheData data : dataList) {
-                long getGroupId = Long.parseLong(data.getGroupId());
-                long getUserId = Long.parseLong(data.getUserId());
-                // 如果缓存中已存在数据
-                if (groupId == getGroupId && userId == getUserId) {
-                    int getCount = data.getCount();
-                    data.setCount(++getCount);
-                    hasCache = true;
-                    break;
-                }
-            }
-            // 如果不存在缓存数据
-            if (!hasCache) {
-                MsgCountCacheBean.CacheData cacheData = new MsgCountCacheBean.CacheData();
-                cacheData.setGroupId(String.valueOf(groupId));
-                cacheData.setUserId(String.valueOf(userId));
-                cacheData.setCount(1);
-                // 追加数据
-                dataList.add(cacheData);
-            }
-            // Obj转为json
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("data", dataList);
-            // 写入Cache File
-            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(CACHE_FILE), StandardCharsets.UTF_8);
-            osw.write(jsonObject.toString());
-            osw.flush();
-            osw.close();
-        } else {
-            log.warn("发言统计缓存文件解析失败，文件可能被占用");
-        }
-    }
-
-    public void deleteCache() {
-        File file = new File(CACHE_FILE);
-        if (file.isFile() && file.exists()) {
-            boolean flag = file.delete();
-            log.info("发言统计缓存文件删除成功，Flag = {}", flag);
-        } else {
-            boolean flag = file.delete();
-            int tryCount = 0;
-            while (!flag && tryCount++ < 5) {
-                // 回收资源
-                System.gc();
-                flag = file.delete();
-                log.error("发言统计缓存文件删除失败，当前重试次数[{}]", tryCount);
-                if (flag) {
-                    log.info("发言统计缓存文件删除成功，Flag = {}", true);
-                    return;
-                }
-            }
-            log.error("发言统计缓存文件删除失败，文件可能不存在或被占用");
-        }
-    }
-
-    public void cacheToDataBase() {
-        // 读取Cache File
+    @Scheduled(cron = "0/30 * * * * ?", zone = "Asia/Shanghai")
+    private void cachePersistent() {
         try {
-            msgCountCacheBean = JSONObject.parseObject(FileUtils.readFile(CACHE_FILE), MsgCountCacheBean.class);
-            // 从Cache统计发言次数
-            if (msgCountCacheBean == null) {
-                throw new RuntimeException("msgCountCacheBean is null");
-            }
-            for (MsgCountCacheBean.CacheData cacheData : msgCountCacheBean.getCacheData()) {
-                long groupId = Long.parseLong(cacheData.getGroupId());
-                long userId = Long.parseLong(cacheData.getUserId());
+            // 遍历Map
+            for (Map.Entry<Long, MsgCountCacheBean> c : cache.entrySet()) {
+                MsgCountCacheBean msgCountCacheBean = c.getValue();
+                long groupId = msgCountCacheBean.getGroupId();
+                long userId = msgCountCacheBean.getUserId();
                 // 写入数据库
                 Optional<MsgCountEntity> msgCount = msgCountRepository.findByGroupAndUserId(groupId, userId);
                 if (msgCount.isPresent()) {
-                    int todayMsgCount = cacheData.getCount();
+                    int todayMsgCount = msgCountCacheBean.getCount();
                     int allMsgCount = msgCount.get().getAllMsgCount() + todayMsgCount;
                     msgCountRepository.update(groupId, userId, todayMsgCount, allMsgCount);
+                } else {
+                    MsgCountEntity msgCountEntity = new MsgCountEntity();
+                    msgCountEntity.setGroupId(groupId);
+                    msgCountEntity.setUserId(userId);
+                    msgCountEntity.setTodayMsgCount(msgCountCacheBean.getCount());
+                    msgCountEntity.setAllMsgCount(msgCountCacheBean.getCount());
+                    msgCountRepository.save(msgCountEntity);
                 }
             }
-            // 删除缓存
-            deleteCache();
+            cache.clear();
+            log.info("发言统计缓存数据持久化完成");
         } catch (Exception e) {
-            log.warn("发言统计缓存数据写入数据库失败，可能是缓存不存在或缓存文件为空: {}", e.getMessage());
+            log.error("发言统计缓存持久化失败: {}", e.getMessage());
         }
-    }
-
-    public void fixCache(){
-        log.info("JsonCache解析异常，准备修复Cache文件");
-        // 读取数据
-        File file = new File(CACHE_FILE);
-        FileReader fileReader = new FileReader(file);
-        String jsonData = fileReader.readString();
-        // 写回数据
-        String fixStr = jsonData.substring(0, jsonData.length() - 1);
-        FileWriter writer = new FileWriter(file);
-        writer.write(fixStr);
     }
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
         long userId = event.getUserId();
         long groupId = event.getGroupId();
-        try {
-            writeJsonCache(groupId, userId);
-        } catch (Exception e) {
-            log.error("群组发言统计Json Cache写入异常: {}", e.getMessage());
-            fixCache();
+        MsgCountCacheBean mb = cache.getOrDefault(userId + groupId, null);
+        if (mb != null) {
+            int nowCount = mb.getCount();
+            mb.setCount(++nowCount);
+            cache.put(userId + groupId, mb);
+        }
+        if (mb == null) {
+            mb = new MsgCountCacheBean();
+            mb.setUserId(userId);
+            mb.setGroupId(groupId);
+            mb.setCount(1);
+            cache.put(userId + groupId, mb);
         }
         return MESSAGE_IGNORE;
     }

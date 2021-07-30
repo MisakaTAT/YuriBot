@@ -1,24 +1,19 @@
 package com.mikuac.bot.bean;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
-import java.util.List;
-
 /**
+ * Created on 2021/7/30.
+ *
  * @author Zero
  */
 @Data
 public class MsgCountCacheBean {
 
-    @JSONField(name = "data")
-    private List<CacheData> cacheData;
+    private Long groupId;
 
-    @Data
-    public static class CacheData {
-        private String groupId;
-        private String userId;
-        private Integer count;
-    }
+    private Long userId;
+
+    private Integer count;
 
 }
