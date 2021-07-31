@@ -76,8 +76,10 @@ public class GroupMsgCount extends BotPlugin {
                 // 写入数据库
                 Optional<MsgCountEntity> msgCount = msgCountRepository.findByGroupAndUserId(groupId, userId);
                 if (msgCount.isPresent()) {
-                    int todayMsgCount = msgCountCacheBean.getCount();
-                    int allMsgCount = msgCount.get().getAllMsgCount() + todayMsgCount;
+                    // 今日计数，数据库今日计数 + 当前未持久化的次数
+                    int todayMsgCount = msgCount.get().getTodayMsgCount() + msgCountCacheBean.getCount();
+                    // 总计数，数据库当前计数 + 当前未持久化的次数
+                    int allMsgCount = msgCount.get().getAllMsgCount() + msgCountCacheBean.getCount();
                     msgCountRepository.update(groupId, userId, todayMsgCount, allMsgCount);
                 } else {
                     MsgCountEntity msgCountEntity = new MsgCountEntity();
