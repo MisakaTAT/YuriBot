@@ -58,13 +58,18 @@ public class GroupAtMe extends BotPlugin {
                 return MESSAGE_IGNORE;
             }
             // 判断被at的是否为机器人
-            long botId = Long.parseLong(message.getDataMap().get("qq"));
-            if (Global.bot_selfId == botId) {
-                String imgUrl = commonUtils.getHostAndPort() + "/img/atme.jpg";
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).image(imgUrl).build(), false);
-                timedCache.put(userId + groupId, true);
-                log.info("@BOT 来自群组：[{}]的用户：[{}]", groupId, userId);
+            String rawQQ = message.getDataMap().get("qq");
+            // 排除全体at
+            if (!rawQQ.equals("all")) {
+                long botId = Long.parseLong(rawQQ);
+                if (Global.bot_selfId == botId) {
+                    String imgUrl = commonUtils.getHostAndPort() + "/img/atme.jpg";
+                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).image(imgUrl).build(), false);
+                    timedCache.put(userId + groupId, true);
+                    log.info("@BOT 来自群组：[{}]的用户：[{}]", groupId, userId);
+                }
             }
+
         }
         return MESSAGE_IGNORE;
     }
