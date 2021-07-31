@@ -62,7 +62,10 @@ public class GroupMsgCount extends BotPlugin {
         }
     }
 
-    @Scheduled(cron = "0/30 * * * * ?", zone = "Asia/Shanghai")
+    /*
+    一分钟持久化一次，值设置为50错开12点整的统计定时任务，防止sqlite同时读写出现locked
+     */
+    @Scheduled(cron = "50 * * * * ?", zone = "Asia/Shanghai")
     private void cachePersistent() {
         try {
             // 遍历Map
