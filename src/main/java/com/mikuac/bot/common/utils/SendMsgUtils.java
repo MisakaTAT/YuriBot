@@ -5,10 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.lz1998.pbbot.bot.Bot;
 import net.lz1998.pbbot.bot.BotContainer;
 import net.lz1998.pbbot.utils.Msg;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,38 +22,27 @@ import java.util.Objects;
 @Component
 public class SendMsgUtils {
 
+    @Resource
     private BotContainer botContainer;
 
-    @Autowired
-    public void setBotContainer(BotContainer botContainer) {
-        this.botContainer = botContainer;
-    }
-
-    @Async("taskExecutor")
     public void sendPrivateMsgForMsg(long userId, Msg msg) throws InterruptedException {
         Bot bot = botContainer.getBots().get(Global.bot_selfId);
-        // 限制发送速度
         Thread.sleep(1000);
         bot.sendPrivateMsg(userId, msg.build(), false);
     }
 
-    @Async("taskExecutor")
     public void sendGroupMsgForMsg(long groupId, Msg msg) throws InterruptedException {
         Bot bot = botContainer.getBots().get(Global.bot_selfId);
-        // 限制发送速度
         Thread.sleep(1000);
         bot.sendGroupMsg(groupId, msg.build(), false);
     }
 
-    @Async("taskExecutor")
     public void sendPrivateMsgForText(long userId, String msg) throws InterruptedException {
         Bot bot = botContainer.getBots().get(Global.bot_selfId);
-        // 限制发送速度
         Thread.sleep(1000);
         bot.sendPrivateMsg(userId, msg, false);
     }
 
-    @Async("taskExecutor")
     public void sendGroupMsgForText(long groupId, String msg) throws InterruptedException {
         Bot bot = botContainer.getBots().get(Global.bot_selfId);
         // 限制发送速度
