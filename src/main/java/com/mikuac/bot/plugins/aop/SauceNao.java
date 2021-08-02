@@ -179,7 +179,7 @@ public class SauceNao extends BotPlugin {
 
         Map<Long, SearchBean> map = SearchModeUtils.getMap();
 
-        if (cmdCheck(bot, 0L, userId, msg, map, key)) {
+        if (!cmdCheck(bot, 0L, userId, msg, map, key)) {
             return MESSAGE_IGNORE;
         }
 
@@ -227,7 +227,7 @@ public class SauceNao extends BotPlugin {
 
         Map<Long, SearchBean> map = SearchModeUtils.getMap();
 
-        if (cmdCheck(bot, groupId, userId, msg, map, key)) {
+        if (!cmdCheck(bot, groupId, userId, msg, map, key)) {
             return MESSAGE_IGNORE;
         }
 
