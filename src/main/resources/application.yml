@@ -35,3 +35,4 @@ spring:
       - com.mikuac.bot.plugins.aop.PhoenixWright
       - com.mikuac.bot.plugins.aop.SteamRep
       - com.mikuac.bot.plugins.aop.AddSensitiveWord
+      - com.mikuac.bot.plugins.aop.Ping

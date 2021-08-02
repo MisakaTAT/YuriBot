@@ -65,4 +65,6 @@ public class RegexConst {
 
     public final static String SHUTDOWN_BOT = "^(?i)shutdown|关闭|停止服务";
 
+    public final static String PING = "(?i)ping";
+
 }

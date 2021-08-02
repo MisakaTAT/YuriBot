@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -28,12 +29,10 @@ public class GroupAtMe extends BotPlugin {
 
     private final static String MSG_TYPE = "at";
 
-    private CommonUtils commonUtils;
+    private final static String AT_ALL = "all";
 
-    @Autowired
-    public void setCommonUtils(CommonUtils commonUtils) {
-        this.commonUtils = commonUtils;
-    }
+    @Resource
+    private CommonUtils commonUtils;
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
@@ -58,10 +57,10 @@ public class GroupAtMe extends BotPlugin {
                 return MESSAGE_IGNORE;
             }
             // 判断被at的是否为机器人
-            String rawQQ = message.getDataMap().get("qq");
+            String rowAtMsg = message.getDataMap().get("qq");
             // 排除全体at
-            if (!rawQQ.equals("all")) {
-                long botId = Long.parseLong(rawQQ);
+            if (!AT_ALL.equals(rowAtMsg)) {
+                long botId = Long.parseLong(rowAtMsg);
                 if (Global.bot_selfId == botId) {
                     String imgUrl = commonUtils.getHostAndPort() + "/img/atme.jpg";
                     bot.sendGroupMsg(groupId, Msg.builder().at(userId).image(imgUrl).build(), false);
