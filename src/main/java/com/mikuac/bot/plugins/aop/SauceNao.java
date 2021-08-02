@@ -140,10 +140,10 @@ public class SauceNao extends BotPlugin {
         if (groupId != 0L) {
             sendMsg.at(userId);
         }
+        sendMsg.image(r.getResultHeader().getThumbnail());
+        sendMsg.text("\n相似度：" + r.getResultHeader().getSimilarity() + "%");
         switch (db) {
-            case 0: {
-                sendMsg.image(r.getResultHeader().getThumbnail());
-                sendMsg.text("\n相似度：" + r.getResultHeader().getSimilarity() + "%");
+            case 0 -> {
                 sendMsg.text("\n标题：" + r.getResultData().getTitle());
                 sendMsg.text("\n画师：" + r.getResultData().getMemberName());
                 sendMsg.text("\nPixiv：https://pixiv.net/i/" + r.getResultData().getPixivId());
@@ -151,22 +151,16 @@ public class SauceNao extends BotPlugin {
                 sendMsg.text("\nProxy：" + PixivProxyUtils.imgProxy(r.getResultData().getPixivId()));
                 sendMsg.text("\n剩余搜索配额：" + sauceNaoBean.getHeader().getLongRemaining());
                 sendMsg.text("\n数据来源：SauceNao (Pixiv)");
-                break;
             }
-            case 1: {
-                sendMsg.image(r.getResultHeader().getThumbnail());
-                sendMsg.text("\n相似度：" + r.getResultHeader().getSimilarity() + "%");
+            case 1 -> {
                 sendMsg.text("\n来源：" + r.getResultData().getSource());
                 sendMsg.text("\n日文名：" + r.getResultData().getJpName());
                 sendMsg.text("\n英文名：" + r.getResultData().getEngName());
                 sendMsg.text("\n剩余搜索配额：" + sauceNaoBean.getHeader().getLongRemaining());
                 sendMsg.text("\n数据来源：SauceNao (E-Hentai)");
                 bot.sendGroupMsg(groupId, sendMsg.build(), false);
-                break;
             }
-            default: {
-                sendMsg.text("未检索到您发送的内容，请更换图片后重新尝试~");
-            }
+            default -> sendMsg.text("未检索到您发送的内容，请更换图片后重新尝试~");
         }
         // 如果群号不为0L则为群组消息
         if (groupId != 0L) {
