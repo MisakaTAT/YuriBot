@@ -23,6 +23,10 @@ public class GroupJoinAndQuit extends BotPlugin {
     public int onGroupIncreaseNotice(@NotNull Bot bot, @NotNull OnebotEvent.GroupIncreaseNoticeEvent event) {
         long groupId = event.getGroupId();
         long userId = event.getUserId();
+        // 排除BOT自身入群通知
+        if (userId == Global.bot_selfId) {
+            return MESSAGE_IGNORE;
+        }
         Msg msg = Msg.builder()
                 .at(userId)
                 .text("Hi~ 我是" + Global.bot_botName + "，欢迎加入本群，如果想了解我，请发送 " + Global.prefix_prefix + "帮助 或 " + Global.prefix_prefix + "help获取帮助信息~");
