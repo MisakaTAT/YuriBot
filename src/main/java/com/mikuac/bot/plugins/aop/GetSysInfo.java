@@ -38,25 +38,25 @@ public class GetSysInfo extends BotPlugin {
             msg.text("\n");
         }
         msg.text("[处理器信息]");
-        msg.text("\nCPU Num：" + cpu.getCpuNum());
-        msg.text("\nCPU Used：" + cpu.getUsed() + "%");
-        msg.text("\nCPU Free：" + cpu.getFree() + "%");
+        msg.text("\nCPU Num: " + cpu.getCpuNum());
+        msg.text("\nCPU Used: " + cpu.getUsed() + "%");
+        msg.text("\nCPU Free: " + cpu.getFree() + "%");
         msg.text("\n\n[内存信息]");
-        msg.text("\nMem Total：" + FileUtil.readableFileSize(memory.getTotal()));
-        msg.text("\nMem Available：" + FileUtil.readableFileSize(memory.getAvailable()));
+        msg.text("\nMem Total: " + FileUtil.readableFileSize(memory.getTotal()));
+        msg.text("\nMem Available: " + FileUtil.readableFileSize(memory.getAvailable()));
         msg.text("\n\n[JVM信息]");
-        msg.text("\nJVM Name：" + jvm.getName());
-        msg.text("\nJVM Vendor：" + jvm.getVendor());
-        msg.text("\nJVM Version：" + jvm.getVersion());
+        msg.text("\nJVM Name: " + jvm.getName());
+        msg.text("\nJVM Vendor: " + jvm.getVendor());
+        msg.text("\nJVM Version: " + jvm.getVersion());
         msg.text("\n\n[运行信息]");
         msg.text("\nMax Memory: " + FileUtil.readableFileSize(runtimeInfo.getMaxMemory()));
         msg.text("\nTotal Memory: " + FileUtil.readableFileSize(runtimeInfo.getTotalMemory()));
         msg.text("\nFree Memory: " + FileUtil.readableFileSize(runtimeInfo.getFreeMemory()));
         msg.text("\nUsable Memory: " + FileUtil.readableFileSize(runtimeInfo.getUsableMemory()));
         msg.text("\n\n[系统信息]");
-        msg.text("\nOS Name：" + osInfo.getName());
-        msg.text("\nOS Arch：" + osInfo.getArch());
-        msg.text("\nOS Version：" + osInfo.getVersion());
+        msg.text("\nOS Name: " + osInfo.getName());
+        msg.text("\nOS Arch:" + osInfo.getArch());
+        msg.text("\nOS Version: " + osInfo.getVersion());
         return msg;
     }
 
@@ -72,21 +72,21 @@ public class GetSysInfo extends BotPlugin {
             msg.text("\n");
         }
         msg.text("[基本信息]");
-        msg.text("\nDevice Model：" + computerSystem.getModel());
-        msg.text("\nDevice Manufacturer：" + computerSystem.getManufacturer());
+        msg.text("\nDevice Model: " + computerSystem.getModel());
+        msg.text("\nDevice Manufacturer: " + computerSystem.getManufacturer());
         msg.text("\n\n[处理器信息]");
         msg.text("\nCPU Name: " + processor.getProcessorIdentifier().getName());
         msg.text("\nCPU Model: " + processor.getProcessorIdentifier().getModel());
         msg.text("\nCPU Vendor: " + processor.getProcessorIdentifier().getVendor());
         msg.text("\nCPU Micro: " + processor.getProcessorIdentifier().getMicroarchitecture());
-        msg.text("\nCPU Stepping" + processor.getProcessorIdentifier().getStepping());
-        msg.text("\nCPU Voltage：" + sensors.getCpuVoltage());
+        msg.text("\nCPU Stepping: " + processor.getProcessorIdentifier().getStepping());
+        msg.text("\nCPU Voltage: " + sensors.getCpuVoltage());
         msg.text("\nCPU Temp：" + sensors.getCpuTemperature());
         msg.text("\n" + processor.getPhysicalPackageCount() + " physical CPU package(s) " + processor.getPhysicalProcessorCount()
                 + " physical CPU core(s) " + processor.getLogicalProcessorCount() + " logical CPU(s)");
         msg.text("\n\n[主板信息]");
         msg.text("\nModel: " + baseboard.getModel());
-        msg.text("\nVersion:" + baseboard.getVersion());
+        msg.text("\nVersion: " + baseboard.getVersion());
         msg.text("\nManufacturer: " + baseboard.getManufacturer());
         return msg;
     }
