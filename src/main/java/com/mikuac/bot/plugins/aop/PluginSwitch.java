@@ -4,11 +4,10 @@ import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
 import com.mikuac.bot.entity.PluginSwitchEntity;
 import com.mikuac.bot.repository.PluginSwitchRepository;
+import com.mikuac.shiro.bot.Bot;
+import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import lombok.extern.slf4j.Slf4j;
-import net.lz1998.pbbot.bot.Bot;
-import net.lz1998.pbbot.bot.BotPlugin;
-import onebot.OnebotEvent;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -65,7 +64,7 @@ public class PluginSwitch extends BotPlugin {
     }
 
     @Override
-    public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
+    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
 
         String msg = event.getRawMessage();
         long userId = event.getUserId();

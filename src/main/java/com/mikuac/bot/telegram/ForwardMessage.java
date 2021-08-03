@@ -2,9 +2,9 @@ package com.mikuac.bot.telegram;
 
 import com.mikuac.bot.common.utils.SendMsgUtils;
 import com.mikuac.bot.common.utils.TelegramUtils;
+import com.mikuac.shiro.utils.Msg;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import net.lz1998.pbbot.utils.Msg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -21,16 +21,15 @@ import java.util.List;
 public class ForwardMessage extends TelegramLongPollingBot {
 
     private SendMsgUtils sendMsgUtils;
+    @Value("${yuri.telegram.botName}")
+    private String botName;
+    @Value("${yuri.telegram.botToken}")
+    private String botToken;
 
     @Autowired
     public void setSendMsgUtils(SendMsgUtils sendMsgUtils) {
         this.sendMsgUtils = sendMsgUtils;
     }
-
-    @Value("${yuri.telegram.botName}")
-    private String botName;
-    @Value("${yuri.telegram.botToken}")
-    private String botToken;
 
     @SneakyThrows
     @Override
@@ -51,7 +50,7 @@ public class ForwardMessage extends TelegramLongPollingBot {
                     if (groupIdList != null && !groupIdList.isEmpty()) {
                         for (long groupId : groupIdList) {
                             Msg msg = Msg.builder()
-                                    .image(imgUrl)
+                                    .img(imgUrl)
                                     .text("\nFrom Telegram：" + (forwardFrom != null ? forwardFrom : groupName));
                             sendMsgUtils.sendGroupMsgForMsg(groupId, msg);
                         }

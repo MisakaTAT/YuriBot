@@ -4,12 +4,11 @@ import com.mikuac.bot.bean.MsgCountCacheBean;
 import com.mikuac.bot.common.utils.SendMsgUtils;
 import com.mikuac.bot.entity.MsgCountEntity;
 import com.mikuac.bot.repository.MsgCountRepository;
+import com.mikuac.shiro.bot.Bot;
+import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
+import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
-import net.lz1998.pbbot.bot.Bot;
-import net.lz1998.pbbot.bot.BotPlugin;
-import net.lz1998.pbbot.utils.Msg;
-import onebot.OnebotEvent;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -29,13 +28,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class GroupMsgCount extends BotPlugin {
 
+    Map<Long, MsgCountCacheBean> cache = new ConcurrentHashMap<>();
     @Resource
     private SendMsgUtils sendMsgUtils;
-
     @Resource
     private MsgCountRepository msgCountRepository;
-
-    Map<Long, MsgCountCacheBean> cache = new ConcurrentHashMap<>();
 
     @Scheduled(cron = "0 0 00 * * ?", zone = "Asia/Shanghai")
     private void sendMsg() throws InterruptedException {
@@ -97,7 +94,7 @@ public class GroupMsgCount extends BotPlugin {
     }
 
     @Override
-    public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
+    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
         long userId = event.getUserId();
         long groupId = event.getGroupId();
         MsgCountCacheBean mb = cache.getOrDefault(userId + groupId, null);

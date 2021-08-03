@@ -2,11 +2,11 @@ package com.mikuac.bot.plugins.aop;
 
 import com.mikuac.bot.common.utils.RegexUtils;
 import com.mikuac.bot.config.RegexConst;
-import net.lz1998.pbbot.bot.Bot;
-import net.lz1998.pbbot.bot.BotPlugin;
-import net.lz1998.pbbot.utils.Msg;
-import onebot.OnebotEvent;
-import org.jetbrains.annotations.NotNull;
+import com.mikuac.shiro.bot.Bot;
+import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
+import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
+import com.mikuac.shiro.utils.Msg;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -59,7 +59,7 @@ public class BvToAv extends BotPlugin {
     }
 
     @Override
-    public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
+    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
         String msg = event.getRawMessage();
         long userId = event.getUserId();
         if (msg.matches(RegexConst.AV_TO_BV)) {
@@ -82,7 +82,7 @@ public class BvToAv extends BotPlugin {
     }
 
     @Override
-    public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
+    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
         String msg = event.getRawMessage();
         long userId = event.getUserId();
         long groupId = event.getGroupId();

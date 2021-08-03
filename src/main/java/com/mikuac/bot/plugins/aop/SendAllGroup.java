@@ -4,11 +4,10 @@ import com.mikuac.bot.common.utils.RegexUtils;
 import com.mikuac.bot.common.utils.SendMsgUtils;
 import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
+import com.mikuac.shiro.bot.Bot;
+import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import lombok.SneakyThrows;
-import net.lz1998.pbbot.bot.Bot;
-import net.lz1998.pbbot.bot.BotPlugin;
-import onebot.OnebotEvent;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +31,7 @@ public class SendAllGroup extends BotPlugin {
 
     @SneakyThrows
     @Override
-    public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
+    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
         long userId = event.getUserId();
         String msg = event.getRawMessage();
         if (userId != Global.bot_adminId) {

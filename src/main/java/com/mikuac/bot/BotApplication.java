@@ -33,27 +33,6 @@ public class BotApplication {
 
     private static ConfigurableApplicationContext context;
 
-    @Bean
-    public TaskScheduler taskScheduler() {
-        ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
-        taskScheduler.setPoolSize(10);
-        taskScheduler.initialize();
-        return taskScheduler;
-    }
-
-    @Bean
-    @SuppressWarnings("rawtypes")
-    public WebServerFactoryCustomizer webServerFactoryCustomizer() {
-        return (WebServerFactoryCustomizer<ConfigurableServletWebServerFactory>) factory -> {
-            try {
-                factory.setAddress(InetAddress.getByName(Global.server_address));
-            } catch (UnknownHostException e) {
-                log.error("启动地址设置失败: {}", e.getMessage());
-            }
-            factory.setPort(Global.server_port);
-        };
-    }
-
     public static void reboot() {
         log.info("开始重启悠里");
         context.close();
@@ -79,6 +58,27 @@ public class BotApplication {
         // 初始化Telegram框架
         ApiContextInitializer.init();
         log.info(START_MSG);
+    }
+
+    @Bean
+    public TaskScheduler taskScheduler() {
+        ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
+        taskScheduler.setPoolSize(10);
+        taskScheduler.initialize();
+        return taskScheduler;
+    }
+
+    @Bean
+    @SuppressWarnings("rawtypes")
+    public WebServerFactoryCustomizer webServerFactoryCustomizer() {
+        return (WebServerFactoryCustomizer<ConfigurableServletWebServerFactory>) factory -> {
+            try {
+                factory.setAddress(InetAddress.getByName(Global.server_address));
+            } catch (UnknownHostException e) {
+                log.error("启动地址设置失败: {}", e.getMessage());
+            }
+            factory.setPort(Global.server_port);
+        };
     }
 
 }

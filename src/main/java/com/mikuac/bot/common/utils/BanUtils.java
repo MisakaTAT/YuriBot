@@ -22,16 +22,14 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class BanUtils {
 
+    Map<Long, Integer> msgCountMap = new ConcurrentHashMap<>();
+    Map<Long, Long> startTimeMap = new ConcurrentHashMap<>();
     private BanRepository banRepository;
 
     @Autowired
     public void setBanRepository(BanRepository banRepository) {
         this.banRepository = banRepository;
     }
-
-    Map<Long, Integer> msgCountMap = new ConcurrentHashMap<>();
-
-    Map<Long, Long> startTimeMap = new ConcurrentHashMap<>();
 
     public void setBan(long userId) {
         startTimeMap.put(userId, Instant.now().getEpochSecond());

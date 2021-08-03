@@ -5,11 +5,11 @@ import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
 import com.mikuac.bot.entity.SensitiveWordEntity;
 import com.mikuac.bot.repository.SensitiveWordRepository;
-import net.lz1998.pbbot.bot.Bot;
-import net.lz1998.pbbot.bot.BotPlugin;
-import net.lz1998.pbbot.utils.Msg;
-import onebot.OnebotEvent;
-import org.jetbrains.annotations.NotNull;
+import com.mikuac.shiro.bot.Bot;
+import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
+import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
+import com.mikuac.shiro.utils.Msg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,7 +40,7 @@ public class AddSensitiveWord extends BotPlugin {
     }
 
     @Override
-    public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
+    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
         String msg = event.getRawMessage();
         long groupId = event.getGroupId();
         long userId = event.getUserId();
@@ -54,19 +54,19 @@ public class AddSensitiveWord extends BotPlugin {
                 return MESSAGE_BLOCK;
             }
             if (sensitiveWordRepository.findWord(word).isPresent()) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("敏感词已存在，请勿重复添加"), false);
+                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("敏感词已存在，请勿重复添加").build(), false);
                 return MESSAGE_BLOCK;
             }
             SensitiveWordEntity sensitiveWordEntity = new SensitiveWordEntity();
             sensitiveWordEntity.setWord(word);
             sensitiveWordRepository.save(sensitiveWordEntity);
-            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("敏感词添加成功"), false);
+            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("敏感词添加成功").build(), false);
         }
         return MESSAGE_IGNORE;
     }
 
     @Override
-    public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
+    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
         String msg = event.getRawMessage();
         long userId = event.getUserId();
         if (msg.matches(RegexConst.SENSITIVE_WORD)) {

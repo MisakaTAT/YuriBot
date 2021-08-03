@@ -19,6 +19,14 @@ import java.util.Map;
 @Component
 public class TrieUtils {
 
+    /**
+     * trie树中拥有多少分枝（多少个敏感词）
+     */
+    private static int size;
+    /**
+     * 根节点
+     */
+    private final TrieNode rootNode = new TrieNode();
     private SensitiveWordRepository sensitiveWordRepository;
 
     @Autowired
@@ -45,51 +53,6 @@ public class TrieUtils {
         } catch (Exception e) {
             log.info("敏感词库加载异常: [{}]", e.getMessage());
         }
-    }
-
-    /**
-     * 根节点
-     */
-    private final TrieNode rootNode = new TrieNode();
-
-    /**
-     * trie树中拥有多少分枝（多少个敏感词）
-     */
-    private static int size;
-
-    /**
-     * 前缀树
-     */
-    private static class TrieNode {
-
-        // 关键词结束标识
-        private boolean isKeywordEnd = false;
-
-        // 子节点(key是下级字符,value是下级节点)
-        private final Map<Character, TrieNode> subNodes = new HashMap<>();
-
-        public boolean isKeywordEnd() {
-            return isKeywordEnd;
-        }
-
-        public void setKeywordEnd(boolean keywordEnd) {
-            isKeywordEnd = keywordEnd;
-        }
-
-        /**
-         * 添加子节点
-         */
-        public void addSubNode(Character c, TrieNode node) {
-            subNodes.put(c, node);
-        }
-
-        /**
-         * 获取子节点
-         */
-        public TrieNode getSubNode(Character c) {
-            return subNodes.get(c);
-        }
-
     }
 
     /**
@@ -168,6 +131,40 @@ public class TrieUtils {
             }
         }
         return false;
+    }
+
+    /**
+     * 前缀树
+     */
+    private static class TrieNode {
+
+        // 子节点(key是下级字符,value是下级节点)
+        private final Map<Character, TrieNode> subNodes = new HashMap<>();
+        // 关键词结束标识
+        private boolean isKeywordEnd = false;
+
+        public boolean isKeywordEnd() {
+            return isKeywordEnd;
+        }
+
+        public void setKeywordEnd(boolean keywordEnd) {
+            isKeywordEnd = keywordEnd;
+        }
+
+        /**
+         * 添加子节点
+         */
+        public void addSubNode(Character c, TrieNode node) {
+            subNodes.put(c, node);
+        }
+
+        /**
+         * 获取子节点
+         */
+        public TrieNode getSubNode(Character c) {
+            return subNodes.get(c);
+        }
+
     }
 
 }

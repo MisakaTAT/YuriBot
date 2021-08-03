@@ -9,12 +9,12 @@ import com.mikuac.bot.common.utils.*;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
+import com.mikuac.shiro.bot.Bot;
+import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
+import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
+import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
-import net.lz1998.pbbot.bot.Bot;
-import net.lz1998.pbbot.bot.BotPlugin;
-import net.lz1998.pbbot.utils.Msg;
-import onebot.OnebotEvent;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,17 +31,6 @@ import java.util.Map;
 @Slf4j
 @Component
 public class WhatAnime extends BotPlugin {
-
-    private BasicInfo basicInfo;
-
-    private AnimeInfo animeInfo;
-
-    private BanUtils banUtils;
-
-    @Autowired
-    public void setBanUtils(BanUtils banUtils) {
-        this.banUtils = banUtils;
-    }
 
     String graphqlQuery = """
                 query ($id: Int) {
@@ -74,6 +63,14 @@ public class WhatAnime extends BotPlugin {
                   }
                 }
             """;
+    private BasicInfo basicInfo;
+    private AnimeInfo animeInfo;
+    private BanUtils banUtils;
+
+    @Autowired
+    public void setBanUtils(BanUtils banUtils) {
+        this.banUtils = banUtils;
+    }
 
     public void getBasicInfo(String picUrl) throws IOException {
         String result = HttpClientUtils.httpGetWithJson(ApiConst.WHAT_ANIME_BASIC_API + picUrl, false);
@@ -107,7 +104,7 @@ public class WhatAnime extends BotPlugin {
         if (isGroupMsg) {
             sendMsg.at(userId).text("\n");
         }
-        sendMsg.image(data.getCoverImage().getLarge());
+        sendMsg.img(data.getCoverImage().getLarge());
         String animeName = data.getTitle().getChinese();
         if ("".equals(animeName)) {
             animeName = data.getTitle().getNativeName();
@@ -125,7 +122,7 @@ public class WhatAnime extends BotPlugin {
     }
 
     @Override
-    public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
+    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
         long groupId = event.getGroupId();
         long userId = event.getUserId();
         String msg = event.getRawMessage();
@@ -146,7 +143,7 @@ public class WhatAnime extends BotPlugin {
             }
             // 检查是否处于搜(图/本)模式
             if (map.get(key + 1) != null) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("您已经处于搜(图/本)模式，请先退出此模式后再次尝试~"), false);
+                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("您已经处于搜(图/本)模式，请先退出此模式后再次尝试~").build(), false);
                 return MESSAGE_IGNORE;
             }
             SearchModeUtils.setMap(key, groupId, userId, "group");
@@ -182,7 +179,7 @@ public class WhatAnime extends BotPlugin {
                     Msg send = buildMsg(true, userId, data, result);
                     // 发送视频
                     bot.sendGroupMsg(groupId, send.build(), false);
-                    bot.sendGroupMsg(groupId, Msg.builder().video(result.getVideo(), picUrl, true).build(), false);
+                    bot.sendGroupMsg(groupId, Msg.builder().video(result.getVideo(), picUrl).build(), false);
                 } catch (Exception e) {
                     bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("WhatAnime番剧检索失败，请更换图片或稍后重试~").build(), false);
                     log.info("WhatAnime插件检索异常", e);
@@ -194,7 +191,7 @@ public class WhatAnime extends BotPlugin {
     }
 
     @Override
-    public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
+    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
         long userId = event.getUserId();
         String msg = event.getRawMessage();
         // key加1以区分其它搜图模式
@@ -248,7 +245,7 @@ public class WhatAnime extends BotPlugin {
                     Msg send = buildMsg(false, userId, data, result);
                     bot.sendPrivateMsg(userId, send.build(), false);
                     // 发送视频
-                    bot.sendPrivateMsg(userId, Msg.builder().video(result.getVideo(), picUrl, true).build(), false);
+                    bot.sendPrivateMsg(userId, Msg.builder().video(result.getVideo(), picUrl).build(), false);
                 } catch (Exception e) {
                     bot.sendPrivateMsg(userId, "WhatAnime番剧检索失败，请更换图片或稍后重试~", false);
                     log.info("WhatAnime插件检索异常", e);

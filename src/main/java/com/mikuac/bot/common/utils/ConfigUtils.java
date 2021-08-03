@@ -103,19 +103,6 @@ public class ConfigUtils {
         log.info("默认配置文件生成完毕，请按需修改配置文件");
     }
 
-    @PostConstruct
-    public void watchFile() {
-        WatchMonitor monitor = WatchMonitor.createAll("./", new DelayWatcher(new SimpleWatcher() {
-            @Override
-            public void onModify(WatchEvent<?> event, Path currentPath) {
-                if (FILE_NAME.equals(event.context().toString())) {
-                    init(true);
-                }
-            }
-        }, 500));
-        monitor.start();
-    }
-
     public static ConfigBean init(boolean isReload) {
         try {
             checkConfigFileExists(isReload);
@@ -136,6 +123,19 @@ public class ConfigUtils {
             System.exit(0);
             return null;
         }
+    }
+
+    @PostConstruct
+    public void watchFile() {
+        WatchMonitor monitor = WatchMonitor.createAll("./", new DelayWatcher(new SimpleWatcher() {
+            @Override
+            public void onModify(WatchEvent<?> event, Path currentPath) {
+                if (FILE_NAME.equals(event.context().toString())) {
+                    init(true);
+                }
+            }
+        }, 500));
+        monitor.start();
     }
 
 }

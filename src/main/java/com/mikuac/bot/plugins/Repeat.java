@@ -4,11 +4,10 @@ import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.util.RandomUtil;
 import com.mikuac.bot.config.Global;
+import com.mikuac.shiro.bot.Bot;
+import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import lombok.extern.slf4j.Slf4j;
-import net.lz1998.pbbot.bot.Bot;
-import net.lz1998.pbbot.bot.BotPlugin;
-import onebot.OnebotEvent;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -42,7 +41,7 @@ public class Repeat extends BotPlugin {
     int randomCount = RandomUtil.randomInt(Global.repeat_randomCountSize);
 
     @Override
-    public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
+    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
         String msg = event.getRawMessage();
         long groupId = event.getGroupId();
 

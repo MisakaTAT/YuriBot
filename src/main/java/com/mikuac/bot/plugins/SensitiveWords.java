@@ -2,13 +2,13 @@ package com.mikuac.bot.plugins;
 
 import com.mikuac.bot.common.utils.TrieUtils;
 import com.mikuac.bot.config.Global;
+import com.mikuac.shiro.bot.Bot;
+import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.dto.action.common.ActionData;
+import com.mikuac.shiro.dto.action.response.GroupMemberInfoResp;
+import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
+import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
-import net.lz1998.pbbot.bot.Bot;
-import net.lz1998.pbbot.bot.BotPlugin;
-import net.lz1998.pbbot.utils.Msg;
-import onebot.OnebotApi;
-import onebot.OnebotEvent;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +21,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class SensitiveWords extends BotPlugin {
 
+    private final static String ADMIN_ROLE = "admin";
+    private final static String OWNER_ROLE = "owner";
     private TrieUtils trieUtils;
 
     @Autowired
@@ -28,27 +30,23 @@ public class SensitiveWords extends BotPlugin {
         this.trieUtils = trieUtils;
     }
 
-    private final static String ADMIN_ROLE = "admin";
-
-    private final static String OWNER_ROLE = "owner";
-
     @Override
-    public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
+    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
         String msg = event.getRawMessage().replaceAll("\\s*", "");
         long userId = event.getUserId();
         long groupId = event.getGroupId();
         int msgId = event.getMessageId();
         // 检查Bot是否有管理员权限
-        OnebotApi.GetGroupMemberInfoResp groupBotInfo = bot.getGroupMemberInfo(groupId, Global.bot_selfId, false);
-        if (groupBotInfo != null) {
-            if (!ADMIN_ROLE.equals(groupBotInfo.getRole())) {
+        ActionData<GroupMemberInfoResp> groupBotInfo = bot.getGroupMemberInfo(groupId, Global.bot_selfId, false);
+        if (groupBotInfo.getData() != null) {
+            if (!ADMIN_ROLE.equals(groupBotInfo.getData().getRole())) {
                 return MESSAGE_IGNORE;
             }
         }
         // 检查发送者是否为管理员或群主或者Bot管理员
-        OnebotApi.GetGroupMemberInfoResp groupMemberInfo = bot.getGroupMemberInfo(groupId, userId, false);
-        if (groupMemberInfo != null) {
-            String getRole = groupMemberInfo.getRole();
+        ActionData<GroupMemberInfoResp> groupMemberInfo = bot.getGroupMemberInfo(groupId, userId, false);
+        if (groupMemberInfo.getData() != null) {
+            String getRole = groupMemberInfo.getData().getRole();
             if (ADMIN_ROLE.equals(getRole) || Global.bot_adminId == userId || OWNER_ROLE.equals(getRole)) {
                 return MESSAGE_IGNORE;
             }

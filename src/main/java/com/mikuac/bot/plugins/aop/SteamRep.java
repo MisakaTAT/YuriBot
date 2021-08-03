@@ -6,12 +6,12 @@ import com.mikuac.bot.common.utils.HttpClientUtils;
 import com.mikuac.bot.common.utils.RegexUtils;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.RegexConst;
+import com.mikuac.shiro.bot.Bot;
+import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
+import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
+import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
-import net.lz1998.pbbot.bot.Bot;
-import net.lz1998.pbbot.bot.BotPlugin;
-import net.lz1998.pbbot.utils.Msg;
-import onebot.OnebotEvent;
-import org.jetbrains.annotations.NotNull;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -123,7 +123,7 @@ public class SteamRep extends BotPlugin {
         if (isGroupMsg) {
             sendMsg.at(userId).text("\n");
         }
-        sendMsg.image(steamRepBean.getAvatar()
+        sendMsg.img(steamRepBean.getAvatar()
         );
         sendMsg.text("\nSteam 名称: " + steamRepBean.getSteamNickName());
         sendMsg.text("\nVAC 作弊系统检测: " + steamRepBean.getVacCheck());
@@ -144,7 +144,7 @@ public class SteamRep extends BotPlugin {
     }
 
     @Override
-    public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
+    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
         String msg = event.getRawMessage();
         long userId = event.getUserId();
 
@@ -162,7 +162,7 @@ public class SteamRep extends BotPlugin {
     }
 
     @Override
-    public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
+    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
         String msg = event.getRawMessage();
         long groupId = event.getGroupId();
         long userId = event.getUserId();

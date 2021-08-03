@@ -9,18 +9,19 @@ import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
 import com.mikuac.bot.repository.PluginSwitchRepository;
+import com.mikuac.shiro.bot.Bot;
+import com.mikuac.shiro.bot.BotContainer;
+import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.dto.action.common.ActionData;
+import com.mikuac.shiro.dto.action.common.MsgId;
+import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
+import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
+import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
-import net.lz1998.pbbot.bot.Bot;
-import net.lz1998.pbbot.bot.BotContainer;
-import net.lz1998.pbbot.bot.BotPlugin;
-import net.lz1998.pbbot.utils.Msg;
-import onebot.OnebotApi;
-import onebot.OnebotEvent;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,39 +34,19 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class SeTu extends BotPlugin {
 
+    Map<Long, Long> lastGetTimeMap = new ConcurrentHashMap<>();
+    Map<Long, Integer> getCountMap = new ConcurrentHashMap<>();
+
+    @Resource
     private SetuBean seTuBean;
 
-    @Autowired
-    public void setSeTuBean(SetuBean seTuBean) {
-        this.seTuBean = seTuBean;
-    }
-
-    private BotContainer botContainer;
-
-    @Autowired
-    public void setBotContainer(BotContainer botContainer) {
-        this.botContainer = botContainer;
-    }
-
+    @Resource
     private PluginSwitchRepository pluginSwitchRepository;
 
-    @Autowired
-    public void setPluginSwitchRepository(PluginSwitchRepository pluginSwitchRepository) {
-        this.pluginSwitchRepository = pluginSwitchRepository;
-    }
-
+    @Resource
     private AsyncTask asyncTask;
 
-    @Autowired
-    public void setAsyncTask(AsyncTask asyncTask) {
-        this.asyncTask = asyncTask;
-    }
-
     private String picUrl;
-
-    Map<Long, Long> lastGetTimeMap = new ConcurrentHashMap<>();
-
-    Map<Long, Integer> getCountMap = new ConcurrentHashMap<>();
 
     @Scheduled(cron = "0 0 00 * * ?")
     public void clearMaxGetCount() {
@@ -80,7 +61,7 @@ public class SeTu extends BotPlugin {
 
 
     @Override
-    public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
+    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
         String msg = event.getRawMessage();
         // 私聊消息处理
         if (msg.matches(RegexConst.SETU)) {
@@ -108,10 +89,10 @@ public class SeTu extends BotPlugin {
                         }
                         bot.sendPrivateMsg(userId, stInfoMsg.build(), false);
                         // 构建闪照图片消息
-                        Msg flashPic = Msg.builder().flash(picUrl);
-                        OnebotApi.SendPrivateMsgResp picMsg = bot.sendPrivateMsg(userId, flashPic.build(), false);
-                        if (picMsg != null) {
-                            asyncTask.deleteMsg(picMsg.getMessageId(), botContainer.getBots().get(Global.bot_selfId));
+                        Msg flashPic = Msg.builder().flashImg(picUrl);
+                        ActionData<MsgId> picMsg = bot.sendPrivateMsg(userId, flashPic.build(), false);
+                        if (picMsg.getData() != null) {
+                            asyncTask.deleteMsg(picMsg.getData().getMessageId(), BotContainer.robots.get(Global.bot_selfId));
                         }
                     } catch (Exception e) {
                         lastGetTimeMap.put(userId, 0L);
@@ -129,7 +110,7 @@ public class SeTu extends BotPlugin {
     }
 
     @Override
-    public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
+    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
         String msg = event.getRawMessage();
         // 私聊消息处理
         if (msg.matches(RegexConst.SETU)) {
@@ -162,10 +143,10 @@ public class SeTu extends BotPlugin {
                         }
                         bot.sendGroupMsg(groupId, stInfoMsg.build(), false);
                         // 构建闪照图片消息
-                        Msg flashPic = Msg.builder().flash(picUrl);
-                        OnebotApi.SendGroupMsgResp picMsg = bot.sendGroupMsg(groupId, flashPic.build(), false);
-                        if (picMsg != null) {
-                            asyncTask.deleteMsg(picMsg.getMessageId(), botContainer.getBots().get(Global.bot_selfId));
+                        Msg flashPic = Msg.builder().flashImg(picUrl);
+                        ActionData<MsgId> picMsg = bot.sendGroupMsg(groupId, flashPic.build(), false);
+                        if (picMsg.getData() != null) {
+                            asyncTask.deleteMsg(picMsg.getData().getMessageId(), BotContainer.robots.get(Global.bot_selfId));
                         }
                     } catch (Exception e) {
                         getCountMap.put(userId, getCountMap.get(userId) - 1);

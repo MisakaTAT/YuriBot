@@ -2,11 +2,11 @@ package com.mikuac.bot.plugins.aop;
 
 import com.mikuac.bot.common.utils.CommonUtils;
 import com.mikuac.bot.config.RegexConst;
-import net.lz1998.pbbot.bot.Bot;
-import net.lz1998.pbbot.bot.BotPlugin;
-import net.lz1998.pbbot.utils.Msg;
-import onebot.OnebotEvent;
-import org.jetbrains.annotations.NotNull;
+import com.mikuac.shiro.bot.Bot;
+import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
+import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
+import com.mikuac.shiro.utils.Msg;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -24,26 +24,26 @@ public class Ping extends BotPlugin {
     private CommonUtils commonUtils;
 
     @Override
-    public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
+    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
         long upTime = ManagementFactory.getRuntimeMXBean().getUptime() / 1000;
         String msg = event.getRawMessage();
         long userId = event.getUserId();
         if (msg.matches(RegexConst.PING)) {
             String imgUrl = commonUtils.getHostAndPort() + "/img/ping.jpg";
-            Msg.builder().text("UpTime: " + upTime + "s\n").image(imgUrl).sendToFriend(bot, userId);
+            bot.sendPrivateMsg(userId, Msg.builder().text("UpTime: " + upTime + "s\n").img(imgUrl).build(), false);
         }
         return MESSAGE_IGNORE;
     }
 
     @Override
-    public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
+    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
         long upTime = ManagementFactory.getRuntimeMXBean().getUptime() / 1000;
         String msg = event.getRawMessage();
         long userId = event.getUserId();
         long groupId = event.getGroupId();
         if (msg.matches(RegexConst.PING)) {
             String imgUrl = commonUtils.getHostAndPort() + "/img/ping.jpg";
-            Msg.builder().at(userId).text("UpTime: " + upTime + "s\n").image(imgUrl).sendToGroup(bot, groupId);
+            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("UpTime: " + upTime + "s\n").img(imgUrl).build(), false);
         }
         return MESSAGE_IGNORE;
     }

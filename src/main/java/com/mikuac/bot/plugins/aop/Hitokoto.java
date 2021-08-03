@@ -7,12 +7,12 @@ import com.mikuac.bot.common.utils.HttpClientUtils;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
+import com.mikuac.shiro.bot.Bot;
+import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
+import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
+import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
-import net.lz1998.pbbot.bot.Bot;
-import net.lz1998.pbbot.bot.BotPlugin;
-import net.lz1998.pbbot.utils.Msg;
-import onebot.OnebotEvent;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -29,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class Hitokoto extends BotPlugin {
 
+    private final String types = "abcdefghijkl";
     /**
      * 初始化typesMap
      */
@@ -48,17 +49,13 @@ public class Hitokoto extends BotPlugin {
             put('l', "抖机灵");
         }
     };
-
-    private final String types = "abcdefghijkl";
-
+    Map<Long, Long> lastGetTimeMap = new ConcurrentHashMap<>();
     @JSONField(serialzeFeatures = {SerializerFeature.WriteMapNullValue})
     private String hitokoto;
     @JSONField(serialzeFeatures = {SerializerFeature.WriteMapNullValue})
     private String from;
     @JSONField(serialzeFeatures = {SerializerFeature.WriteMapNullValue})
     private char getType;
-
-    Map<Long, Long> lastGetTimeMap = new ConcurrentHashMap<>();
 
     public void getData(char type) {
         String result = HttpClientUtils.httpGetWithJson(ApiConst.HITOKOTO_API + type, false);
@@ -69,7 +66,7 @@ public class Hitokoto extends BotPlugin {
     }
 
     @Override
-    public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
+    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
         String msg = event.getRawMessage();
         // 群组消息处理
         if (msg.matches(RegexConst.HITOKOTO)) {
@@ -106,7 +103,7 @@ public class Hitokoto extends BotPlugin {
     }
 
     @Override
-    public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
+    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
         String msg = event.getRawMessage();
         // 私聊消息处理
         if (msg.matches(RegexConst.HITOKOTO)) {

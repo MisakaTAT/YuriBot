@@ -1,11 +1,11 @@
 package com.mikuac.bot.plugins.aop;
 
 import com.mikuac.bot.config.RegexConst;
-import net.lz1998.pbbot.bot.Bot;
-import net.lz1998.pbbot.bot.BotPlugin;
-import net.lz1998.pbbot.utils.Msg;
-import onebot.OnebotEvent;
-import org.jetbrains.annotations.NotNull;
+import com.mikuac.shiro.bot.Bot;
+import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
+import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
+import com.mikuac.shiro.utils.Msg;
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SendHelp extends BotPlugin {
-
 
     public Msg buildMsg(Boolean isGroupMsg, long userId) {
         Msg sendMsg = Msg.builder();
@@ -29,7 +28,7 @@ public class SendHelp extends BotPlugin {
     }
 
     @Override
-    public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
+    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
         long userId = event.getUserId();
         String msg = event.getRawMessage();
         if (msg.matches(RegexConst.SEND_HELP)) {
@@ -39,7 +38,7 @@ public class SendHelp extends BotPlugin {
     }
 
     @Override
-    public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
+    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
         String msg = event.getRawMessage();
         long userId = event.getUserId();
         long groupId = event.getGroupId();

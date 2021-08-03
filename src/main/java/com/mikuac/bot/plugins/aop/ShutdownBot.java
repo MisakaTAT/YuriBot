@@ -3,12 +3,12 @@ package com.mikuac.bot.plugins.aop;
 import com.mikuac.bot.BotApplication;
 import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
+import com.mikuac.shiro.bot.Bot;
+import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
+import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
+import com.mikuac.shiro.utils.Msg;
 import lombok.SneakyThrows;
-import net.lz1998.pbbot.bot.Bot;
-import net.lz1998.pbbot.bot.BotPlugin;
-import net.lz1998.pbbot.utils.Msg;
-import onebot.OnebotEvent;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,7 +21,7 @@ public class ShutdownBot extends BotPlugin {
 
     @SneakyThrows
     @Override
-    public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
+    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
         String msg = event.getRawMessage();
         long userId = event.getUserId();
         if (msg.matches(RegexConst.SHUTDOWN_BOT)) {
@@ -36,7 +36,7 @@ public class ShutdownBot extends BotPlugin {
     }
 
     @Override
-    public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
+    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
         String msg = event.getRawMessage();
         long userId = event.getUserId();
         long groupId = event.getGroupId();

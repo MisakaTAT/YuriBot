@@ -1,7 +1,7 @@
 package com.mikuac.bot.common.utils;
 
 import com.mikuac.bot.bean.SearchBean;
-import net.lz1998.pbbot.utils.Msg;
+import com.mikuac.shiro.utils.Msg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -17,14 +17,42 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class SearchModeUtils {
 
+    private static final Map<Long, SearchBean> SEARCH_MODE = new ConcurrentHashMap<>();
     private SendMsgUtils sendMsgUtils;
+
+    public static void setMap(long key, long groupId, long userId, String msgType) {
+        SearchBean searchBean = new SearchBean();
+        searchBean.setKey(key);
+        searchBean.setGroupId(groupId);
+        searchBean.setUserId(userId);
+        searchBean.setEnable(true);
+        searchBean.setStartTime(Instant.now().getEpochSecond());
+        searchBean.setMsgType(msgType);
+        SEARCH_MODE.put(key, searchBean);
+    }
+
+    public static void setMap(long key, long userId, String msgType) {
+        SearchBean searchBean = new SearchBean();
+        searchBean.setKey(key);
+        searchBean.setUserId(userId);
+        searchBean.setEnable(true);
+        searchBean.setStartTime(Instant.now().getEpochSecond());
+        searchBean.setMsgType(msgType);
+        SEARCH_MODE.put(key, searchBean);
+    }
+
+    public static Map<Long, SearchBean> getMap() {
+        return SEARCH_MODE;
+    }
+
+    public static void quitSearch(long key) {
+        SEARCH_MODE.remove(key);
+    }
 
     @Autowired
     public void setSendMsgUtils(SendMsgUtils sendMsgUtils) {
         this.sendMsgUtils = sendMsgUtils;
     }
-
-    private static final Map<Long, SearchBean> SEARCH_MODE = new ConcurrentHashMap<>();
 
     @Scheduled(cron = "0/5 * * * * ?", zone = "Asia/Shanghai")
     public void timeOutRemove() throws InterruptedException {
@@ -54,35 +82,6 @@ public class SearchModeUtils {
                 }
             }
         }
-    }
-
-    public static void setMap(long key, long groupId, long userId, String msgType) {
-        SearchBean searchBean = new SearchBean();
-        searchBean.setKey(key);
-        searchBean.setGroupId(groupId);
-        searchBean.setUserId(userId);
-        searchBean.setEnable(true);
-        searchBean.setStartTime(Instant.now().getEpochSecond());
-        searchBean.setMsgType(msgType);
-        SEARCH_MODE.put(key, searchBean);
-    }
-
-    public static void setMap(long key, long userId, String msgType) {
-        SearchBean searchBean = new SearchBean();
-        searchBean.setKey(key);
-        searchBean.setUserId(userId);
-        searchBean.setEnable(true);
-        searchBean.setStartTime(Instant.now().getEpochSecond());
-        searchBean.setMsgType(msgType);
-        SEARCH_MODE.put(key, searchBean);
-    }
-
-    public static Map<Long, SearchBean> getMap() {
-        return SEARCH_MODE;
-    }
-
-    public static void quitSearch(long key) {
-        SEARCH_MODE.remove(key);
     }
 
 }

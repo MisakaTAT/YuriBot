@@ -1,12 +1,12 @@
 package com.mikuac.bot.plugins;
 
 import com.mikuac.bot.config.Global;
+import com.mikuac.shiro.bot.Bot;
+import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.dto.event.notice.GroupDecreaseNoticeEvent;
+import com.mikuac.shiro.dto.event.notice.GroupIncreaseNoticeEvent;
+import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
-import net.lz1998.pbbot.bot.Bot;
-import net.lz1998.pbbot.bot.BotPlugin;
-import net.lz1998.pbbot.utils.Msg;
-import onebot.OnebotEvent;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class GroupJoinAndQuit extends BotPlugin {
 
     @Override
-    public int onGroupIncreaseNotice(@NotNull Bot bot, @NotNull OnebotEvent.GroupIncreaseNoticeEvent event) {
+    public int onGroupIncreaseNotice(Bot bot, GroupIncreaseNoticeEvent event) {
         long groupId = event.getGroupId();
         long userId = event.getUserId();
         // 排除BOT自身入群通知
@@ -35,7 +35,7 @@ public class GroupJoinAndQuit extends BotPlugin {
     }
 
     @Override
-    public int onGroupDecreaseNotice(@NotNull Bot bot, @NotNull OnebotEvent.GroupDecreaseNoticeEvent event) {
+    public int onGroupDecreaseNotice(Bot bot, GroupDecreaseNoticeEvent event) {
         long groupId = event.getGroupId();
         long userId = event.getUserId();
         Msg msg = Msg.builder()

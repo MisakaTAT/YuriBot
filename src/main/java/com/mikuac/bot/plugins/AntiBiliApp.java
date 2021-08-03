@@ -8,13 +8,13 @@ import com.mikuac.bot.common.utils.HttpClientUtils;
 import com.mikuac.bot.common.utils.RegexUtils;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.RegexConst;
+import com.mikuac.shiro.bot.Bot;
+import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
+import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
+import com.mikuac.shiro.utils.Msg;
 import lombok.SneakyThrows;
-import net.lz1998.pbbot.bot.Bot;
-import net.lz1998.pbbot.bot.BotPlugin;
-import net.lz1998.pbbot.utils.Msg;
-import onebot.OnebotEvent;
 import org.apache.commons.text.StringEscapeUtils;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -60,7 +60,7 @@ public class AntiBiliApp extends BotPlugin {
 
     @SneakyThrows
     @Override
-    public int onPrivateMessage(@NotNull Bot bot, @NotNull OnebotEvent.PrivateMessageEvent event) {
+    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
         String videoUrl = "https://www.bilibili.com/video/";
         String msg = StringEscapeUtils.unescapeHtml4(event.getRawMessage()).replaceAll("\\\\", "");
         long userId = event.getUserId();
@@ -76,7 +76,7 @@ public class AntiBiliApp extends BotPlugin {
                     AntiBiliData data = antiBiliBean.getData();
                     AntiBiliStat stat = antiBiliBean.getData().getStat();
                     Msg sendMsg = Msg.builder()
-                            .image(data.getPic())
+                            .img(data.getPic())
                             .text("\n" + data.getTitle())
                             .text("\nUP：" + data.getOwner().getName())
                             .text("\n播放：" + stat.getView() + "  弹幕：" + stat.getDanmaku())
@@ -94,7 +94,7 @@ public class AntiBiliApp extends BotPlugin {
 
     @SneakyThrows
     @Override
-    public int onGroupMessage(@NotNull Bot bot, @NotNull OnebotEvent.GroupMessageEvent event) {
+    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
         String videoUrl = "https://www.bilibili.com/video/";
         String msg = StringEscapeUtils.unescapeHtml4(event.getRawMessage()).replaceAll("\\\\", "");
         long userId = event.getUserId();
@@ -112,7 +112,7 @@ public class AntiBiliApp extends BotPlugin {
                     AntiBiliStat stat = antiBiliBean.getData().getStat();
                     Msg sendMsg = Msg.builder()
                             .at(userId)
-                            .image(data.getPic())
+                            .img(data.getPic())
                             .text("\n" + data.getTitle())
                             .text("\nUP：" + data.getOwner().getName())
                             .text("\n播放：" + stat.getView() + "  弹幕：" + stat.getDanmaku())
