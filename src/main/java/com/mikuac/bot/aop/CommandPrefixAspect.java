@@ -6,10 +6,9 @@ import com.mikuac.shiro.bot.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
@@ -33,8 +32,8 @@ public class CommandPrefixAspect {
     private void prefixPoint() {
     }
 
-    @Around(value = "prefixPoint()")
-    public Object prefixCheck(ProceedingJoinPoint pjp) throws Throwable {
+    @Before(value = "prefixPoint()")
+    public Object prefixCheck(JoinPoint pjp) throws Throwable {
         Object[] args = pjp.getArgs();
         for (int i = 0; i < args.length; i++) {
             // 处理群组消息
@@ -82,9 +81,6 @@ public class CommandPrefixAspect {
                 }
             }
         }
-
-        return pjp.proceed(args);
-
+        return pjp;
     }
-
 }

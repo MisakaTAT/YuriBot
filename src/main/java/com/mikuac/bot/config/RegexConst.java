@@ -67,4 +67,6 @@ public class RegexConst {
 
     public final static String PING = "(?i)ping";
 
+    public final static String GROUP_AT = "^\\[CQ:at,qq=(.*?)\\]";
+
 }
