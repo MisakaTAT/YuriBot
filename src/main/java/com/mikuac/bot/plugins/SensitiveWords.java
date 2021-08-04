@@ -39,14 +39,14 @@ public class SensitiveWords extends BotPlugin {
         int msgId = event.getMessageId();
         // 检查Bot是否有管理员权限
         ActionData<GroupMemberInfoResp> groupBotInfo = bot.getGroupMemberInfo(groupId, Global.bot_selfId, false);
-        if (groupBotInfo.getData() != null) {
+        if (groupBotInfo != null && groupBotInfo.getData() != null) {
             if (!ADMIN_ROLE.equals(groupBotInfo.getData().getRole())) {
                 return MESSAGE_IGNORE;
             }
         }
         // 检查发送者是否为管理员或群主或者Bot管理员
         ActionData<GroupMemberInfoResp> groupMemberInfo = bot.getGroupMemberInfo(groupId, userId, false);
-        if (groupMemberInfo.getData() != null) {
+        if (groupMemberInfo != null && groupMemberInfo.getData() != null) {
             String getRole = groupMemberInfo.getData().getRole();
             if (ADMIN_ROLE.equals(getRole) || Global.bot_adminId == userId || OWNER_ROLE.equals(getRole)) {
                 return MESSAGE_IGNORE;
