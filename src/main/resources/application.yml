@@ -8,31 +8,32 @@ spring:
       ddl-auto: update
     show-sql: false
     open-in-view: false
-  bot:
-    plugin-list:
-      - com.mikuac.bot.plugins.SensitiveWords
-      - com.mikuac.bot.plugins.filter.TcBotFilter
-      - com.mikuac.bot.plugins.aop.EventLog
-      - com.mikuac.bot.plugins.aop.Maintenance
-      - com.mikuac.bot.plugins.aop.RebootBot
-      - com.mikuac.bot.plugins.aop.ShutdownBot
-      - com.mikuac.bot.plugins.aop.SendHelp
-      - com.mikuac.bot.plugins.aop.Hitokoto
-      - com.mikuac.bot.plugins.GroupJoinAndQuit
-      - com.mikuac.bot.plugins.aop.RainbowSixStats
-      - com.mikuac.bot.plugins.aop.SeTu
-      - com.mikuac.bot.plugins.aop.SendAllGroup
-      - com.mikuac.bot.plugins.aop.PluginSwitch
-      - com.mikuac.bot.plugins.aop.WhatAnime
-      - com.mikuac.bot.plugins.aop.SauceNao
-      - com.mikuac.bot.plugins.aop.GetSysInfo
-      - com.mikuac.bot.plugins.aop.BvToAv
-      - com.mikuac.bot.plugins.Repeat
-      - com.mikuac.bot.plugins.GroupAtMe
-      - com.mikuac.bot.plugins.AntiBiliApp
-      - com.mikuac.bot.plugins.GroupMsgCount
-      - com.mikuac.bot.plugins.aop.BlockChain
-      - com.mikuac.bot.plugins.aop.PhoenixWright
-      - com.mikuac.bot.plugins.aop.SteamRep
-      - com.mikuac.bot.plugins.aop.AddSensitiveWord
-      - com.mikuac.bot.plugins.aop.Ping
+
+shiro:
+  plugin-list:
+    - com.mikuac.bot.plugins.SensitiveWords
+    - com.mikuac.bot.plugins.filter.TcBotFilter
+    - com.mikuac.bot.plugins.aop.EventLog
+    - com.mikuac.bot.plugins.aop.Maintenance
+    - com.mikuac.bot.plugins.aop.RebootBot
+    - com.mikuac.bot.plugins.aop.ShutdownBot
+    - com.mikuac.bot.plugins.aop.SendHelp
+    - com.mikuac.bot.plugins.aop.Hitokoto
+    - com.mikuac.bot.plugins.GroupJoinAndQuit
+    - com.mikuac.bot.plugins.aop.RainbowSixStats
+    - com.mikuac.bot.plugins.aop.SeTu
+    - com.mikuac.bot.plugins.aop.SendAllGroup
+    - com.mikuac.bot.plugins.aop.PluginSwitch
+    - com.mikuac.bot.plugins.aop.WhatAnime
+    - com.mikuac.bot.plugins.aop.SauceNao
+    - com.mikuac.bot.plugins.aop.GetSysInfo
+    - com.mikuac.bot.plugins.aop.BvToAv
+    - com.mikuac.bot.plugins.Repeat
+    - com.mikuac.bot.plugins.GroupAtMe
+    - com.mikuac.bot.plugins.AntiBiliApp
+    - com.mikuac.bot.plugins.GroupMsgCount
+    - com.mikuac.bot.plugins.aop.BlockChain
+    - com.mikuac.bot.plugins.aop.PhoenixWright
+    - com.mikuac.bot.plugins.aop.SteamRep
+    - com.mikuac.bot.plugins.aop.AddSensitiveWord
+    - com.mikuac.bot.plugins.aop.Ping
