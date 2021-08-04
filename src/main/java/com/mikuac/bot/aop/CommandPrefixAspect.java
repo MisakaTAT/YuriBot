@@ -6,9 +6,9 @@ import com.mikuac.shiro.bot.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
@@ -32,8 +32,8 @@ public class CommandPrefixAspect {
     private void prefixPoint() {
     }
 
-    @Before(value = "prefixPoint()")
-    public Object prefixCheck(JoinPoint pjp) throws Throwable {
+    @Around(value = "prefixPoint()")
+    public Object prefixCheck(ProceedingJoinPoint pjp) throws Throwable {
         Object[] args = pjp.getArgs();
         for (int i = 0; i < args.length; i++) {
             // 处理群组消息
@@ -54,8 +54,9 @@ public class CommandPrefixAspect {
                 }
                 // 如果消息携带prefix则去除prefix并放行
                 if (rawMsg.startsWith(Global.prefix_prefix)) {
-                    event.setRawMessage(rawMsg.substring(Global.prefix_prefix.length()));
-                    args[i] = event;
+                    var eventBuilder = event.toBuilder();
+                    eventBuilder.rawMessage(rawMsg.substring(Global.prefix_prefix.length()));
+                    args[i] = eventBuilder.build();
                 }
             }
             // 处理私聊消息
@@ -76,11 +77,12 @@ public class CommandPrefixAspect {
                 }
                 // 如果消息携带prefix则去除prefix并放行
                 if (rawMsg.startsWith(Global.prefix_prefix)) {
-                    event.setRawMessage(rawMsg.substring(Global.prefix_prefix.length()));
-                    args[i] = event;
+                    var eventBuilder = event.toBuilder();
+                    eventBuilder.rawMessage(rawMsg.substring(Global.prefix_prefix.length()));
+                    args[i] = eventBuilder.build();
                 }
             }
         }
-        return pjp;
+        return pjp.proceed(args);
     }
 }
