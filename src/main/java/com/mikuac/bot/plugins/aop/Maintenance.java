@@ -6,6 +6,7 @@ import com.mikuac.shiro.bot.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import com.mikuac.shiro.utils.Msg;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class Maintenance extends BotPlugin {
 
     @Override
-    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
+    public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
         long userId = event.getUserId();
         if (Global.maintenance_enable) {
             Msg msgBuilder = Msg.builder()
@@ -32,7 +33,7 @@ public class Maintenance extends BotPlugin {
     }
 
     @Override
-    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
+    public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         long userId = event.getUserId();
         long groupId = event.getGroupId();
         if (Global.maintenance_enable) {

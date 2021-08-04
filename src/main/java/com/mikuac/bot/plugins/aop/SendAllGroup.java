@@ -8,6 +8,7 @@ import com.mikuac.shiro.bot.Bot;
 import com.mikuac.shiro.bot.BotPlugin;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import lombok.SneakyThrows;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +32,7 @@ public class SendAllGroup extends BotPlugin {
 
     @SneakyThrows
     @Override
-    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
+    public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
         long userId = event.getUserId();
         String msg = event.getRawMessage();
         if (userId != Global.bot_adminId) {

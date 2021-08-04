@@ -14,6 +14,7 @@ import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 import oshi.hardware.*;
 
@@ -92,7 +93,7 @@ public class GetSysInfo extends BotPlugin {
     }
 
     @Override
-    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
+    public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
         String msg = event.getRawMessage();
         // 获取系统信息
         if (msg.matches(RegexConst.GET_SYS_INFO)) {
@@ -121,7 +122,7 @@ public class GetSysInfo extends BotPlugin {
     }
 
     @Override
-    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
+    public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         String msg = event.getRawMessage();
         if (msg.matches(RegexConst.GET_SYS_INFO)) {
             long uerId = event.getUserId();

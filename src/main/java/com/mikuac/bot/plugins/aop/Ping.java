@@ -7,6 +7,7 @@ import com.mikuac.shiro.bot.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import com.mikuac.shiro.utils.Msg;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -24,7 +25,7 @@ public class Ping extends BotPlugin {
     private CommonUtils commonUtils;
 
     @Override
-    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
+    public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
         long upTime = ManagementFactory.getRuntimeMXBean().getUptime() / 1000;
         String msg = event.getRawMessage();
         long userId = event.getUserId();
@@ -36,7 +37,7 @@ public class Ping extends BotPlugin {
     }
 
     @Override
-    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
+    public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         long upTime = ManagementFactory.getRuntimeMXBean().getUptime() / 1000;
         String msg = event.getRawMessage();
         long userId = event.getUserId();

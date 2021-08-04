@@ -9,6 +9,7 @@ import com.mikuac.shiro.bot.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -59,8 +60,8 @@ public class GroupMsgCount extends BotPlugin {
         }
     }
 
-    /*
-    一分钟持久化一次，值设置为50错开12点整的统计定时任务，防止sqlite同时读写出现locked
+    /**
+     * 一分钟持久化一次，值设置为50错开12点整的统计定时任务，防止sqlite同时读写出现locked
      */
     @Scheduled(cron = "50 * * * * ?", zone = "Asia/Shanghai")
     private void cachePersistent() {
@@ -94,7 +95,7 @@ public class GroupMsgCount extends BotPlugin {
     }
 
     @Override
-    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
+    public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         long userId = event.getUserId();
         long groupId = event.getGroupId();
         MsgCountCacheBean mb = cache.getOrDefault(userId + groupId, null);

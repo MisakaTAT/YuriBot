@@ -13,6 +13,7 @@ import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -106,7 +107,7 @@ public class RainbowSixStats extends BotPlugin {
     }
 
     @Override
-    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
+    public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         String msg = event.getRawMessage();
         if (msg.matches(RegexConst.RAINBOW_SIX_STATS)) {
             long groupId = event.getGroupId();
@@ -131,7 +132,7 @@ public class RainbowSixStats extends BotPlugin {
     }
 
     @Override
-    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
+    public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
         String msg = event.getRawMessage();
         if (msg.matches(RegexConst.RAINBOW_SIX_STATS)) {
             long userId = event.getUserId();

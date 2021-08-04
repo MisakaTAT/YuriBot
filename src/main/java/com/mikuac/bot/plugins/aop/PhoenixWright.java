@@ -7,6 +7,7 @@ import com.mikuac.shiro.bot.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import com.mikuac.shiro.utils.Msg;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.net.URLEncoder;
@@ -23,7 +24,7 @@ import java.util.Objects;
 public class PhoenixWright extends BotPlugin {
 
     @Override
-    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
+    public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         String msg = event.getRawMessage();
         long groupId = event.getGroupId();
         long userId = event.getUserId();
@@ -39,7 +40,7 @@ public class PhoenixWright extends BotPlugin {
     }
 
     @Override
-    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
+    public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
         String msg = event.getRawMessage();
         long userId = event.getUserId();
         if (msg.matches(RegexConst.PHOENIX_WRIGHT)) {

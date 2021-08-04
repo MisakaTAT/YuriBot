@@ -15,6 +15,7 @@ import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import com.mikuac.shiro.utils.Msg;
 import lombok.SneakyThrows;
 import org.apache.commons.text.StringEscapeUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -60,7 +61,7 @@ public class AntiBiliApp extends BotPlugin {
 
     @SneakyThrows
     @Override
-    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
+    public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
         String videoUrl = "https://www.bilibili.com/video/";
         String msg = StringEscapeUtils.unescapeHtml4(event.getRawMessage()).replaceAll("\\\\", "");
         long userId = event.getUserId();
@@ -94,7 +95,7 @@ public class AntiBiliApp extends BotPlugin {
 
     @SneakyThrows
     @Override
-    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
+    public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         String videoUrl = "https://www.bilibili.com/video/";
         String msg = StringEscapeUtils.unescapeHtml4(event.getRawMessage()).replaceAll("\\\\", "");
         long userId = event.getUserId();

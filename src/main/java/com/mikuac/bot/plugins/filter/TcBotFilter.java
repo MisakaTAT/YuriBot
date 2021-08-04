@@ -4,6 +4,7 @@ import com.mikuac.shiro.bot.Bot;
 import com.mikuac.shiro.bot.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Component;
 public class TcBotFilter extends BotPlugin {
 
     @Override
-    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
+    public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         long userId = event.getUserId();
         long startId = 2854196300L;
         long endId = 2854216399L;

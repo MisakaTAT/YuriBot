@@ -6,6 +6,7 @@ import com.mikuac.shiro.bot.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import com.mikuac.shiro.utils.Msg;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,7 +29,7 @@ public class SendHelp extends BotPlugin {
     }
 
     @Override
-    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
+    public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
         long userId = event.getUserId();
         String msg = event.getRawMessage();
         if (msg.matches(RegexConst.SEND_HELP)) {
@@ -38,7 +39,7 @@ public class SendHelp extends BotPlugin {
     }
 
     @Override
-    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
+    public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         String msg = event.getRawMessage();
         long userId = event.getUserId();
         long groupId = event.getGroupId();

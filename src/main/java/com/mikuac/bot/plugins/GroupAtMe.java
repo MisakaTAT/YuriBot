@@ -11,6 +11,7 @@ import com.mikuac.shiro.bot.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -29,7 +30,7 @@ public class GroupAtMe extends BotPlugin {
     private CommonUtils commonUtils;
 
     @Override
-    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
+    public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         long userId = event.getUserId();
         long groupId = event.getGroupId();
         String msg = event.getRawMessage();

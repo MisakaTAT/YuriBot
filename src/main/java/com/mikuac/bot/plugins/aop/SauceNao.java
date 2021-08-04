@@ -14,6 +14,7 @@ import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -42,7 +43,7 @@ public class SauceNao extends BotPlugin {
         sauceNaoBean = JSON.parseObject(result, SauceNaoBean.class);
     }
 
-    public Boolean apiCheck(Bot bot, long groupId, long userId) {
+    public Boolean apiCheck(@NotNull Bot bot, long groupId, long userId) {
         // 检查24小时内剩余搜索额度
         if (sauceNaoBean.getHeader().getLongRemaining() <= 0) {
             if (groupId != 0L) {
@@ -73,7 +74,7 @@ public class SauceNao extends BotPlugin {
         return false;
     }
 
-    public Boolean cmdCheck(Bot bot, long groupId, long userId, String msg, Map<Long, SearchBean> map, long key) {
+    public Boolean cmdCheck(@NotNull Bot bot, long groupId, long userId, String msg, Map<Long, SearchBean> map, long key) {
         // 开始搜图
         if (msg.matches(RegexConst.SAUCE_NAO)) {
             // 检查是否触发滥用规则被封禁
@@ -134,7 +135,7 @@ public class SauceNao extends BotPlugin {
         return true;
     }
 
-    public void msgBuilder(Bot bot, long groupId, long userId, Results r, int db) {
+    public void msgBuilder(@NotNull Bot bot, long groupId, long userId, Results r, int db) {
         Msg sendMsg = Msg.builder();
         // 如果群号不为0L则为群组消息
         if (groupId != 0L) {
@@ -171,7 +172,7 @@ public class SauceNao extends BotPlugin {
     }
 
     @Override
-    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
+    public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
         String msg = event.getRawMessage();
         long userId = event.getUserId();
         // key加2以区分其它搜图模式
@@ -218,7 +219,7 @@ public class SauceNao extends BotPlugin {
     }
 
     @Override
-    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
+    public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         String msg = event.getRawMessage();
         long userId = event.getUserId();
         long groupId = event.getGroupId();

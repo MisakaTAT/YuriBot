@@ -8,6 +8,7 @@ import com.mikuac.shiro.bot.Bot;
 import com.mikuac.shiro.bot.BotPlugin;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -64,7 +65,7 @@ public class PluginSwitch extends BotPlugin {
     }
 
     @Override
-    public int onPrivateMessage(Bot bot, PrivateMessageEvent event) {
+    public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
 
         String msg = event.getRawMessage();
         long userId = event.getUserId();

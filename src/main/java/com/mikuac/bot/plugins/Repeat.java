@@ -8,6 +8,7 @@ import com.mikuac.shiro.bot.Bot;
 import com.mikuac.shiro.bot.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -41,7 +42,7 @@ public class Repeat extends BotPlugin {
     int randomCount = RandomUtil.randomInt(Global.repeat_randomCountSize);
 
     @Override
-    public int onGroupMessage(Bot bot, GroupMessageEvent event) {
+    public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         String msg = event.getRawMessage();
         long groupId = event.getGroupId();
 
