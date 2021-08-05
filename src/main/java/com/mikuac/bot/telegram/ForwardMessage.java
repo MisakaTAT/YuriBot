@@ -55,13 +55,13 @@ public class ForwardMessage extends TelegramLongPollingBot {
                             sendMsgUtils.sendGroupMsgForMsg(groupId, msg);
                         }
                     } else {
-                        log.info("群组列表获取失败");
+                        log.error("群组列表获取失败");
                     }
                 } else {
-                    log.info("Telegram imgUrl获取失败");
+                    log.error("Telegram imgUrl获取失败");
                 }
             } else {
-                log.info("Telegram imgFileId获取失败");
+                log.error("Telegram imgFileId获取失败");
             }
         }
     }

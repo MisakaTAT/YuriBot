@@ -103,8 +103,8 @@ public class GetSysInfo extends BotPlugin {
                 // doGet();
                 bot.sendPrivateMsg(uerId, sendSysInfoMsg(false, 0L).build(), false);
             } catch (Exception e) {
-                log.info("系统信息收集异常", e);
                 bot.sendPrivateMsg(uerId, "系统信息收集异常~", false);
+                log.error("系统信息收集异常: {}", e.getMessage());
             }
         }
         // 获取硬件信息
@@ -114,8 +114,8 @@ public class GetSysInfo extends BotPlugin {
                 bot.sendPrivateMsg(uerId, "⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ 需要一点时间来为您收集硬件信息，请稍后~", false);
                 bot.sendPrivateMsg(uerId, sendHardwareInfoMsg(false, 0L).build(), false);
             } catch (Exception e) {
-                log.info("硬件信息收集异常", e);
                 bot.sendPrivateMsg(uerId, "硬件信息收集异常~", false);
+                log.error("硬件信息收集异常: {}", e.getMessage());
             }
         }
         return MESSAGE_IGNORE;
@@ -131,8 +131,8 @@ public class GetSysInfo extends BotPlugin {
                 bot.sendGroupMsg(groupId, Msg.builder().at(uerId).text("⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ 需要一点时间来为您收集系统信息，请稍后~").build(), false);
                 bot.sendGroupMsg(groupId, sendSysInfoMsg(true, uerId).build(), false);
             } catch (Exception e) {
-                log.info("系统信息收集异常", e);
                 bot.sendGroupMsg(groupId, Msg.builder().at(uerId).text("系统信息收集异常~").build(), false);
+                log.error("系统信息收集异常: {}", e.getMessage());
             }
         }
         if (msg.matches(RegexConst.GET_HARDWARE_INFO)) {
@@ -142,8 +142,8 @@ public class GetSysInfo extends BotPlugin {
                 bot.sendGroupMsg(groupId, Msg.builder().at(uerId).text("⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ 需要一点时间来为您收集硬件信息，请稍后~").build(), false);
                 bot.sendGroupMsg(groupId, sendHardwareInfoMsg(true, uerId).build(), false);
             } catch (Exception e) {
-                log.info("硬件信息收集异常", e);
                 bot.sendGroupMsg(groupId, Msg.builder().at(uerId).text("硬件信息收集异常~").build(), false);
+                log.error("硬件信息收集异常: {}", e.getMessage());
             }
         }
         return MESSAGE_IGNORE;

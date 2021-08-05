@@ -50,12 +50,12 @@ public class HttpClientUtils {
             // 获得返回的结果
             return EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
         } catch (IOException e) {
-            log.info("HttpGetWithJson请求异常", e);
+            log.error("HttpGetWithJson Request Exception: {}", e.getMessage());
         } finally {
             try {
                 httpClient.close();
             } catch (IOException e) {
-                log.info("HttpGetWithJson HttpClient Close异常", e);
+                log.error("HttpGetWithJson HttpClient Close Exception: {}", e.getMessage());
             }
         }
         return null;

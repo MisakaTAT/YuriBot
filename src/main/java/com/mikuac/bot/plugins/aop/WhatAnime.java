@@ -81,9 +81,8 @@ public class WhatAnime extends BotPlugin {
         if (basicInfo != null && !basicInfo.getResult().isEmpty()) {
             long aniListId = basicInfo.getResult().get(0).getAnilist();
             doSearch(aniListId);
-            log.info("doSearch方法调用成功，AniListId为[{}]", aniListId);
         } else {
-            log.info("WhatAnime调用doSearch方法失败，可能基本信息获取失败或者aniListId为空");
+            log.error("WhatAnime doSearch Failed，可能基本信息获取失败或者aniListId为空");
         }
     }
 
@@ -183,7 +182,7 @@ public class WhatAnime extends BotPlugin {
                     bot.sendGroupMsg(groupId, Msg.builder().video(result.getVideo(), picUrl).build(), false);
                 } catch (Exception e) {
                     bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("WhatAnime番剧检索失败，请更换图片或稍后重试~").build(), false);
-                    log.info("WhatAnime插件检索异常", e);
+                    log.error("WhatAnime插件检索异常: {}", e.getMessage());
                 }
             }
         }
@@ -249,7 +248,7 @@ public class WhatAnime extends BotPlugin {
                     bot.sendPrivateMsg(userId, Msg.builder().video(result.getVideo(), picUrl).build(), false);
                 } catch (Exception e) {
                     bot.sendPrivateMsg(userId, "WhatAnime番剧检索失败，请更换图片或稍后重试~", false);
-                    log.info("WhatAnime插件检索异常", e);
+                    log.error("WhatAnime插件检索异常: {}", e.getMessage());
                 }
             }
         }

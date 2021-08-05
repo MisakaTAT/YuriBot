@@ -29,7 +29,7 @@ public class AsyncTask {
                 bot.deleteMsg(msgId);
                 log.info("色图撤回成功，消息ID：[{}]", msgId);
             } catch (InterruptedException e) {
-                log.info("色图撤回异常", e);
+                log.error("色图撤回异常: {}", e.getMessage());
             }
         }
     }

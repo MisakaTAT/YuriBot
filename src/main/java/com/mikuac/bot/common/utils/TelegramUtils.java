@@ -28,7 +28,7 @@ public class TelegramUtils {
         try {
             result = HttpClientUtils.httpGetWithJson(api, false);
         } catch (Exception e) {
-            log.info("Telegram图片链接获取异常 [{}]", e);
+            log.error("Telegram图片链接获取异常 [{}]", e.getMessage());
         }
         if (result != null) {
             JSONObject jsonObject = JSONObject.parseObject(result);

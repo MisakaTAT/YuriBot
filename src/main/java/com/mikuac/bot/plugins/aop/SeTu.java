@@ -98,7 +98,7 @@ public class SeTu extends BotPlugin {
                     } catch (Exception e) {
                         lastGetTimeMap.put(userId, 0L);
                         bot.sendPrivateMsg(userId, "图片获取失败，请稍后重试~", false);
-                        log.info("色图私聊发送异常", e);
+                        log.error("色图私聊发送异常: {}", e.getMessage());
                     }
                 } else {
                     bot.sendPrivateMsg(userId, "请求过于频繁~ 剩余CD时间为" + rCd + "秒", false);
@@ -153,7 +153,7 @@ public class SeTu extends BotPlugin {
                         getCountMap.put(userId, getCountMap.get(userId) - 1);
                         lastGetTimeMap.put(userId + groupId, 0L);
                         bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("图片获取失败，请稍后重试~").build(), false);
-                        log.info("色图私聊发送异常", e);
+                        log.error("色图私聊发送异常: {}", e.getMessage());
                     }
                 } else if (count == Global.setu_maxGet) {
                     bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("今日获取次数已达上限，每晚24点重置~").build(), false);

@@ -63,7 +63,7 @@ public class SendMsgUtils {
                     break;
                 }
                 if (i == 5) {
-                    log.info("Bot对象获取失败5次，将中止此函数");
+                    log.error("Bot对象获取失败5次，将中止此函数");
                     return groupIdList;
                 }
             }
@@ -86,13 +86,13 @@ public class SendMsgUtils {
                     }
                     break;
                 } else {
-                    log.info("群组计数获取失败，且未发生异常，将中止此函数，当前群组计数[{}]", groupCount);
+                    log.error("群组计数获取失败，且未发生异常，将中止此函数，当前群组计数[{}]", groupCount);
                     return groupIdList;
                 }
             } catch (Exception e) {
-                log.info("群组计数获取失败，当前失败[{}]次，剩余重试次数[{}]，将在" + (retryDelay / 1000) + "秒后重试~", i, retryCount - i - 1);
+                log.error("群组计数获取失败，当前失败[{}]次，剩余重试次数[{}]，将在" + (retryDelay / 1000) + "秒后重试~", i, retryCount - i - 1);
                 if (i == 5) {
-                    log.info("群组计数获取失败5次，将中止此函数");
+                    log.error("群组计数获取失败5次，将中止此函数");
                     return groupIdList;
                 }
                 Thread.sleep(retryDelay);
