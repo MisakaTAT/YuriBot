@@ -18,6 +18,9 @@
     <img src="https://img.shields.io/badge/QQ群-204219849-brightgreen.svg?style=flat-square" alt="qq-group">
 </p>
 
+# Warning
+>该分支已于v1.1.4版本开始归档并停止维护，将不再对此版本进行bug修复及新功能添加，建议使用main分支基于Shiro框架的新版本，如果您有能力自行维护请无视此信息。
+
 # Features
 - [x] 一言
 - [x] 复读姬
