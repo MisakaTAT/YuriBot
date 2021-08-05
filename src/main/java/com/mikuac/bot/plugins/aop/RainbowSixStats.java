@@ -108,7 +108,7 @@ public class RainbowSixStats extends BotPlugin {
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         if (msg.matches(RegexConst.RAINBOW_SIX_STATS)) {
             long groupId = event.getGroupId();
             long userId = event.getUserId();
@@ -133,7 +133,7 @@ public class RainbowSixStats extends BotPlugin {
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         if (msg.matches(RegexConst.RAINBOW_SIX_STATS)) {
             long userId = event.getUserId();
             String gameUserId = RegexUtils.regex(RegexConst.GET_R6_ID, msg);

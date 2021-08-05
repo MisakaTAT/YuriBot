@@ -33,7 +33,7 @@ public class GroupAtMe extends BotPlugin {
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         long userId = event.getUserId();
         long groupId = event.getGroupId();
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         // // 判断是否已经回复过
         if (timedCache.get(userId + groupId) != null) {
             return MESSAGE_IGNORE;

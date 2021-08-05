@@ -126,7 +126,7 @@ public class WhatAnime extends BotPlugin {
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         long groupId = event.getGroupId();
         long userId = event.getUserId();
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         // key加1以区分其它搜图模式
         long key = groupId + userId + 1;
 
@@ -194,7 +194,7 @@ public class WhatAnime extends BotPlugin {
     @Override
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
         long userId = event.getUserId();
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         // key加1以区分其它搜图模式
         long key = userId + 1;
         Map<Long, SearchBean> map = SearchModeUtils.getMap();

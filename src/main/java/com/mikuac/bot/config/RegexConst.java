@@ -69,4 +69,6 @@ public class RegexConst {
 
     public final static String GROUP_AT = "^\\[CQ:at,qq=(.*?)\\]";
 
+    public final static String IMG_MSG_REGEX = "^\\[CQ:image,file=(.*),url=(.*)\\]";
+
 }

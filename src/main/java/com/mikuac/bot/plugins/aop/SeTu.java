@@ -63,7 +63,7 @@ public class SeTu extends BotPlugin {
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         // 私聊消息处理
         if (msg.matches(RegexConst.SETU)) {
             long userId = event.getUserId();
@@ -112,7 +112,7 @@ public class SeTu extends BotPlugin {
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         // 私聊消息处理
         if (msg.matches(RegexConst.SETU)) {
             long userId = event.getUserId();

@@ -31,7 +31,7 @@ public class RebootBot extends BotPlugin {
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         long userId = event.getUserId();
         if (msg.matches(RegexConst.REBOOT_BOT)) {
             if (Global.bot_adminId != userId) {
@@ -46,7 +46,7 @@ public class RebootBot extends BotPlugin {
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         long userId = event.getUserId();
         long groupId = event.getGroupId();
         if (msg.matches(RegexConst.REBOOT_BOT)) {

@@ -61,7 +61,7 @@ public class BvToAv extends BotPlugin {
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         long userId = event.getUserId();
         if (msg.matches(RegexConst.AV_TO_BV)) {
             String avId = RegexUtils.regex(RegexConst.AV_TO_BV_GET_ID, msg);
@@ -84,7 +84,7 @@ public class BvToAv extends BotPlugin {
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         long userId = event.getUserId();
         long groupId = event.getGroupId();
         if (msg.matches(RegexConst.AV_TO_BV)) {

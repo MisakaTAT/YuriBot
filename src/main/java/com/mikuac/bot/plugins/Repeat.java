@@ -43,7 +43,7 @@ public class Repeat extends BotPlugin {
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         long groupId = event.getGroupId();
 
         // 获取Map中当前群组最后一条消息内容

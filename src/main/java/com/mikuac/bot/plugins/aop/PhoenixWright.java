@@ -25,7 +25,7 @@ public class PhoenixWright extends BotPlugin {
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         long groupId = event.getGroupId();
         long userId = event.getUserId();
         if (msg.matches(RegexConst.PHOENIX_WRIGHT)) {
@@ -41,7 +41,7 @@ public class PhoenixWright extends BotPlugin {
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         long userId = event.getUserId();
         if (msg.matches(RegexConst.PHOENIX_WRIGHT)) {
             String topText = URLEncoder.encode(Objects.requireNonNull(RegexUtils.regexGroup(RegexConst.PHOENIX_WRIGHT, msg, 1)), StandardCharsets.UTF_8);

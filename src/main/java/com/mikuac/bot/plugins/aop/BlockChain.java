@@ -85,7 +85,7 @@ public class BlockChain extends BotPlugin {
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         if (msg.matches(RegexConst.BINANCE_PRICE)) {
             long groupId = event.getGroupId();
             long userId = event.getUserId();
@@ -112,7 +112,7 @@ public class BlockChain extends BotPlugin {
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         if (msg.matches(RegexConst.BINANCE_PRICE)) {
             long userId = event.getUserId();
             bot.sendPrivateMsg(userId, "币价查询中，请稍后~", false);

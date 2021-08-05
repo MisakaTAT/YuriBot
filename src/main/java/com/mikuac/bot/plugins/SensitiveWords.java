@@ -33,7 +33,7 @@ public class SensitiveWords extends BotPlugin {
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
-        String msg = event.getRawMessage().replaceAll("\\s*", "");
+        String msg = event.getMessage().replaceAll("\\s*", "");
         long userId = event.getUserId();
         long groupId = event.getGroupId();
         int msgId = event.getMessageId();

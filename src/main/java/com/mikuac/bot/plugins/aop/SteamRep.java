@@ -146,7 +146,7 @@ public class SteamRep extends BotPlugin {
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         long userId = event.getUserId();
 
         if (msg.matches(RegexConst.STEAM_REP)) {
@@ -164,7 +164,7 @@ public class SteamRep extends BotPlugin {
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         long groupId = event.getGroupId();
         long userId = event.getUserId();
 

@@ -20,13 +20,13 @@ public class EventLog extends BotPlugin {
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
-        log.info("收到私聊消息 QQ：[{}] 内容：[{}]", event.getUserId(), event.getRawMessage());
+        log.info("收到私聊消息 QQ：[{}] 内容：[{}]", event.getUserId(), event.getMessage());
         return MESSAGE_IGNORE;
     }
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
-        log.info("收到群消息 群号：[{}] QQ：[{}] 内容：[{}]", event.getGroupId(), event.getUserId(), event.getRawMessage());
+        log.info("收到群消息 群号：[{}] QQ：[{}] 内容：[{}]", event.getGroupId(), event.getUserId(), event.getMessage());
         return MESSAGE_IGNORE;
     }
 

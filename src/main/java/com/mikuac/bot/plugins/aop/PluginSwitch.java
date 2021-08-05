@@ -67,7 +67,7 @@ public class PluginSwitch extends BotPlugin {
     @Override
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
 
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         long userId = event.getUserId();
 
         String pluginName = msg.replaceAll("(.*)插件(.*)用-", "");

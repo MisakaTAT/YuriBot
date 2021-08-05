@@ -94,7 +94,7 @@ public class GetSysInfo extends BotPlugin {
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         // 获取系统信息
         if (msg.matches(RegexConst.GET_SYS_INFO)) {
             long uerId = event.getUserId();
@@ -123,7 +123,7 @@ public class GetSysInfo extends BotPlugin {
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         if (msg.matches(RegexConst.GET_SYS_INFO)) {
             long uerId = event.getUserId();
             long groupId = event.getGroupId();

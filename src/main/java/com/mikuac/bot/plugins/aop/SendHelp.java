@@ -31,7 +31,7 @@ public class SendHelp extends BotPlugin {
     @Override
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
         long userId = event.getUserId();
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         if (msg.matches(RegexConst.SEND_HELP)) {
             bot.sendPrivateMsg(userId, buildMsg(false, userId).build(), false);
         }
@@ -40,7 +40,7 @@ public class SendHelp extends BotPlugin {
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         long userId = event.getUserId();
         long groupId = event.getGroupId();
         if (msg.matches(RegexConst.SEND_HELP)) {

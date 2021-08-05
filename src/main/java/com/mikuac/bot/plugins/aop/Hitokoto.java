@@ -68,7 +68,7 @@ public class Hitokoto extends BotPlugin {
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         // 群组消息处理
         if (msg.matches(RegexConst.HITOKOTO)) {
             long groupId = event.getGroupId();
@@ -79,7 +79,7 @@ public class Hitokoto extends BotPlugin {
             // 逻辑处理
             if (getNowTime >= lastGetTime + Global.hitokoto_cdTime) {
                 try {
-                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("一言获取中~").build(), true);
+                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("一言获取中~").build(), false);
                     String msgType = msg.replaceAll("(.*?)-", "");
                     if (msgType.matches("[a-l]")) {
                         getData(msgType.charAt(0));
@@ -88,8 +88,8 @@ public class Hitokoto extends BotPlugin {
                     }
                     String type = typesMap.get(getType);
                     Msg msgBuilder = Msg.builder()
-                            .at(userId)
-                            .text("\n『" + hitokoto + "』\n" + "出自：" + from + "\n" + "类型：" + type);
+                            .reply(event.getMessageId())
+                            .text("『" + hitokoto + "』\n" + "出自：" + from + "\n" + "类型：" + type);
                     bot.sendGroupMsg(groupId, msgBuilder.build(), false);
                     lastGetTimeMap.put(groupId + userId, Instant.now().getEpochSecond());
                 } catch (Exception e) {
@@ -105,7 +105,7 @@ public class Hitokoto extends BotPlugin {
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         // 私聊消息处理
         if (msg.matches(RegexConst.HITOKOTO)) {
             long userId = event.getUserId();

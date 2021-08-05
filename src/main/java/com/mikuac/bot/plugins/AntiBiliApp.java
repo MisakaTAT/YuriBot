@@ -63,7 +63,7 @@ public class AntiBiliApp extends BotPlugin {
     @Override
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
         String videoUrl = "https://www.bilibili.com/video/";
-        String msg = StringEscapeUtils.unescapeHtml4(event.getRawMessage()).replaceAll("\\\\", "");
+        String msg = StringEscapeUtils.unescapeHtml4(event.getMessage()).replaceAll("\\\\", "");
         long userId = event.getUserId();
 
         if (msg.matches(RegexConst.ANTI_BILI_MINI_APP)) {
@@ -97,7 +97,7 @@ public class AntiBiliApp extends BotPlugin {
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         String videoUrl = "https://www.bilibili.com/video/";
-        String msg = StringEscapeUtils.unescapeHtml4(event.getRawMessage()).replaceAll("\\\\", "");
+        String msg = StringEscapeUtils.unescapeHtml4(event.getMessage()).replaceAll("\\\\", "");
         long userId = event.getUserId();
         long groupId = event.getGroupId();
 

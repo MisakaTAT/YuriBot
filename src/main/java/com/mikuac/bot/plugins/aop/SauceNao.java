@@ -173,7 +173,7 @@ public class SauceNao extends BotPlugin {
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         long userId = event.getUserId();
         // key加2以区分其它搜图模式
         long key = userId + 2;
@@ -220,7 +220,7 @@ public class SauceNao extends BotPlugin {
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         long userId = event.getUserId();
         long groupId = event.getGroupId();
         // key加2以区分其它搜图模式

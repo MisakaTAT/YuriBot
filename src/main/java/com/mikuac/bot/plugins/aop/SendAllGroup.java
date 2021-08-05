@@ -34,7 +34,7 @@ public class SendAllGroup extends BotPlugin {
     @Override
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
         long userId = event.getUserId();
-        String msg = event.getRawMessage();
+        String msg = event.getMessage();
         if (userId != Global.bot_adminId) {
             bot.sendPrivateMsg(userId, "此操作仅管理员可执行哟～", false);
             return MESSAGE_IGNORE;

@@ -65,8 +65,6 @@ vim config.json
 # Credits
 * [setu-api](https://api.lolicon.app/#/setu)
 * [heroku-pximg-proxy](https://github.com/Tsuk1ko/heroku-pximg-proxy)
-* [pbbot-spring-boot-starter](https://github.com/ProtobufBot/pbbot-spring-boot-starter)
-* [Go-Mirai-Client](https://github.com/ProtobufBot/Go-Mirai-Client)
 
 # License
 MIT License
