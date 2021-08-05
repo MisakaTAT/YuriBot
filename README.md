@@ -67,6 +67,24 @@ vim config.json
 * [setu-api](https://api.lolicon.app/#/setu)
 * [heroku-pximg-proxy](https://github.com/Tsuk1ko/heroku-pximg-proxy)
 
+# Client Connect
+修改目录下生成的 `config.json`（也可使用默认值）
+```json
+{
+  "server": {
+    "address": "127.0.0.1",
+    "port": 5000
+  }
+}
+```
+配置反向WebSocket
+
+以go-cqhttp为例 修改`config.yaml`如下参数
+```yaml
+- ws-reverse:
+    universal: ws://127.0.0.1:5000/ws/shiro
+```
+
 # License
 MIT License
 
