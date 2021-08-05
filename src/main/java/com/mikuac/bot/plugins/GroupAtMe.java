@@ -24,6 +24,8 @@ import javax.annotation.Resource;
 @Component
 public class GroupAtMe extends BotPlugin {
 
+    private final static String AT_ALL = "all";
+
     TimedCache<Long, Boolean> timedCache = CacheUtil.newTimedCache(5000);
 
     @Resource
@@ -40,7 +42,7 @@ public class GroupAtMe extends BotPlugin {
         }
         // 判断被at的是否为机器人
         String atId = RegexUtils.regexGroup(RegexConst.GROUP_AT, msg, 1);
-        if (atId != null && !atId.isEmpty()) {
+        if (atId != null && !atId.isEmpty() && !AT_ALL.equals(atId)) {
             long botId = Long.parseLong(atId);
             if (Global.bot_selfId == botId) {
                 String imgUrl = commonUtils.getHostAndPort() + "/img/atme.jpg";
