@@ -26,7 +26,7 @@
     </parent>
     <groupId>com.mikuac</groupId>
     <artifactId>YuriBot</artifactId>
-    <version>v1.1.5</version>
+    <version>v1.1.6</version>
     <name>YuriBot</name>
     <description>你好~ 我是悠里⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄</description>
 
@@ -83,7 +83,7 @@
         <dependency>
             <groupId>com.mikuac</groupId>
             <artifactId>Shiro</artifactId>
-            <version>1.0.6</version>
+            <version>1.0.7</version>
         </dependency>
 
         <dependency>
