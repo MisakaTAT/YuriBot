@@ -136,32 +136,41 @@ public class SauceNao extends BotPlugin {
     }
 
     public void msgBuilder(@NotNull Bot bot, long groupId, long userId, Results r, int db) {
+        if (r == null || db == -1) {
+            if (groupId != 0L) {
+                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("未检索到您发送的内容，请更换图片后重新尝试~").build(), false);
+                return;
+            }
+            bot.sendPrivateMsg(userId, "未检索到您发送的内容，请更换图片后重新尝试~", false);
+            return;
+        }
+
         Msg sendMsg = Msg.builder();
         // 如果群号不为0L则为群组消息
         if (groupId != 0L) {
             sendMsg.at(userId);
         }
         sendMsg.img(r.getResultHeader().getThumbnail());
-        sendMsg.text("\n相似度：" + r.getResultHeader().getSimilarity() + "%");
+        sendMsg.text("\n相似度: " + r.getResultHeader().getSimilarity() + "%");
         switch (db) {
             case 0 -> {
-                sendMsg.text("\n标题：" + r.getResultData().getTitle());
-                sendMsg.text("\n画师：" + r.getResultData().getMemberName());
-                sendMsg.text("\nPixiv：https://pixiv.net/i/" + r.getResultData().getPixivId());
-                sendMsg.text("\nAuthor：https://pixiv.net/u/" + r.getResultData().getMemberId());
-                sendMsg.text("\nProxy：" + PixivProxyUtils.imgProxy(r.getResultData().getPixivId()));
-                sendMsg.text("\n剩余搜索配额：" + sauceNaoBean.getHeader().getLongRemaining());
-                sendMsg.text("\n数据来源：SauceNao (Pixiv)");
+                sendMsg.text("\n标题: " + r.getResultData().getTitle());
+                sendMsg.text("\n画师: " + r.getResultData().getMemberName());
+                sendMsg.text("\nPixiv: https://pixiv.net/i/" + r.getResultData().getPixivId());
+                sendMsg.text("\nAuthor: https://pixiv.net/u/" + r.getResultData().getMemberId());
+                sendMsg.text("\nProxy: " + PixivProxyUtils.imgProxy(r.getResultData().getPixivId()));
+                sendMsg.text("\n剩余搜索配额: " + sauceNaoBean.getHeader().getLongRemaining());
+                sendMsg.text("\n数据来源: SauceNao (Pixiv)");
             }
             case 1 -> {
-                sendMsg.text("\n来源：" + r.getResultData().getSource());
-                sendMsg.text("\n日文名：" + r.getResultData().getJpName());
-                sendMsg.text("\n英文名：" + r.getResultData().getEngName());
-                sendMsg.text("\n剩余搜索配额：" + sauceNaoBean.getHeader().getLongRemaining());
-                sendMsg.text("\n数据来源：SauceNao (E-Hentai)");
-                bot.sendGroupMsg(groupId, sendMsg.build(), false);
+                sendMsg.text("\n来源: " + r.getResultData().getSource());
+                sendMsg.text("\n日文名: " + r.getResultData().getJpName());
+                sendMsg.text("\n英文名: " + r.getResultData().getEngName());
+                sendMsg.text("\n剩余搜索配额: " + sauceNaoBean.getHeader().getLongRemaining());
+                sendMsg.text("\n数据来源: SauceNao (E-Hentai)");
             }
-            default -> sendMsg.text("未检索到您发送的内容，请更换图片后重新尝试~");
+            default -> {
+            }
         }
         // 如果群号不为0L则为群组消息
         if (groupId != 0L) {
@@ -210,6 +219,7 @@ public class SauceNao extends BotPlugin {
                         return MESSAGE_IGNORE;
                     }
                 }
+                msgBuilder(bot, 0L, userId, null, -1);
             } catch (Exception e) {
                 bot.sendPrivateMsg(userId, "SauceNao检索服务出现异常，请稍后重试~", false);
                 log.error("SauceNao插件检索异常: {}", e.getMessage());
@@ -258,6 +268,7 @@ public class SauceNao extends BotPlugin {
                         return MESSAGE_IGNORE;
                     }
                 }
+                msgBuilder(bot, groupId, userId, null, -1);
             } catch (Exception e) {
                 bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("SauceNao检索服务出现异常，请稍后重试~").build(), false);
                 log.error("SauceNao插件检索异常: {}", e.getMessage());
@@ -267,3 +278,4 @@ public class SauceNao extends BotPlugin {
     }
 
 }
+

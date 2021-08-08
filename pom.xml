@@ -82,7 +82,7 @@
         <!--bot框架-->
         <dependency>
             <groupId>com.mikuac</groupId>
-            <artifactId>Shiro</artifactId>
+            <artifactId>shiro</artifactId>
             <version>1.0.7</version>
         </dependency>
 

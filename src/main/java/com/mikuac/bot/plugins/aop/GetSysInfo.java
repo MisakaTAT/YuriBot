@@ -56,7 +56,7 @@ public class GetSysInfo extends BotPlugin {
         msg.text("\nUsable Memory: " + FileUtil.readableFileSize(runtimeInfo.getUsableMemory()));
         msg.text("\n\n[系统信息]");
         msg.text("\nOS Name: " + osInfo.getName());
-        msg.text("\nOS Arch:" + osInfo.getArch());
+        msg.text("\nOS Arch: " + osInfo.getArch());
         msg.text("\nOS Version: " + osInfo.getVersion());
         return msg;
     }
