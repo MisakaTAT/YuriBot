@@ -11,11 +11,11 @@
 <p align="center">
     <img src="https://img.shields.io/github/stars/MisakaTAT/YuriBot?style=flat-square" alt="stars">
     <img src="https://img.shields.io/github/forks/MisakaTAT/YuriBot?style=flat-square" alt="forks">
-    <img src="https://img.shields.io/github/issues/MisakaTAT/YuriBot?style=flat-square" alt="issues">
+    <a href="https://github.com/MisakaTAT/YuriBot/issues"><img src="https://img.shields.io/github/issues/MisakaTAT/YuriBot?style=flat-square" alt="issues"></a>
     <img src="https://img.shields.io/github/downloads/MisakaTAT/YuriBot/total?style=flat-square?style=flat-square" alt="downloads">
-    <img src="https://img.shields.io/github/license/MisakaTAT/YuriBot?style=flat-square" alt="license">
+    <a href="https://github.com/MisakaTAT/YuriBot/blob/main/LICENSE"><img src="https://img.shields.io/github/license/MisakaTAT/YuriBot?style=flat-square" alt="license"></a>
     <img src="https://img.shields.io/badge/jdk-15+-brightgreen.svg?style=flat-square" alt="jdk-version">
-    <img src="https://img.shields.io/badge/QQ群-204219849-brightgreen.svg?style=flat-square" alt="qq-group">
+    <a href="https://qm.qq.com/cgi-bin/qm/qr?k=Fl3-G9irYp84ng7LAFlTvqrOGIFHdufR&jump_from=webapi"><img src="https://img.shields.io/badge/QQ群-204219849-brightgreen.svg?style=flat-square" alt="qq-group"></a>
 </p>
 
 # Features
