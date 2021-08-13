@@ -39,10 +39,10 @@ public class BanUtils {
         long nowTime = Instant.now().getEpochSecond();
 
         // 判断是否还在限制时间内
-        if (startTime + Global.banUtils_limitTime >= nowTime && userId != Global.bot_adminId) {
+        if (startTime + Global.banUtilsLimitTime >= nowTime && userId != Global.botAdminId) {
             int getMsgCount = msgCountMap.getOrDefault(userId, 0);
             // 如果在限制时间内发送的消息次数大于限制次数则封禁
-            if (getMsgCount > Global.banUtils_limitCount) {
+            if (getMsgCount > Global.banUtilsLimitCount) {
                 log.info("用户：[{}]已触发滥用规则被封禁", userId);
                 BanEntity banEntity = new BanEntity();
                 banEntity.setUserId(userId);

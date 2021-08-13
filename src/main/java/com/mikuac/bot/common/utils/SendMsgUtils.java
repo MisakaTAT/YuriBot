@@ -21,25 +21,25 @@ import java.util.List;
 public class SendMsgUtils {
 
     public void sendPrivateMsgForMsg(long userId, Msg msg) throws InterruptedException {
-        Bot bot = BotContainer.robots.get(Global.bot_selfId);
+        Bot bot = BotContainer.robots.get(Global.botSelfId);
         Thread.sleep(1000);
         bot.sendPrivateMsg(userId, msg.build(), false);
     }
 
     public void sendGroupMsgForMsg(long groupId, Msg msg) throws InterruptedException {
-        Bot bot = BotContainer.robots.get(Global.bot_selfId);
+        Bot bot = BotContainer.robots.get(Global.botSelfId);
         Thread.sleep(1000);
         bot.sendGroupMsg(groupId, msg.build(), false);
     }
 
     public void sendPrivateMsgForText(long userId, String msg) throws InterruptedException {
-        Bot bot = BotContainer.robots.get(Global.bot_selfId);
+        Bot bot = BotContainer.robots.get(Global.botSelfId);
         Thread.sleep(1000);
         bot.sendPrivateMsg(userId, msg, false);
     }
 
     public void sendGroupMsgForText(long groupId, String msg) throws InterruptedException {
-        Bot bot = BotContainer.robots.get(Global.bot_selfId);
+        Bot bot = BotContainer.robots.get(Global.botSelfId);
         // 限制发送速度
         Thread.sleep(1000);
         bot.sendGroupMsg(groupId, msg, false);
@@ -52,12 +52,12 @@ public class SendMsgUtils {
         List<Long> groupIdList = new ArrayList<>();
 
         //获取Bot对象
-        Bot bot = BotContainer.robots.get(Global.bot_selfId);
+        Bot bot = BotContainer.robots.get(Global.botSelfId);
         if (bot == null) {
             for (int i = 1; i < retryCount; i++) {
                 log.info("Bot对象获取失败，当前失败[{}]次，剩余重试次数[{}]，将在" + (retryDelay / 1000) + "秒后重试~", i, retryCount - i - 1);
                 Thread.sleep(retryDelay);
-                bot = BotContainer.robots.get(Global.bot_selfId);
+                bot = BotContainer.robots.get(Global.botSelfId);
                 if (bot != null) {
                     log.info("Bot对象获取成功[{}]", bot);
                     break;

@@ -40,7 +40,7 @@ public class CommandPrefixAspect {
                 GroupMessageEvent event = (GroupMessageEvent) args[i];
                 String msg = event.getMessage();
                 // 如果消息未携带prefix，且未匹配到纯图片信息则拦截
-                if (!msg.startsWith(Global.prefix_prefix) && !msg.matches(RegexConst.IMG_MSG_REGEX)) {
+                if (!msg.startsWith(Global.prefixPrefix) && !msg.matches(RegexConst.IMG_MSG_REGEX)) {
                     return BotPlugin.MESSAGE_IGNORE;
                 }
                 // 匹配到纯图片信息判断用户是否处于搜(图/番/本)模式，否则拦截
@@ -52,9 +52,9 @@ public class CommandPrefixAspect {
                     }
                 }
                 // 如果消息携带prefix则去除prefix并放行
-                if (msg.startsWith(Global.prefix_prefix)) {
+                if (msg.startsWith(Global.prefixPrefix)) {
                     var eventBuilder = event.toBuilder();
-                    eventBuilder.message(msg.substring(Global.prefix_prefix.length()));
+                    eventBuilder.message(msg.substring(Global.prefixPrefix.length()));
                     args[i] = eventBuilder.build();
                 }
             }
@@ -63,7 +63,7 @@ public class CommandPrefixAspect {
                 PrivateMessageEvent event = (PrivateMessageEvent) args[i];
                 String msg = event.getMessage();
                 // 如果消息未携带prefix，且未匹配到img标签则拦截（用于搜图模式）
-                if (!msg.startsWith(Global.prefix_prefix) && !msg.matches(RegexConst.IMG_MSG_REGEX)) {
+                if (!msg.startsWith(Global.prefixPrefix) && !msg.matches(RegexConst.IMG_MSG_REGEX)) {
                     return BotPlugin.MESSAGE_IGNORE;
                 }
                 // 匹配到纯图片信息判断用户是否处于搜(图/番/本)模式，否则拦截
@@ -75,9 +75,9 @@ public class CommandPrefixAspect {
                     }
                 }
                 // 如果消息携带prefix则去除prefix并放行
-                if (msg.startsWith(Global.prefix_prefix)) {
+                if (msg.startsWith(Global.prefixPrefix)) {
                     var eventBuilder = event.toBuilder();
-                    eventBuilder.message(msg.substring(Global.prefix_prefix.length()));
+                    eventBuilder.message(msg.substring(Global.prefixPrefix.length()));
                     args[i] = eventBuilder.build();
                 }
             }

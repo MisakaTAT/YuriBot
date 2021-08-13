@@ -44,7 +44,7 @@ public class GroupAtMe extends BotPlugin {
         String atId = RegexUtils.regexGroup(RegexConst.GROUP_AT, msg, 1);
         if (atId != null && !atId.isEmpty() && !AT_ALL.equals(atId)) {
             long botId = Long.parseLong(atId);
-            if (Global.bot_selfId == botId) {
+            if (Global.botSelfId == botId) {
                 String imgUrl = commonUtils.getHostAndPort() + "/img/atme.jpg";
                 bot.sendGroupMsg(groupId, Msg.builder().at(userId).img(imgUrl).build(), false);
                 timedCache.put(userId + groupId, true);

@@ -21,10 +21,10 @@ public class Maintenance extends BotPlugin {
     @Override
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
         long userId = event.getUserId();
-        if (Global.maintenance_enable) {
+        if (Global.maintenanceEnable) {
             Msg msgBuilder = Msg.builder()
                     .at(userId)
-                    .text(Global.maintenance_alertMsg);
+                    .text(Global.maintenanceAlertMsg);
             bot.sendGroupMsg(userId, msgBuilder.build(), false);
             return MESSAGE_BLOCK;
         } else {
@@ -36,10 +36,10 @@ public class Maintenance extends BotPlugin {
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         long userId = event.getUserId();
         long groupId = event.getGroupId();
-        if (Global.maintenance_enable) {
+        if (Global.maintenanceEnable) {
             Msg msgBuilder = Msg.builder()
                     .at(userId)
-                    .text(Global.maintenance_alertMsg);
+                    .text(Global.maintenanceAlertMsg);
             bot.sendGroupMsg(groupId, msgBuilder.build(), false);
             return MESSAGE_BLOCK;
         } else {

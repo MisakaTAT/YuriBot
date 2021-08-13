@@ -26,11 +26,11 @@ public class ShutdownBot extends BotPlugin {
         String msg = event.getMessage();
         long userId = event.getUserId();
         if (msg.matches(RegexConst.SHUTDOWN_BOT)) {
-            if (Global.bot_adminId != userId) {
+            if (Global.botAdminId != userId) {
                 bot.sendPrivateMsg(userId, "此操作仅管理员可执行", false);
                 return MESSAGE_IGNORE;
             }
-            bot.sendPrivateMsg(userId, Global.bot_botName + "服务停止中，正在释放资源，请耐心等待～", false);
+            bot.sendPrivateMsg(userId, Global.botBotName + "服务停止中，正在释放资源，请耐心等待～", false);
             BotApplication.shutdown();
         }
         return MESSAGE_IGNORE;
@@ -42,11 +42,11 @@ public class ShutdownBot extends BotPlugin {
         long userId = event.getUserId();
         long groupId = event.getGroupId();
         if (msg.matches(RegexConst.SHUTDOWN_BOT)) {
-            if (Global.bot_adminId != userId) {
+            if (Global.botAdminId != userId) {
                 bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("此操作仅管理员可执行").build(), false);
                 return MESSAGE_IGNORE;
             }
-            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text(Global.bot_botName + "服务停止中，正在释放资源，请耐心等待～").build(), false);
+            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text(Global.botBotName + "服务停止中，正在释放资源，请耐心等待～").build(), false);
             BotApplication.shutdown();
         }
         return MESSAGE_IGNORE;

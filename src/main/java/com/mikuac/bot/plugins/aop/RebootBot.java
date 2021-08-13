@@ -34,11 +34,11 @@ public class RebootBot extends BotPlugin {
         String msg = event.getMessage();
         long userId = event.getUserId();
         if (msg.matches(RegexConst.REBOOT_BOT)) {
-            if (Global.bot_adminId != userId) {
+            if (Global.botAdminId != userId) {
                 bot.sendPrivateMsg(userId, "此操作仅管理员可执行", false);
                 return MESSAGE_IGNORE;
             }
-            bot.sendPrivateMsg(userId, Global.bot_botName + "即将进行重启，请耐心等待～", false);
+            bot.sendPrivateMsg(userId, Global.botBotName + "即将进行重启，请耐心等待～", false);
             asyncTask.rebootBot();
         }
         return MESSAGE_IGNORE;
@@ -50,11 +50,11 @@ public class RebootBot extends BotPlugin {
         long userId = event.getUserId();
         long groupId = event.getGroupId();
         if (msg.matches(RegexConst.REBOOT_BOT)) {
-            if (Global.bot_adminId != userId) {
+            if (Global.botAdminId != userId) {
                 bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("此操作仅管理员可执行").build(), false);
                 return MESSAGE_IGNORE;
             }
-            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text(Global.bot_botName + "即将进行重启，请耐心等待～").build(), false);
+            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text(Global.botBotName + "即将进行重启，请耐心等待～").build(), false);
             asyncTask.rebootBot();
         }
         return MESSAGE_IGNORE;

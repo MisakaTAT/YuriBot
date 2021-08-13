@@ -12,51 +12,52 @@ import org.springframework.stereotype.Component;
 @Component
 public class Global {
 
-    public static String server_address;
-    public static int server_port;
-    public static String bot_botName;
-    public static long bot_adminId;
-    public static long bot_selfId;
-    public static String prefix_prefix;
-    public static int hitokoto_cdTime;
-    public static String setu_apiKey;
-    public static int setu_cdTime;
-    public static int setu_delTime;
-    public static int setu_maxGet;
-    public static int repeat_randomCountSize;
-    public static String telegram_proxyHost;
-    public static int telegram_proxyPort;
-    public static String telegram_botName;
-    public static String telegram_botToken;
-    public static int banUtils_limitTime;
-    public static int banUtils_limitCount;
-    public static boolean maintenance_enable;
-    public static String maintenance_alertMsg;
-    public static String sauceNao_apiKey;
+    public static String serverAddress;
+
+    public static int serverPort;
+    public static String botBotName;
+    public static long botAdminId;
+    public static long botSelfId;
+    public static String prefixPrefix;
+    public static int hitokotoCdTime;
+    public static String setuApiKey;
+    public static int setuCdTime;
+    public static int setuDelTime;
+    public static int setuMaxGet;
+    public static int repeatRandomCountSize;
+    public static String telegramProxyHost;
+    public static int telegramProxyPort;
+    public static String telegramBotName;
+    public static String telegramBotToken;
+    public static int banUtilsLimitTime;
+    public static int banUtilsLimitCount;
+    public static boolean maintenanceEnable;
+    public static String maintenanceAlertMsg;
+    public static String sauceNaoApiKey;
     public static ConfigBean config = ConfigUtils.init(false);
 
     public static void set() {
-        server_address = config.getServer().getAddress();
-        server_port = config.getServer().getPort();
-        bot_botName = config.getBot().getBotName();
-        bot_adminId = config.getBot().getAdminId();
-        bot_selfId = config.getBot().getSelfId();
-        prefix_prefix = config.getPrefix().getPrefix();
-        hitokoto_cdTime = config.getHitokoto().getCdTime();
-        setu_apiKey = config.getSetu().getApiKey();
-        setu_cdTime = config.getSetu().getCdTime();
-        setu_delTime = config.getSetu().getDelTime();
-        setu_maxGet = config.getSetu().getMaxGet();
-        repeat_randomCountSize = config.getRepeat().getRandomCountSize();
-        telegram_proxyHost = config.getTelegram().getProxyHost();
-        telegram_proxyPort = config.getTelegram().getProxyPort();
-        telegram_botName = config.getTelegram().getBotName();
-        telegram_botToken = config.getTelegram().getBotToken();
-        banUtils_limitTime = config.getBanUtils().getLimitTime();
-        banUtils_limitCount = config.getBanUtils().getLimitCount();
-        maintenance_enable = config.getMaintenance().isEnable();
-        maintenance_alertMsg = config.getMaintenance().getAlertMsg();
-        sauceNao_apiKey = config.getSauceNao().getApiKey();
+        serverAddress = config.getServer().getAddress();
+        serverPort = config.getServer().getPort();
+        botBotName = config.getBot().getBotName();
+        botAdminId = config.getBot().getAdminId();
+        botSelfId = config.getBot().getSelfId();
+        prefixPrefix = config.getPrefix().getPrefix();
+        hitokotoCdTime = config.getHitokoto().getCdTime();
+        setuApiKey = config.getSetu().getApiKey();
+        setuCdTime = config.getSetu().getCdTime();
+        setuDelTime = config.getSetu().getDelTime();
+        setuMaxGet = config.getSetu().getMaxGet();
+        repeatRandomCountSize = config.getRepeat().getRandomCountSize();
+        telegramProxyHost = config.getTelegram().getProxyHost();
+        telegramProxyPort = config.getTelegram().getProxyPort();
+        telegramBotName = config.getTelegram().getBotName();
+        telegramBotToken = config.getTelegram().getBotToken();
+        banUtilsLimitTime = config.getBanUtils().getLimitTime();
+        banUtilsLimitCount = config.getBanUtils().getLimitCount();
+        maintenanceEnable = config.getMaintenance().isEnable();
+        maintenanceAlertMsg = config.getMaintenance().getAlertMsg();
+        sauceNaoApiKey = config.getSauceNao().getApiKey();
     }
 
 }

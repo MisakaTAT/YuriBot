@@ -73,11 +73,11 @@ public class BotApplication {
     public WebServerFactoryCustomizer webServerFactoryCustomizer() {
         return (WebServerFactoryCustomizer<ConfigurableServletWebServerFactory>) factory -> {
             try {
-                factory.setAddress(InetAddress.getByName(Global.server_address));
+                factory.setAddress(InetAddress.getByName(Global.serverAddress));
             } catch (UnknownHostException e) {
                 log.error("启动地址设置失败: {}", e.getMessage());
             }
-            factory.setPort(Global.server_port);
+            factory.setPort(Global.serverPort);
         };
     }
 

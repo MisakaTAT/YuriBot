@@ -38,7 +38,7 @@ public class SensitiveWords extends BotPlugin {
         long groupId = event.getGroupId();
         int msgId = event.getMessageId();
         // 检查Bot是否有管理员权限
-        ActionData<GroupMemberInfoResp> groupBotInfo = bot.getGroupMemberInfo(groupId, Global.bot_selfId, false);
+        ActionData<GroupMemberInfoResp> groupBotInfo = bot.getGroupMemberInfo(groupId, Global.botSelfId, false);
         if (groupBotInfo != null && groupBotInfo.getData() != null) {
             if (!ADMIN_ROLE.equals(groupBotInfo.getData().getRole())) {
                 return MESSAGE_IGNORE;
@@ -48,7 +48,7 @@ public class SensitiveWords extends BotPlugin {
         ActionData<GroupMemberInfoResp> groupMemberInfo = bot.getGroupMemberInfo(groupId, userId, false);
         if (groupMemberInfo != null && groupMemberInfo.getData() != null) {
             String getRole = groupMemberInfo.getData().getRole();
-            if (ADMIN_ROLE.equals(getRole) || Global.bot_adminId == userId || OWNER_ROLE.equals(getRole)) {
+            if (ADMIN_ROLE.equals(getRole) || Global.botAdminId == userId || OWNER_ROLE.equals(getRole)) {
                 return MESSAGE_IGNORE;
             }
         }
@@ -61,7 +61,7 @@ public class SensitiveWords extends BotPlugin {
             bot.deleteMsg(msgId);
             Msg sendMsg = Msg.builder()
                     .at(userId)
-                    .text(Global.bot_botName + "注意到您发送到内容存在不适当的内容，已撤回处理，请注意言行哟～");
+                    .text(Global.botBotName + "注意到您发送到内容存在不适当的内容，已撤回处理，请注意言行哟～");
             bot.sendGroupMsg(groupId, sendMsg.build(), false);
             log.info("检测到敏感词: [{}], 来自群: [{}], 发送者: [{}]", msg, groupId, userId);
         }

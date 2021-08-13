@@ -38,7 +38,7 @@ public class SauceNao extends BotPlugin {
     private BanUtils banUtils;
 
     public void searchResult(String picUrl) {
-        String param = "api_key=" + Global.sauceNao_apiKey + "&output_type=2&numres=3&db=999&url=" + picUrl;
+        String param = "api_key=" + Global.setuApiKey + "&output_type=2&numres=3&db=999&url=" + picUrl;
         String result = HttpClientUtils.httpGetWithJson(ApiConst.SAUCENAO_API + param, false);
         sauceNaoBean = JSON.parseObject(result, SauceNaoBean.class);
     }
@@ -106,11 +106,11 @@ public class SauceNao extends BotPlugin {
             }
             if (groupId != 0L) {
                 SearchModeUtils.setMap(key, groupId, userId, "group");
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("您已进入搜(图/本)模式，请发送图片来帮您检索~ \n(注意：" + Global.banUtils_limitTime + "秒内发送超过" + Global.banUtils_limitCount + "张图片将会触发滥用规则被封禁)").build(), false);
+                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("您已进入搜(图/本)模式，请发送图片来帮您检索~ \n(注意：" + Global.banUtilsLimitTime + "秒内发送超过" + Global.banUtilsLimitCount + "张图片将会触发滥用规则被封禁)").build(), false);
                 return false;
             }
             SearchModeUtils.setMap(key, userId, "private");
-            bot.sendPrivateMsg(userId, "您已进入搜(图/本)模式，请发送图片来帮您检索~ \n(注意：" + Global.banUtils_limitTime + "秒内发送超过" + Global.banUtils_limitCount + "张图片将会触发滥用规则被封禁)", false);
+            bot.sendPrivateMsg(userId, "您已进入搜(图/本)模式，请发送图片来帮您检索~ \n(注意：" + Global.banUtilsLimitTime + "秒内发送超过" + Global.banUtilsLimitCount + "张图片将会触发滥用规则被封禁)", false);
             return false;
         }
         // 退出搜图

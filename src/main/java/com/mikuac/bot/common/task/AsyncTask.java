@@ -25,7 +25,7 @@ public class AsyncTask {
     public void deleteMsg(int msgId, Bot bot) {
         if (msgId != 0) {
             try {
-                Thread.sleep(Global.setu_delTime * 1000L);
+                Thread.sleep(Global.setuDelTime * 1000L);
                 bot.deleteMsg(msgId);
                 log.info("色图撤回成功，消息ID：[{}]", msgId);
             } catch (InterruptedException e) {

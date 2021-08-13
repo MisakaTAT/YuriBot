@@ -126,7 +126,7 @@ public class ConfigUtils {
     }
 
     @PostConstruct
-    public void watchFile() {
+    public void watchConfigFile() {
         WatchMonitor monitor = WatchMonitor.createAll("./", new DelayWatcher(new SimpleWatcher() {
             @Override
             public void onModify(WatchEvent<?> event, Path currentPath) {
