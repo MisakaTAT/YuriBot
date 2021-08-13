@@ -29,7 +29,7 @@ shiro:
     - com.mikuac.bot.plugins.aop.GetSysInfo
     - com.mikuac.bot.plugins.aop.BvToAv
     - com.mikuac.bot.plugins.Repeat
-    - com.mikuac.bot.plugins.GroupAtMe
+    # - com.mikuac.bot.plugins.GroupAtMe
     - com.mikuac.bot.plugins.AntiBiliApp
     - com.mikuac.bot.plugins.GroupMsgCount
     - com.mikuac.bot.plugins.aop.BlockChain
@@ -37,3 +37,4 @@ shiro:
     - com.mikuac.bot.plugins.aop.SteamRep
     - com.mikuac.bot.plugins.aop.AddSensitiveWord
     - com.mikuac.bot.plugins.aop.Ping
+    - com.mikuac.bot.plugins.AnimeThesaurus
