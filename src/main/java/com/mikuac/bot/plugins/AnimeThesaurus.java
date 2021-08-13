@@ -1,6 +1,10 @@
 package com.mikuac.bot.plugins;
 
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.extra.tokenizer.Result;
+import cn.hutool.extra.tokenizer.TokenizerEngine;
+import cn.hutool.extra.tokenizer.TokenizerUtil;
+import cn.hutool.extra.tokenizer.Word;
 import cn.hutool.json.JSONObject;
 import com.alibaba.fastjson.JSONArray;
 import com.mikuac.bot.common.utils.FileUtils;
@@ -29,6 +33,8 @@ import java.util.List;
 @Component
 public class AnimeThesaurus extends BotPlugin {
 
+    TokenizerEngine engine = TokenizerUtil.createEngine();
+
     JSONObject jsonObject;
 
     @PostConstruct
@@ -41,7 +47,16 @@ public class AnimeThesaurus extends BotPlugin {
         if (msg.isEmpty()) {
             return null;
         }
-        String listString = jsonObject.getOrDefault(msg, "").toString();
+        Result result = engine.parse(msg.trim());
+        String listString = "";
+        // 分词匹配
+        for (Word word : result) {
+            listString = jsonObject.getOrDefault(word.getText(), "").toString();
+            // 匹配到就跳出循环
+            if (listString.length() > 0) {
+                break;
+            }
+        }
         if (listString.length() <= 0) {
             return null;
         }
@@ -52,7 +67,6 @@ public class AnimeThesaurus extends BotPlugin {
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         String msg = event.getMessage();
-        long userId = event.getUserId();
         long groupId = event.getGroupId();
         int msgId = event.getMessageId();
         if (ShiroUtils.isAtAll(msg)) {
@@ -68,11 +82,7 @@ public class AnimeThesaurus extends BotPlugin {
                 if (sendMsg == null) {
                     return MESSAGE_IGNORE;
                 }
-                if (msgId > 0) {
-                    bot.sendGroupMsg(groupId, Msg.builder().reply(msgId).text(sendMsg).build(), false);
-                    return MESSAGE_IGNORE;
-                }
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text(sendMsg).build(), false);
+                bot.sendGroupMsg(groupId, Msg.builder().reply(msgId).text(sendMsg).build(), false);
             }
         }
         return MESSAGE_IGNORE;
