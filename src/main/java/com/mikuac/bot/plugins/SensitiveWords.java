@@ -36,6 +36,15 @@ public class SensitiveWords extends BotPlugin {
 
     WordTree wordTree = new WordTree();
 
+    public void removeWord(String word) {
+        wordTree.clear();
+        init();
+    }
+
+    public void addWord(String word) {
+        wordTree.addWord(word);
+    }
+
     /**
      * 容器实例化Bean构造器,服务初始化
      */

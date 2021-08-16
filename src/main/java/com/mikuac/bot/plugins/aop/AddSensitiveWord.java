@@ -4,6 +4,7 @@ import com.mikuac.bot.common.utils.RegexUtils;
 import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
 import com.mikuac.bot.entity.SensitiveWordEntity;
+import com.mikuac.bot.plugins.SensitiveWords;
 import com.mikuac.bot.repository.SensitiveWordRepository;
 import com.mikuac.shiro.bot.Bot;
 import com.mikuac.shiro.bot.BotPlugin;
@@ -11,8 +12,9 @@ import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import com.mikuac.shiro.utils.Msg;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * @author Zero
@@ -20,24 +22,94 @@ import org.springframework.stereotype.Component;
 @Component
 public class AddSensitiveWord extends BotPlugin {
 
+    @Resource
     private SensitiveWordRepository sensitiveWordRepository;
 
-    @Autowired
-    public void setSensitiveWordRepository(SensitiveWordRepository sensitiveWordRepository) {
-        this.sensitiveWordRepository = sensitiveWordRepository;
-    }
+    @Resource
+    private SensitiveWords sensitiveWords;
 
-    public String getWord(String msg) {
-        String word = null;
+    public String getAddWord(String msg) {
+        String word = "";
         // 正则group数
         int groupCount = 3;
         for (int i = 1; i <= groupCount; i++) {
-            if (RegexUtils.regexGroup(RegexConst.SENSITIVE_WORD, msg, i) != null) {
-                word = RegexUtils.regexGroup(RegexConst.SENSITIVE_WORD, msg, i);
+            if (RegexUtils.regexGroup(RegexConst.ADD_SENSITIVE_WORD, msg, i) != null) {
+                word = RegexUtils.regexGroup(RegexConst.ADD_SENSITIVE_WORD, msg, i);
                 break;
             }
         }
         return word;
+    }
+
+    public String getDelWord(String msg) {
+        String word = "";
+        // 正则group数
+        int groupCount = 3;
+        for (int i = 1; i <= groupCount; i++) {
+            if (RegexUtils.regexGroup(RegexConst.DEL_SENSITIVE_WORD, msg, i) != null) {
+                word = RegexUtils.regexGroup(RegexConst.DEL_SENSITIVE_WORD, msg, i);
+                break;
+            }
+        }
+        return word;
+    }
+
+    private boolean roleCheck(@NotNull Bot bot, long groupId, long userId) {
+        // 检查指令发送者是否为admin
+        if (Global.botAdminId != userId) {
+            if (groupId != 0L) {
+                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("此操作仅管理员可执行").build(), false);
+            } else {
+                bot.sendPrivateMsg(userId, "此操作仅管理员可执行", false);
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private String getWord(String msg, boolean isAdd) {
+        String word;
+        if (isAdd) {
+            word = getAddWord(msg);
+        } else {
+            word = getDelWord(msg);
+        }
+        if (!word.isEmpty()) {
+            return word;
+        }
+        return null;
+    }
+
+    private void addWordToDb(@NotNull Bot bot, String word, long groupId, long userId) {
+        if (sensitiveWordRepository.findWord(word).isPresent()) {
+            if (groupId != 0L) {
+                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("敏感词已存在，请勿重复添加").build(), false);
+            } else {
+                bot.sendPrivateMsg(userId, "敏感词已存在，请勿重复添加", false);
+            }
+            return;
+        }
+        SensitiveWordEntity sensitiveWordEntity = new SensitiveWordEntity();
+        sensitiveWordEntity.setWord(word);
+        sensitiveWordRepository.save(sensitiveWordEntity);
+        // 向关键词树添加单词，免去重启程序加载新增词
+        sensitiveWords.addWord(word);
+        if (groupId != 0L) {
+            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("敏感词添加成功").build(), false);
+        } else {
+            bot.sendPrivateMsg(userId, "敏感词添加成功", false);
+        }
+    }
+
+    private void delWordToDb(@NotNull Bot bot, String word, long groupId, long userId) {
+        sensitiveWordRepository.deleteByWord(word);
+        // 从关键词树移除单词，免去重启程序
+        sensitiveWords.removeWord(word);
+        if (groupId != 0L) {
+            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("敏感词删除成功").build(), false);
+        } else {
+            bot.sendPrivateMsg(userId, "敏感词删除成功", false);
+        }
     }
 
     @Override
@@ -45,24 +117,33 @@ public class AddSensitiveWord extends BotPlugin {
         String msg = event.getMessage();
         long groupId = event.getGroupId();
         long userId = event.getUserId();
-        if (msg.matches(RegexConst.SENSITIVE_WORD)) {
-            if (Global.botAdminId != userId) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("此操作仅管理员可执行").build(), false);
-                return MESSAGE_BLOCK;
+
+        // 添加敏感词
+        if (msg.matches(RegexConst.ADD_SENSITIVE_WORD)) {
+            // 权限检查
+            if (!roleCheck(bot, groupId, userId)) {
+                return MESSAGE_IGNORE;
             }
-            String word = getWord(msg);
-            if (word != null && word.isEmpty()) {
-                return MESSAGE_BLOCK;
+            // 添加敏感词到数据库
+            String word = getWord(msg, true);
+            if (word != null && !word.isEmpty()) {
+                addWordToDb(bot, word, groupId, userId);
             }
-            if (sensitiveWordRepository.findWord(word).isPresent()) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("敏感词已存在，请勿重复添加").build(), false);
-                return MESSAGE_BLOCK;
-            }
-            SensitiveWordEntity sensitiveWordEntity = new SensitiveWordEntity();
-            sensitiveWordEntity.setWord(word);
-            sensitiveWordRepository.save(sensitiveWordEntity);
-            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("敏感词添加成功").build(), false);
         }
+
+        // 删除敏感词
+        if (msg.matches(RegexConst.DEL_SENSITIVE_WORD)) {
+            // 权限检查
+            if (!roleCheck(bot, groupId, userId)) {
+                return MESSAGE_IGNORE;
+            }
+            // 从数据库删除敏感词
+            String word = getWord(msg, false);
+            if (word != null && !word.isEmpty()) {
+                delWordToDb(bot, word, groupId, userId);
+            }
+        }
+
         return MESSAGE_IGNORE;
     }
 
@@ -70,26 +151,34 @@ public class AddSensitiveWord extends BotPlugin {
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
         String msg = event.getMessage();
         long userId = event.getUserId();
-        if (msg.matches(RegexConst.SENSITIVE_WORD)) {
-            if (Global.botAdminId != userId) {
-                bot.sendPrivateMsg(userId, "此操作仅管理员可执行", false);
-                return MESSAGE_BLOCK;
+
+        // 添加敏感词
+        if (msg.matches(RegexConst.ADD_SENSITIVE_WORD)) {
+            // 权限检查
+            if (!roleCheck(bot, 0L, userId)) {
+                return MESSAGE_IGNORE;
             }
-            String word = getWord(msg);
-            if (word != null && word.isEmpty()) {
-                return MESSAGE_BLOCK;
+            // 添加敏感词到数据库
+            String word = getWord(msg, true);
+            if (word != null && !word.isEmpty()) {
+                addWordToDb(bot, word, 0L, userId);
             }
-            if (sensitiveWordRepository.findWord(word).isPresent()) {
-                bot.sendPrivateMsg(userId, "敏感词已存在，请勿重复添加", false);
-                return MESSAGE_BLOCK;
-            }
-            SensitiveWordEntity sensitiveWordEntity = new SensitiveWordEntity();
-            sensitiveWordEntity.setWord(word);
-            sensitiveWordRepository.save(sensitiveWordEntity);
-            bot.sendPrivateMsg(userId, "敏感词添加成功", false);
         }
+
+        // 删除敏感词
+        if (msg.matches(RegexConst.DEL_SENSITIVE_WORD)) {
+            // 权限检查
+            if (!roleCheck(bot, 0L, userId)) {
+                return MESSAGE_IGNORE;
+            }
+            // 从数据库删除敏感词
+            String word = getWord(msg, false);
+            if (word != null && !word.isEmpty()) {
+                delWordToDb(bot, word, 0L, userId);
+            }
+        }
+
         return MESSAGE_IGNORE;
     }
 
 }
-

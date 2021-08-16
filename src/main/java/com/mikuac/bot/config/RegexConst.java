@@ -59,7 +59,9 @@ public class RegexConst {
 
     public final static String STEAM_REP = "SteamRep\\s(.*)";
 
-    public final static String SENSITIVE_WORD = "^添加敏感词\\s(.*)|^(?i)AddSensitiveWord\\s(.*)|^(?i)AddSW\\s(.*)";
+    public final static String ADD_SENSITIVE_WORD = "^添加敏感词\\s(.*)|^(?i)AddSensitiveWord\\s(.*)|^(?i)AddSW\\s(.*)";
+
+    public final static String DEL_SENSITIVE_WORD = "^删除敏感词\\s(.*)|^(?i)DelSensitiveWord\\s(.*)|^(?i)DelSW\\s(.*)";
 
     public final static String REBOOT_BOT = "^(?i)reboot|重启|restart";
 
