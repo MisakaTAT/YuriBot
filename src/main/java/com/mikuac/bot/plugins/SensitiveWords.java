@@ -1,7 +1,9 @@
 package com.mikuac.bot.plugins;
 
-import com.mikuac.bot.common.utils.TrieUtils;
+import cn.hutool.dfa.WordTree;
 import com.mikuac.bot.config.Global;
+import com.mikuac.bot.entity.SensitiveWordEntity;
+import com.mikuac.bot.repository.SensitiveWordRepository;
 import com.mikuac.shiro.bot.Bot;
 import com.mikuac.shiro.bot.BotPlugin;
 import com.mikuac.shiro.dto.action.common.ActionData;
@@ -10,8 +12,11 @@ import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 敏感词撤回
@@ -26,11 +31,30 @@ public class SensitiveWords extends BotPlugin {
 
     private final static String OWNER_ROLE = "owner";
 
-    private TrieUtils trieUtils;
+    @Resource
+    private SensitiveWordRepository sensitiveWordRepository;
 
-    @Autowired
-    public void setTrieUtils(TrieUtils trieUtils) {
-        this.trieUtils = trieUtils;
+    WordTree wordTree = new WordTree();
+
+    /**
+     * 容器实例化Bean构造器,服务初始化
+     */
+    @PostConstruct
+    public void init() {
+        try {
+            List<SensitiveWordEntity> wordList = sensitiveWordRepository.findAll();
+            if (wordList.size() <= 0) {
+                log.info("从数据库加载敏感词失败");
+                return;
+            }
+            for (SensitiveWordEntity sensitiveWordEntity : wordList) {
+                // 添加到前缀树
+                wordTree.addWord(sensitiveWordEntity.getWord());
+            }
+            log.info("SensitiveWord 词库加载完成，当前词条数 [{}]", wordTree.size());
+        } catch (Exception e) {
+            log.info("SensitiveWord 词库加载异常: [{}]", e.getMessage());
+        }
     }
 
     @Override
@@ -55,17 +79,13 @@ public class SensitiveWords extends BotPlugin {
             }
         }
         // 检查是否为敏感词
-        if (trieUtils.contains(msg)) {
-            if (msgId <= 0) {
-                return MESSAGE_IGNORE;
-            }
-            // 如果获取到了消息ID则撤回消息
+        if (wordTree.isMatch(msg)) {
             bot.deleteMsg(msgId);
             Msg sendMsg = Msg.builder()
                     .at(userId)
                     .text(Global.botBotName + "注意到您发送到内容存在不适当的内容，已撤回处理，请注意言行哟～");
             bot.sendGroupMsg(groupId, sendMsg.build(), false);
-            log.info("检测到敏感词: [{}], 来自群: [{}], 发送者: [{}]", msg, groupId, userId);
+            log.info("检测到敏感词: [{}]，来自群: [{}]，发送者: [{}]", msg, groupId, userId);
         }
         return MESSAGE_IGNORE;
     }

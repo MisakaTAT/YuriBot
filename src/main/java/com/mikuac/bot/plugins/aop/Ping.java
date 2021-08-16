@@ -31,7 +31,7 @@ public class Ping extends BotPlugin {
         long userId = event.getUserId();
         if (msg.matches(RegexConst.PING)) {
             String imgUrl = commonUtils.getHostAndPort() + "/img/ping.jpg";
-            bot.sendPrivateMsg(userId, Msg.builder().text("运行时长: " + CommonUtils.secondFormat(upTime)).img(imgUrl).build(), false);
+            bot.sendPrivateMsg(userId, Msg.builder().text("运行时长: " + CommonUtils.secondFormat(upTime) + "\n").img(imgUrl).build(), false);
         }
         return MESSAGE_IGNORE;
     }
@@ -44,7 +44,7 @@ public class Ping extends BotPlugin {
         int msgId = event.getMessageId();
         if (msg.matches(RegexConst.PING)) {
             String imgUrl = commonUtils.getHostAndPort() + "/img/ping.jpg";
-            bot.sendGroupMsg(groupId, Msg.builder().reply(msgId).text("运行时长: " + CommonUtils.secondFormat(upTime)).img(imgUrl).build(), false);
+            bot.sendGroupMsg(groupId, Msg.builder().reply(msgId).text("运行时长: " + CommonUtils.secondFormat(upTime) + "\n").img(imgUrl).build(), false);
         }
         return MESSAGE_IGNORE;
     }

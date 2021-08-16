@@ -40,7 +40,7 @@ public class AnimeThesaurus extends BotPlugin {
     @PostConstruct
     private void init() {
         jsonObject = new JSONObject(FileUtils.readFile("world.json"));
-        log.info("AnimeThesaurus 词库加载完成, 词库大小 [{}]", jsonObject.size());
+        log.info("AnimeThesaurus 词库加载完成，词库大小 [{}]", jsonObject.size());
     }
 
     private String getRespList(String msg) {

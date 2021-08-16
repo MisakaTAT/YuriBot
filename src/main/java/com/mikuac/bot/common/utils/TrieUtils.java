@@ -4,10 +4,9 @@ import com.mikuac.bot.entity.SensitiveWordEntity;
 import com.mikuac.bot.repository.SensitiveWordRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.CharUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,21 +22,19 @@ public class TrieUtils {
      * trie树中拥有多少分枝（多少个敏感词）
      */
     private static int size;
+
     /**
      * 根节点
      */
     private final TrieNode rootNode = new TrieNode();
-    private SensitiveWordRepository sensitiveWordRepository;
 
-    @Autowired
-    public void setSensitiveWordRepository(SensitiveWordRepository sensitiveWordRepository) {
-        this.sensitiveWordRepository = sensitiveWordRepository;
-    }
+    @Resource
+    private SensitiveWordRepository sensitiveWordRepository;
 
     /**
      * 容器实例化Bean构造器,服务初始化
      */
-    @PostConstruct
+    // @PostConstruct
     public void init() {
         try {
             List<SensitiveWordEntity> wordList = sensitiveWordRepository.findAll();
