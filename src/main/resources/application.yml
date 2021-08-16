@@ -34,6 +34,6 @@ shiro:
     - com.mikuac.bot.plugins.aop.BlockChain
     - com.mikuac.bot.plugins.aop.PhoenixWright
     - com.mikuac.bot.plugins.aop.SteamRep
-    - com.mikuac.bot.plugins.aop.AddSensitiveWord
+    - com.mikuac.bot.plugins.aop.SensitiveWordMgmt
     - com.mikuac.bot.plugins.aop.Ping
     - com.mikuac.bot.plugins.AnimeThesaurus

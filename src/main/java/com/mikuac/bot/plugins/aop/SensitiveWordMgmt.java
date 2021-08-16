@@ -20,7 +20,7 @@ import javax.annotation.Resource;
  * @author Zero
  */
 @Component
-public class AddSensitiveWord extends BotPlugin {
+public class SensitiveWordMgmt extends BotPlugin {
 
     @Resource
     private SensitiveWordRepository sensitiveWordRepository;
@@ -54,7 +54,7 @@ public class AddSensitiveWord extends BotPlugin {
         return word;
     }
 
-    private boolean roleCheck(@NotNull Bot bot, long groupId, long userId) {
+    private boolean roleCheckFail(@NotNull Bot bot, long groupId, long userId) {
         // 检查指令发送者是否为admin
         if (Global.botAdminId != userId) {
             if (groupId != 0L) {
@@ -62,9 +62,9 @@ public class AddSensitiveWord extends BotPlugin {
             } else {
                 bot.sendPrivateMsg(userId, "此操作仅管理员可执行", false);
             }
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     private String getWord(String msg, boolean isAdd) {
@@ -121,7 +121,7 @@ public class AddSensitiveWord extends BotPlugin {
         // 添加敏感词
         if (msg.matches(RegexConst.ADD_SENSITIVE_WORD)) {
             // 权限检查
-            if (!roleCheck(bot, groupId, userId)) {
+            if (roleCheckFail(bot, groupId, userId)) {
                 return MESSAGE_IGNORE;
             }
             // 添加敏感词到数据库
@@ -134,7 +134,7 @@ public class AddSensitiveWord extends BotPlugin {
         // 删除敏感词
         if (msg.matches(RegexConst.DEL_SENSITIVE_WORD)) {
             // 权限检查
-            if (!roleCheck(bot, groupId, userId)) {
+            if (roleCheckFail(bot, groupId, userId)) {
                 return MESSAGE_IGNORE;
             }
             // 从数据库删除敏感词
@@ -155,7 +155,7 @@ public class AddSensitiveWord extends BotPlugin {
         // 添加敏感词
         if (msg.matches(RegexConst.ADD_SENSITIVE_WORD)) {
             // 权限检查
-            if (!roleCheck(bot, 0L, userId)) {
+            if (roleCheckFail(bot, 0L, userId)) {
                 return MESSAGE_IGNORE;
             }
             // 添加敏感词到数据库
@@ -168,7 +168,7 @@ public class AddSensitiveWord extends BotPlugin {
         // 删除敏感词
         if (msg.matches(RegexConst.DEL_SENSITIVE_WORD)) {
             // 权限检查
-            if (!roleCheck(bot, 0L, userId)) {
+            if (roleCheckFail(bot, 0L, userId)) {
                 return MESSAGE_IGNORE;
             }
             // 从数据库删除敏感词

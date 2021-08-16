@@ -95,6 +95,8 @@ public class SensitiveWords extends BotPlugin {
                     .text(Global.botBotName + "注意到您发送到内容存在不适当的内容，已撤回处理，请注意言行哟～");
             bot.sendGroupMsg(groupId, sendMsg.build(), false);
             log.info("检测到敏感词: [{}]，来自群: [{}]，发送者: [{}]", msg, groupId, userId);
+            // 如果是敏感词就阻止后面的插件执行，防止复读
+            return MESSAGE_BLOCK;
         }
         return MESSAGE_IGNORE;
     }
