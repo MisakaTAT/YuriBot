@@ -21,8 +21,8 @@ public class CommonUtils {
     /**
      * 精确到小数点后两位，返回String
      *
-     * @param value
-     * @return
+     * @param value 值
+     * @return 格式化后的字符串
      */
     public static String formatDouble(double value) {
         return String.valueOf(Double.valueOf(String.format("%.2f", value)));
@@ -31,8 +31,8 @@ public class CommonUtils {
     /**
      * 秒转分秒
      *
-     * @param value
-     * @return
+     * @param value 秒值
+     * @return 格式化后的字符串
      */
     public static String sFormat(double value) {
         long minute = Math.round(value) / 60;
@@ -45,14 +45,32 @@ public class CommonUtils {
     /**
      * 生成UUID
      *
-     * @return
+     * @return uuid
      */
-    public static String getUUID() {
+    public static String getUuid() {
         return UUID.randomUUID().toString();
     }
 
     public String getHostAndPort() {
         return "http://127.0.0.1:" + environment.getProperty("local.server.port");
+    }
+
+    public static String secondFormat(long s) {
+        String dateTimes = null;
+        long days = s / (60 * 60 * 24);
+        long hours = (s % (60 * 60 * 24)) / (60 * 60);
+        long minutes = (s % (60 * 60)) / 60;
+        long seconds = s % 60;
+        if (days > 0) {
+            dateTimes = days + " 天 " + hours + " 小时 " + minutes + " 分钟 " + seconds + " 秒 ";
+        } else if (hours > 0) {
+            dateTimes = hours + " 小时 " + minutes + " 分钟 " + seconds + " 秒 ";
+        } else if (minutes > 0) {
+            dateTimes = minutes + " 分钟 " + seconds + " 秒 ";
+        } else {
+            dateTimes = seconds + " 秒 ";
+        }
+        return dateTimes;
     }
 
 }

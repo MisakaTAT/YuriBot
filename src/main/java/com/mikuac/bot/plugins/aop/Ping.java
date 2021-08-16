@@ -31,7 +31,7 @@ public class Ping extends BotPlugin {
         long userId = event.getUserId();
         if (msg.matches(RegexConst.PING)) {
             String imgUrl = commonUtils.getHostAndPort() + "/img/ping.jpg";
-            bot.sendPrivateMsg(userId, Msg.builder().text("UpTime: " + upTime + "s\n").img(imgUrl).build(), false);
+            bot.sendPrivateMsg(userId, Msg.builder().text("运行时长: " + CommonUtils.secondFormat(upTime)).img(imgUrl).build(), false);
         }
         return MESSAGE_IGNORE;
     }
@@ -40,11 +40,11 @@ public class Ping extends BotPlugin {
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         long upTime = ManagementFactory.getRuntimeMXBean().getUptime() / 1000;
         String msg = event.getMessage();
-        long userId = event.getUserId();
         long groupId = event.getGroupId();
+        int msgId = event.getMessageId();
         if (msg.matches(RegexConst.PING)) {
             String imgUrl = commonUtils.getHostAndPort() + "/img/ping.jpg";
-            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("UpTime: " + upTime + "s\n").img(imgUrl).build(), false);
+            bot.sendGroupMsg(groupId, Msg.builder().reply(msgId).text("运行时长: " + CommonUtils.secondFormat(upTime)).img(imgUrl).build(), false);
         }
         return MESSAGE_IGNORE;
     }

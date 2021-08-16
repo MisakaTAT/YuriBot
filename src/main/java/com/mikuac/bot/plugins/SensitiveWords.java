@@ -23,7 +23,9 @@ import org.springframework.stereotype.Component;
 public class SensitiveWords extends BotPlugin {
 
     private final static String ADMIN_ROLE = "admin";
+
     private final static String OWNER_ROLE = "owner";
+
     private TrieUtils trieUtils;
 
     @Autowired
