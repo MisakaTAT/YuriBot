@@ -25,8 +25,10 @@ public class Poke extends BotPlugin {
         long userId = event.getUserId();
         long targetId = event.getTargetId();
 
-        if (Global.botSelfId == targetId) {
-            bot.sendGroupMsg(groupId, Msg.builder().poke(userId).build(), false);
+        if (event.getSenderId() != Global.botSelfId) {
+            if (Global.botSelfId == targetId || Global.botAdminId == targetId) {
+                bot.sendGroupMsg(groupId, Msg.builder().poke(userId).build(), false);
+            }
         }
 
         GroupMemberInfoResp userInfo = bot.getGroupMemberInfo(groupId, userId, true).getData();
