@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 public class Global {
 
     public static String serverAddress;
-
     public static int serverPort;
     public static String botBotName;
     public static long botAdminId;
@@ -31,8 +30,6 @@ public class Global {
     public static String telegramBotToken;
     public static int banUtilsLimitTime;
     public static int banUtilsLimitCount;
-    public static boolean maintenanceEnable;
-    public static String maintenanceAlertMsg;
     public static String sauceNaoApiKey;
     public static ConfigBean config = ConfigUtils.init(false);
 
@@ -55,8 +52,6 @@ public class Global {
         telegramBotToken = config.getTelegram().getBotToken();
         banUtilsLimitTime = config.getBanUtils().getLimitTime();
         banUtilsLimitCount = config.getBanUtils().getLimitCount();
-        maintenanceEnable = config.getMaintenance().isEnable();
-        maintenanceAlertMsg = config.getMaintenance().getAlertMsg();
         sauceNaoApiKey = config.getSauceNao().getApiKey();
     }
 

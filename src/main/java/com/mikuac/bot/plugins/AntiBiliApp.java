@@ -85,7 +85,7 @@ public class AntiBiliApp extends BotPlugin {
             // 如果不为空继续302跳转取到bvId
             if (redirectUrl != null) {
                 String bvId = getRedirectUrlBv(redirectUrl);
-                if (bvId != null && !"".equals(bvId)) {
+                if (bvId != null && !bvId.isEmpty()) {
                     getVideoInfo(bvId);
                     AntiBiliData data = antiBiliBean.getData();
                     AntiBiliStat stat = antiBiliBean.getData().getStat();
@@ -108,7 +108,7 @@ public class AntiBiliApp extends BotPlugin {
             // 如果不为空继续302跳转取到bvId
             if (redirectUrl != null) {
                 String bvId = getRedirectUrlBv(redirectUrl);
-                if (bvId != null && !"".equals(bvId)) {
+                if (bvId != null && !bvId.isEmpty()) {
                     getVideoInfo(bvId);
                     AntiBiliData data = antiBiliBean.getData();
                     AntiBiliStat stat = antiBiliBean.getData().getStat();

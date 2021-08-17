@@ -100,7 +100,6 @@ public class GetSysInfo extends BotPlugin {
             long uerId = event.getUserId();
             try {
                 bot.sendPrivateMsg(uerId, "⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ 需要一点时间来为您收集系统信息，请稍后~", false);
-                // doGet();
                 bot.sendPrivateMsg(uerId, sendSysInfoMsg(false, 0L).build(), false);
             } catch (Exception e) {
                 bot.sendPrivateMsg(uerId, "系统信息收集异常~", false);

@@ -31,6 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Hitokoto extends BotPlugin {
 
     private final String types = "abcdefghijkl";
+
     /**
      * 初始化typesMap
      */
@@ -50,11 +51,15 @@ public class Hitokoto extends BotPlugin {
             put('l', "抖机灵");
         }
     };
+
     Map<Long, Long> lastGetTimeMap = new ConcurrentHashMap<>();
+
     @JSONField(serialzeFeatures = {SerializerFeature.WriteMapNullValue})
     private String hitokoto;
+
     @JSONField(serialzeFeatures = {SerializerFeature.WriteMapNullValue})
     private String from;
+
     @JSONField(serialzeFeatures = {SerializerFeature.WriteMapNullValue})
     private char getType;
 

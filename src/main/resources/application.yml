@@ -14,7 +14,6 @@ shiro:
     - com.mikuac.bot.plugins.SensitiveWords
     - com.mikuac.bot.plugins.filter.TcBotFilter
     - com.mikuac.bot.plugins.aop.EventLog
-    - com.mikuac.bot.plugins.aop.Maintenance
     - com.mikuac.bot.plugins.aop.RebootBot
     - com.mikuac.bot.plugins.aop.ShutdownBot
     - com.mikuac.bot.plugins.aop.SendHelp

@@ -64,11 +64,6 @@ public class ConfigUtils {
         prefix.setPrefix(".");
         configBean.setPrefix(prefix);
 
-        ConfigBean.Maintenance maintenance = new ConfigBean.Maintenance();
-        maintenance.setEnable(false);
-        maintenance.setAlertMsg("yuri维护中,请稍后再试~");
-        configBean.setMaintenance(maintenance);
-
         ConfigBean.Repeat repeat = new ConfigBean.Repeat();
         repeat.setRandomCountSize(5);
         configBean.setRepeat(repeat);

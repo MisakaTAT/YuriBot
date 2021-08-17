@@ -53,12 +53,6 @@
     // 时间阈值最大发送图片数量
     "limitCount": 10
   },
-  "maintenance": {
-    // 是否处于维护模式
-    "enable": false,
-    // 维护模式下提示信息
-    "alertMsg": "yuri维护中,请稍后再试~"
-  },
   "sauceNao": {
     // SauceNao Api Key
     "apiKey": "Api Key Value"
