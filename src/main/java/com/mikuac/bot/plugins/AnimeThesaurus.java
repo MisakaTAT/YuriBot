@@ -1,10 +1,6 @@
 package com.mikuac.bot.plugins;
 
 import cn.hutool.core.util.RandomUtil;
-import cn.hutool.extra.tokenizer.Result;
-import cn.hutool.extra.tokenizer.TokenizerEngine;
-import cn.hutool.extra.tokenizer.TokenizerUtil;
-import cn.hutool.extra.tokenizer.Word;
 import cn.hutool.json.JSONObject;
 import com.alibaba.fastjson.JSONArray;
 import com.mikuac.bot.common.utils.FileUtils;
@@ -33,35 +29,22 @@ import java.util.List;
 @Component
 public class AnimeThesaurus extends BotPlugin {
 
-    TokenizerEngine engine = TokenizerUtil.createEngine();
-
     JSONObject jsonObject;
 
     @PostConstruct
     private void init() {
         jsonObject = new JSONObject(FileUtils.readFile("anime_thesaurus.json"));
-        log.info("AnimeThesaurus 词库加载完成，词库大小 [{}]", jsonObject.size());
+        log.info("AnimeThesaurus 词库加载完成，索引大小 [{}]", jsonObject.size());
     }
 
     private String getRespList(String msg) {
-        if (msg.isEmpty()) {
-            return null;
-        }
-        Result result = engine.parse(msg.trim());
-        String listString = "";
-        // 分词匹配
-        for (Word word : result) {
-            listString = jsonObject.getOrDefault(word.getText(), "").toString();
-            // 匹配到就跳出循环
-            if (listString.length() > 0) {
-                break;
+        for (Object key : jsonObject.keySet()) {
+            if (msg.contains(key.toString())) {
+                List<String> respWorldList = JSONArray.parseArray(jsonObject.get(key.toString()).toString(), String.class);
+                return RandomUtil.randomEle(respWorldList);
             }
         }
-        if (listString.length() <= 0) {
-            return null;
-        }
-        List<String> respWorldList = JSONArray.parseArray(listString, String.class);
-        return RandomUtil.randomEle(respWorldList);
+        return null;
     }
 
     @Override
