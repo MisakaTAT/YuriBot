@@ -21,9 +21,11 @@
 # Features
 - [x] 一言
 - [x] 复读姬
+- [x] HttpCat
 - [x] 色图time (
 - [x] WhatAnime 搜番
 - [x] SauceNao 搜图
+- [x] AnimeThesaurus
 - [x] 入群欢迎与退群提醒
 - [x] 彩虹六号游戏战绩查询
 - [x] 群组消息批量推送

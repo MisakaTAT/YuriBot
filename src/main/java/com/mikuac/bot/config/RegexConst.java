@@ -73,4 +73,6 @@ public class RegexConst {
 
     public final static String IMG_MSG_REGEX = "^\\[CQ:image,file=(.*),url=(.*)\\]";
 
+    public final static String HTTP_CAT = "(?i)httpcat\\s([0-9]+)";
+
 }

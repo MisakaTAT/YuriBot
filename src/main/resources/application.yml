@@ -37,3 +37,4 @@ shiro:
     - com.mikuac.bot.plugins.aop.Ping
     - com.mikuac.bot.plugins.AnimeThesaurus
     - com.mikuac.bot.plugins.Poke
+    - com.mikuac.bot.plugins.aop.HttpCat

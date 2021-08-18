@@ -31,4 +31,6 @@ public class ApiConst {
 
     public final static String STEAM_REP_API2 = "https://steamid.facheme.com/lookup";
 
+    public final static String HTTP_CAT = "https://http.cat/";
+
 }
