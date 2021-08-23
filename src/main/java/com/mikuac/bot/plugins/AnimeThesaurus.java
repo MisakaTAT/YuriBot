@@ -31,6 +31,8 @@ public class AnimeThesaurus extends BotPlugin {
 
     JSONObject jsonObject;
 
+    private final static String IMAGE_CQ_CODE = "[CQ:image";
+
     @PostConstruct
     private void init() {
         jsonObject = new JSONObject(FileUtils.readFile("anime_thesaurus.json"));
@@ -52,7 +54,7 @@ public class AnimeThesaurus extends BotPlugin {
         String msg = event.getMessage();
         long groupId = event.getGroupId();
         int msgId = event.getMessageId();
-        if (ShiroUtils.isAtAll(msg)) {
+        if (ShiroUtils.isAtAll(msg) || msg.contains(IMAGE_CQ_CODE)) {
             return MESSAGE_IGNORE;
         }
         // 判断被at的是否为机器人
@@ -69,6 +71,7 @@ public class AnimeThesaurus extends BotPlugin {
             }
         }
         return MESSAGE_IGNORE;
+
     }
 
     @Override
@@ -76,7 +79,7 @@ public class AnimeThesaurus extends BotPlugin {
         String msg = event.getMessage();
         long userId = event.getUserId();
         String sendMsg = getRespList(msg);
-        if (sendMsg == null) {
+        if (msg.contains(IMAGE_CQ_CODE) || sendMsg == null) {
             return MESSAGE_IGNORE;
         }
         bot.sendPrivateMsg(userId, sendMsg, false);

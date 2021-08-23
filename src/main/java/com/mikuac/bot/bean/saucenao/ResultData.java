@@ -34,4 +34,13 @@ public class ResultData {
     @JSONField(name = "jp_name")
     private String jpName;
 
+    @JSONField(name = "tweet_id")
+    private String tweetId;
+
+    @JSONField(name = "twitter_user_id")
+    private String twitterUserId;
+
+    @JSONField(name = "twitter_user_handle")
+    private String twitterUserHandle;
+
 }

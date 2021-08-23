@@ -38,7 +38,7 @@ public class SauceNao extends BotPlugin {
     private BanUtils banUtils;
 
     public void searchResult(String picUrl) {
-        String param = "api_key=" + Global.setuApiKey + "&output_type=2&numres=3&db=999&url=" + picUrl;
+        String param = "api_key=" + Global.sauceNaoApiKey + "&output_type=2&numres=3&db=999&url=" + picUrl;
         String result = HttpClientUtils.httpGetWithJson(ApiConst.SAUCENAO_API + param, false);
         sauceNaoBean = JSON.parseObject(result, SauceNaoBean.class);
     }
@@ -163,11 +163,17 @@ public class SauceNao extends BotPlugin {
                 sendMsg.text("\n数据来源: SauceNao (Pixiv)");
             }
             case 1 -> {
+                sendMsg.text("\n链接: " + r.getResultData().getExtUrls().get(0));
+                sendMsg.text("\n用户: " + "https://twitter.com/" + r.getResultData().getTwitterUserHandle());
+                sendMsg.text("\n剩余搜索配额: " + sauceNaoBean.getHeader().getLongRemaining());
+                sendMsg.text("\n数据来源: SauceNao (Twitter)");
+            }
+            case 2 -> {
                 sendMsg.text("\n来源: " + r.getResultData().getSource());
                 sendMsg.text("\n日文名: " + r.getResultData().getJpName());
                 sendMsg.text("\n英文名: " + r.getResultData().getEngName());
                 sendMsg.text("\n剩余搜索配额: " + sauceNaoBean.getHeader().getLongRemaining());
-                sendMsg.text("\n数据来源: SauceNao (E-Hentai)");
+                sendMsg.text("\n数据来源: SauceNao (H-Misc)");
             }
             default -> {
             }
@@ -178,6 +184,29 @@ public class SauceNao extends BotPlugin {
         } else {
             bot.sendPrivateMsg(userId, sendMsg.build(), false);
         }
+    }
+
+    private boolean resultMatch(@NotNull Bot bot, long groupId, long userId) {
+        // Index #41: Twitter
+        // Index #5: pixiv Images
+        // Index #18, #38: H-Misc
+        for (Results r : sauceNaoBean.getResults()) {
+            int indexId = r.getResultHeader().getIndexId();
+            if (indexId == 5) {
+                msgBuilder(bot, groupId, userId, r, 0);
+                return true;
+            }
+            if (indexId == 41) {
+                msgBuilder(bot, groupId, userId, r, 1);
+                return true;
+            }
+            if (indexId == 38 || indexId == 18) {
+                msgBuilder(bot, groupId, userId, r, 2);
+                return true;
+            }
+        }
+        msgBuilder(bot, groupId, userId, null, -1);
+        return false;
     }
 
     @Override
@@ -205,21 +234,10 @@ public class SauceNao extends BotPlugin {
             bot.sendPrivateMsg(userId, "图片搜索中，请稍后~", false);
             try {
                 searchResult(picUrl);
-                if (apiCheck(bot, 0L, userId)) {
+                if (apiCheck(bot, 0L, userId) || resultMatch(bot, 0L, userId
+                )) {
                     return MESSAGE_IGNORE;
                 }
-                // 构建消息 匹配到P站图片db返回0，匹配到E站返回1
-                for (Results r : sauceNaoBean.getResults()) {
-                    if (r.getResultHeader().getIndexName().matches("(.*)Pixiv(.*)")) {
-                        msgBuilder(bot, 0L, userId, r, 0);
-                        return MESSAGE_IGNORE;
-                    }
-                    if (r.getResultHeader().getIndexName().matches("(.*)E-Hentai(.*)")) {
-                        msgBuilder(bot, 0L, userId, r, 1);
-                        return MESSAGE_IGNORE;
-                    }
-                }
-                msgBuilder(bot, 0L, userId, null, -1);
             } catch (Exception e) {
                 bot.sendPrivateMsg(userId, "SauceNao检索服务出现异常，请稍后重试~", false);
                 log.error("SauceNao插件检索异常: {}", e.getMessage());
@@ -254,21 +272,9 @@ public class SauceNao extends BotPlugin {
             bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("图片搜索中，请稍后~").build(), false);
             try {
                 searchResult(picUrl);
-                if (apiCheck(bot, groupId, userId)) {
+                if (apiCheck(bot, groupId, userId) || resultMatch(bot, groupId, userId)) {
                     return MESSAGE_IGNORE;
                 }
-                // 构建消息 匹配到P站图片db返回0，匹配到E站返回1
-                for (Results r : sauceNaoBean.getResults()) {
-                    if (r.getResultHeader().getIndexName().matches("(.*)Pixiv(.*)")) {
-                        msgBuilder(bot, groupId, userId, r, 0);
-                        return MESSAGE_IGNORE;
-                    }
-                    if (r.getResultHeader().getIndexName().matches("(.*)E-Hentai(.*)")) {
-                        msgBuilder(bot, groupId, userId, r, 1);
-                        return MESSAGE_IGNORE;
-                    }
-                }
-                msgBuilder(bot, groupId, userId, null, -1);
             } catch (Exception e) {
                 bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("SauceNao检索服务出现异常，请稍后重试~").build(), false);
                 log.error("SauceNao插件检索异常: {}", e.getMessage());
