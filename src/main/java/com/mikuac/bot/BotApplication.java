@@ -12,7 +12,6 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import org.telegram.telegrambots.ApiContextInitializer;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -37,8 +36,6 @@ public class BotApplication {
         log.info("开始重启悠里");
         context.close();
         BotApplication.context = SpringApplication.run(BotApplication.class, args);
-        // 初始化Telegram框架
-        ApiContextInitializer.init();
         log.info("悠里重启完毕");
     }
 
@@ -55,8 +52,6 @@ public class BotApplication {
     public static void main(String[] args) {
         BotApplication.args = args;
         BotApplication.context = SpringApplication.run(BotApplication.class, args);
-        // 初始化Telegram框架
-        ApiContextInitializer.init();
         log.info(START_MSG);
     }
 

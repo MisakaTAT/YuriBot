@@ -2,14 +2,14 @@ package com.mikuac.bot.telegram;
 
 import com.mikuac.bot.common.utils.SendMsgUtils;
 import com.mikuac.bot.common.utils.TelegramUtils;
+import com.mikuac.bot.config.Global;
 import com.mikuac.shiro.utils.Msg;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -17,19 +17,11 @@ import java.util.List;
  * @date 2020/10/31 17:08
  */
 @Slf4j
-//@Component
+// @Component
 public class ForwardMessage extends TelegramLongPollingBot {
 
+    @Resource
     private SendMsgUtils sendMsgUtils;
-    @Value("${yuri.telegram.botName}")
-    private String botName;
-    @Value("${yuri.telegram.botToken}")
-    private String botToken;
-
-    @Autowired
-    public void setSendMsgUtils(SendMsgUtils sendMsgUtils) {
-        this.sendMsgUtils = sendMsgUtils;
-    }
 
     @SneakyThrows
     @Override
@@ -44,7 +36,7 @@ public class ForwardMessage extends TelegramLongPollingBot {
                 imgFileId = update.getChannelPost().getPhoto().get(i).getFileId();
             }
             if (imgFileId != null && !imgFileId.isEmpty()) {
-                String imgUrl = TelegramUtils.getImgUrl(botToken, imgFileId);
+                String imgUrl = TelegramUtils.getImgUrl(Global.telegramBotToken, imgFileId);
                 if (imgUrl != null && !imgUrl.isEmpty()) {
                     List<Long> groupIdList = sendMsgUtils.getGroupList();
                     if (groupIdList != null && !groupIdList.isEmpty()) {
@@ -68,12 +60,12 @@ public class ForwardMessage extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return botName;
+        return Global.telegramBotName;
     }
 
     @Override
     public String getBotToken() {
-        return botToken;
+        return Global.telegramBotToken;
     }
 
 }
