@@ -8,11 +8,11 @@ import com.mikuac.bot.common.utils.*;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
-import com.mikuac.shiro.bot.Bot;
-import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.core.Bot;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
-import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
@@ -47,7 +47,7 @@ public class SauceNao extends BotPlugin {
         // 检查24小时内剩余搜索额度
         if (sauceNaoBean.getHeader().getLongRemaining() <= 0) {
             if (groupId != 0L) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("Saucenao 24小时内搜索配额已耗尽，明天再来吧~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("Saucenao 24小时内搜索配额已耗尽，明天再来吧~").build(), false);
                 return true;
             }
             bot.sendPrivateMsg(userId, "Saucenao 24小时内搜索配额已耗尽，明天再来吧~", false);
@@ -56,7 +56,7 @@ public class SauceNao extends BotPlugin {
         // 检查30秒内剩余搜索额度
         if (sauceNaoBean.getHeader().getShortRemaining() <= 0) {
             if (groupId != 0L) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("Saucenao 30秒内搜索配额已耗尽，请稍后再试~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("Saucenao 30秒内搜索配额已耗尽，请稍后再试~").build(), false);
                 return true;
             }
             bot.sendPrivateMsg(userId, "Saucenao 30秒内搜索配额已耗尽，请稍后再试~", false);
@@ -65,7 +65,7 @@ public class SauceNao extends BotPlugin {
         // 检查是否有返回结果
         if (sauceNaoBean.getResults().size() <= 0) {
             if (groupId != 0L) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("抱歉，未检索到您发送的图片内容，请更换图片再次尝试~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("抱歉，未检索到您发送的图片内容，请更换图片再次尝试~").build(), false);
                 return true;
             }
             bot.sendPrivateMsg(userId, "抱歉，未检索到您发送的图片内容，请更换图片再次尝试~", false);
@@ -80,7 +80,7 @@ public class SauceNao extends BotPlugin {
             // 检查是否触发滥用规则被封禁
             if (banUtils.isBanned(userId)) {
                 if (groupId != 0L) {
-                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("您因触发滥用规则已被封禁~").build(), false);
+                    bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("您因触发滥用规则已被封禁~").build(), false);
                     return false;
                 }
                 bot.sendPrivateMsg(userId, "您因触发滥用规则已被封禁~", false);
@@ -89,7 +89,7 @@ public class SauceNao extends BotPlugin {
             // 防止重复执行
             if (map.get(key) != null) {
                 if (groupId != 0L) {
-                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("您已经处于搜(图/本)模式啦，请直接发送图片让我来帮您检索~").build(), false);
+                    bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("您已经处于搜(图/本)模式啦，请直接发送图片让我来帮您检索~").build(), false);
                     return false;
                 }
                 bot.sendPrivateMsg(userId, "您已经处于搜(图/本)模式啦，请直接发送图片让我来帮您检索~", false);
@@ -98,7 +98,7 @@ public class SauceNao extends BotPlugin {
             // 检查是否处于搜番模式
             if (map.get(key - 1) != null) {
                 if (groupId != 0L) {
-                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("您已经处于搜番模式，请先退出此模式后再次尝试~").build(), false);
+                    bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("您已经处于搜番模式，请先退出此模式后再次尝试~").build(), false);
                     return false;
                 }
                 bot.sendPrivateMsg(userId, "您已经处于搜番模式，请先退出此模式后再次尝试~", false);
@@ -106,7 +106,7 @@ public class SauceNao extends BotPlugin {
             }
             if (groupId != 0L) {
                 SearchModeUtils.setMap(key, groupId, userId, "group");
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("您已进入搜(图/本)模式，请发送图片来帮您检索~ \n(注意：" + Global.banUtilsLimitTime + "秒内发送超过" + Global.banUtilsLimitCount + "张图片将会触发滥用规则被封禁)").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("您已进入搜(图/本)模式，请发送图片来帮您检索~ \n(注意：" + Global.banUtilsLimitTime + "秒内发送超过" + Global.banUtilsLimitCount + "张图片将会触发滥用规则被封禁)").build(), false);
                 return false;
             }
             SearchModeUtils.setMap(key, userId, "private");
@@ -118,10 +118,10 @@ public class SauceNao extends BotPlugin {
             if (groupId != 0L) {
                 if (map.get(key) != null) {
                     SearchModeUtils.quitSearch(key);
-                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("已为您退出搜(图/本)模式~").build(), false);
+                    bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("已为您退出搜(图/本)模式~").build(), false);
                     return false;
                 }
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("您尚未进入搜(图/本)模式~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("您尚未进入搜(图/本)模式~").build(), false);
                 return false;
             }
             if (map.get(key) != null) {
@@ -138,14 +138,14 @@ public class SauceNao extends BotPlugin {
     public void msgBuilder(@NotNull Bot bot, long groupId, long userId, Results r, int db) {
         if (r == null || db == -1) {
             if (groupId != 0L) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("未检索到您发送的内容，请更换图片后重新尝试~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("未检索到您发送的内容，请更换图片后重新尝试~").build(), false);
                 return;
             }
             bot.sendPrivateMsg(userId, "未检索到您发送的内容，请更换图片后重新尝试~", false);
             return;
         }
 
-        Msg sendMsg = Msg.builder();
+        MsgUtils sendMsg = MsgUtils.builder();
         // 如果群号不为0L则为群组消息
         if (groupId != 0L) {
             sendMsg.at(userId);
@@ -269,14 +269,14 @@ public class SauceNao extends BotPlugin {
             map.get(key).setStartTime(Instant.now().getEpochSecond());
             // 检查滥用
             banUtils.setBan(userId);
-            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("图片搜索中，请稍后~").build(), false);
+            bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("图片搜索中，请稍后~").build(), false);
             try {
                 searchResult(picUrl);
                 if (apiCheck(bot, groupId, userId) || resultMatch(bot, groupId, userId)) {
                     return MESSAGE_IGNORE;
                 }
             } catch (Exception e) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("SauceNao检索服务出现异常，请稍后重试~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("SauceNao检索服务出现异常，请稍后重试~").build(), false);
                 log.error("SauceNao插件检索异常: {}", e.getMessage());
             }
         }

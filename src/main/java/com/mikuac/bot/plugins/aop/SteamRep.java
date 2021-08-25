@@ -6,11 +6,11 @@ import com.mikuac.bot.common.utils.HttpClientUtils;
 import com.mikuac.bot.common.utils.RegexUtils;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.RegexConst;
-import com.mikuac.shiro.bot.Bot;
-import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.core.Bot;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
-import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Connection;
@@ -119,8 +119,8 @@ public class SteamRep extends BotPlugin {
         return steamRepBean;
     }
 
-    public Msg buildMsg(Boolean isGroupMsg, long userId, SteamRepBean steamRepBean) {
-        Msg sendMsg = Msg.builder();
+    public MsgUtils buildMsg(Boolean isGroupMsg, long userId, SteamRepBean steamRepBean) {
+        MsgUtils sendMsg = MsgUtils.builder();
         if (isGroupMsg) {
             sendMsg.at(userId).text("\n");
         }
@@ -171,10 +171,10 @@ public class SteamRep extends BotPlugin {
         if (msg.matches(RegexConst.STEAM_REP)) {
             String id = RegexUtils.regexGroup(RegexConst.STEAM_REP, msg, 1);
             try {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("查询中，请稍后～").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("查询中，请稍后～").build(), false);
                 bot.sendGroupMsg(groupId, buildMsg(true, userId, parseDom(id)).build(), false);
             } catch (Exception e) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("查询失败，请检查SteamID是否正确或使用64位SteamID重试～").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("查询失败，请检查SteamID是否正确或使用64位SteamID重试～").build(), false);
             }
         }
 

@@ -1,11 +1,11 @@
 package com.mikuac.bot.plugins;
 
 import com.mikuac.bot.config.Global;
-import com.mikuac.shiro.bot.Bot;
-import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.core.Bot;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.action.response.GroupMemberInfoResp;
 import com.mikuac.shiro.dto.event.notice.PokeNoticeEvent;
-import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
@@ -27,7 +27,7 @@ public class Poke extends BotPlugin {
 
         if (event.getSenderId() != Global.botSelfId) {
             if (Global.botSelfId == targetId || Global.botAdminId == targetId) {
-                bot.sendGroupMsg(groupId, Msg.builder().poke(userId).build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().poke(userId).build(), false);
             }
         }
 

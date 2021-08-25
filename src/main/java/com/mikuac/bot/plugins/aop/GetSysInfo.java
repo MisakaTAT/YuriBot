@@ -8,11 +8,11 @@ import cn.hutool.system.SystemUtil;
 import cn.hutool.system.oshi.CpuInfo;
 import cn.hutool.system.oshi.OshiUtil;
 import com.mikuac.bot.config.RegexConst;
-import com.mikuac.shiro.bot.Bot;
-import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.core.Bot;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
-import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
@@ -26,14 +26,14 @@ import oshi.hardware.*;
 @Component
 public class GetSysInfo extends BotPlugin {
 
-    public Msg sendSysInfoMsg(boolean isGroup, long userId) {
+    public MsgUtils sendSysInfoMsg(boolean isGroup, long userId) {
         CpuInfo cpu = OshiUtil.getCpuInfo();
         GlobalMemory memory = OshiUtil.getMemory();
         JvmInfo jvm = SystemUtil.getJvmInfo();
         RuntimeInfo runtimeInfo = SystemUtil.getRuntimeInfo();
         OsInfo osInfo = SystemUtil.getOsInfo();
 
-        Msg msg = Msg.builder();
+        MsgUtils msg = MsgUtils.builder();
         if (isGroup) {
             msg.at(userId);
             msg.text("\n");
@@ -61,13 +61,13 @@ public class GetSysInfo extends BotPlugin {
         return msg;
     }
 
-    public Msg sendHardwareInfoMsg(boolean isGroup, long userId) {
+    public MsgUtils sendHardwareInfoMsg(boolean isGroup, long userId) {
         ComputerSystem computerSystem = OshiUtil.getHardware().getComputerSystem();
         Sensors sensors = OshiUtil.getHardware().getSensors();
         CentralProcessor processor = OshiUtil.getHardware().getProcessor();
         Baseboard baseboard = computerSystem.getBaseboard();
 
-        Msg msg = Msg.builder();
+        MsgUtils msg = MsgUtils.builder();
         if (isGroup) {
             msg.at(userId);
             msg.text("\n");
@@ -127,10 +127,10 @@ public class GetSysInfo extends BotPlugin {
             long uerId = event.getUserId();
             long groupId = event.getGroupId();
             try {
-                bot.sendGroupMsg(groupId, Msg.builder().at(uerId).text("⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ 需要一点时间来为您收集系统信息，请稍后~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(uerId).text("⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ 需要一点时间来为您收集系统信息，请稍后~").build(), false);
                 bot.sendGroupMsg(groupId, sendSysInfoMsg(true, uerId).build(), false);
             } catch (Exception e) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(uerId).text("系统信息收集异常~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(uerId).text("系统信息收集异常~").build(), false);
                 log.error("系统信息收集异常: {}", e.getMessage());
             }
         }
@@ -138,10 +138,10 @@ public class GetSysInfo extends BotPlugin {
             long uerId = event.getUserId();
             long groupId = event.getGroupId();
             try {
-                bot.sendGroupMsg(groupId, Msg.builder().at(uerId).text("⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ 需要一点时间来为您收集硬件信息，请稍后~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(uerId).text("⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ 需要一点时间来为您收集硬件信息，请稍后~").build(), false);
                 bot.sendGroupMsg(groupId, sendHardwareInfoMsg(true, uerId).build(), false);
             } catch (Exception e) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(uerId).text("硬件信息收集异常~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(uerId).text("硬件信息收集异常~").build(), false);
                 log.error("硬件信息收集异常: {}", e.getMessage());
             }
         }

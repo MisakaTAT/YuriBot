@@ -2,7 +2,7 @@ package com.mikuac.bot.common.task;
 
 import com.mikuac.bot.BotApplication;
 import com.mikuac.bot.config.Global;
-import com.mikuac.shiro.bot.Bot;
+import com.mikuac.shiro.core.Bot;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;

@@ -2,11 +2,11 @@ package com.mikuac.bot.plugins.aop;
 
 import com.mikuac.bot.common.utils.RegexUtils;
 import com.mikuac.bot.config.RegexConst;
-import com.mikuac.shiro.bot.Bot;
-import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.core.Bot;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
-import com.mikuac.shiro.utils.Msg;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
@@ -90,17 +90,17 @@ public class BvToAv extends BotPlugin {
         if (msg.matches(RegexConst.AV_TO_BV)) {
             String avId = RegexUtils.regex(RegexConst.AV_TO_BV_GET_ID, msg);
             if (avId != null) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text(av2bv(avId)).build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text(av2bv(avId)).build(), false);
             } else {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("未获取到AV号，请检查后重新尝试~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("未获取到AV号，请检查后重新尝试~").build(), false);
             }
         }
         if (msg.matches(RegexConst.BV_TO_AV)) {
             String bvId = RegexUtils.regex(RegexConst.AV_TO_BV_GET_ID, msg);
             if (bvId != null) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text(bv2av(bvId)).build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text(bv2av(bvId)).build(), false);
             } else {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("未获取到BV号，请检查后重新尝试~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("未获取到BV号，请检查后重新尝试~").build(), false);
             }
         }
         return MESSAGE_IGNORE;

@@ -2,11 +2,11 @@ package com.mikuac.bot.plugins.aop;
 
 import com.mikuac.bot.common.utils.RegexUtils;
 import com.mikuac.bot.config.RegexConst;
-import com.mikuac.shiro.bot.Bot;
-import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.core.Bot;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
-import com.mikuac.shiro.utils.Msg;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +31,7 @@ public class PhoenixWright extends BotPlugin {
         if (msg.matches(RegexConst.PHOENIX_WRIGHT)) {
             String topText = URLEncoder.encode(Objects.requireNonNull(RegexUtils.regexGroup(RegexConst.PHOENIX_WRIGHT, msg, 1)), StandardCharsets.UTF_8);
             String bottomText = URLEncoder.encode(Objects.requireNonNull(RegexUtils.regexGroup(RegexConst.PHOENIX_WRIGHT, msg, 2)), StandardCharsets.UTF_8);
-            Msg sendMsg = Msg.builder()
+            MsgUtils sendMsg = MsgUtils.builder()
                     .at(userId)
                     .img("https://gsapi.cyberrex.ml/image?top=" + topText + "&bottom=" + bottomText);
             bot.sendGroupMsg(groupId, sendMsg.build(), false);
@@ -46,7 +46,7 @@ public class PhoenixWright extends BotPlugin {
         if (msg.matches(RegexConst.PHOENIX_WRIGHT)) {
             String topText = URLEncoder.encode(Objects.requireNonNull(RegexUtils.regexGroup(RegexConst.PHOENIX_WRIGHT, msg, 1)), StandardCharsets.UTF_8);
             String bottomText = URLEncoder.encode(Objects.requireNonNull(RegexUtils.regexGroup(RegexConst.PHOENIX_WRIGHT, msg, 2)), StandardCharsets.UTF_8);
-            Msg sendMsg = Msg.builder().img("https://gsapi.cyberrex.ml/image?top=" + topText + "&bottom=" + bottomText);
+            MsgUtils sendMsg = MsgUtils.builder().img("https://gsapi.cyberrex.ml/image?top=" + topText + "&bottom=" + bottomText);
             bot.sendPrivateMsg(userId, sendMsg.build(), false);
         }
         return MESSAGE_IGNORE;

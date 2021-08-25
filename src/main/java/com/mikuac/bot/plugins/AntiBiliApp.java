@@ -9,11 +9,11 @@ import com.mikuac.bot.common.utils.HttpClientUtils;
 import com.mikuac.bot.common.utils.RegexUtils;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.RegexConst;
-import com.mikuac.shiro.bot.Bot;
-import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.core.Bot;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
-import com.mikuac.shiro.utils.Msg;
 import com.sun.research.ws.wadl.HTTPMethods;
 import lombok.SneakyThrows;
 import org.apache.commons.text.StringEscapeUtils;
@@ -58,7 +58,7 @@ public class AntiBiliApp extends BotPlugin {
 
     private void sendMsg(@NotNull Bot bot, long groupId, long userId, AntiBiliData data, AntiBiliStat stat) {
         String videoUrl = "https://www.bilibili.com/video/";
-        Msg sendMsg = Msg.builder()
+        MsgUtils sendMsg = MsgUtils.builder()
                 .img(data.getPic())
                 .text("\n" + data.getTitle())
                 .text("\nUP：" + data.getOwner().getName())

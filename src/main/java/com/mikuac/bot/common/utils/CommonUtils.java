@@ -51,10 +51,6 @@ public class CommonUtils {
         return UUID.randomUUID().toString();
     }
 
-    public String getHostAndPort() {
-        return "http://127.0.0.1:" + environment.getProperty("local.server.port");
-    }
-
     public static String secondFormat(long s) {
         String dateTimes = null;
         long days = s / (60 * 60 * 24);
@@ -71,6 +67,10 @@ public class CommonUtils {
             dateTimes = seconds + " 秒 ";
         }
         return dateTimes;
+    }
+
+    public String getHostAndPort() {
+        return "http://127.0.0.1:" + environment.getProperty("local.server.port");
     }
 
 }

@@ -7,11 +7,11 @@ import com.mikuac.bot.common.utils.HttpClientUtils;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
-import com.mikuac.shiro.bot.Bot;
-import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.core.Bot;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
-import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
@@ -84,7 +84,7 @@ public class Hitokoto extends BotPlugin {
             // 逻辑处理
             if (getNowTime >= lastGetTime + Global.hitokotoCdTime) {
                 try {
-                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("一言获取中~").build(), false);
+                    bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("一言获取中~").build(), false);
                     String msgType = msg.replaceAll("(.*?)-", "");
                     if (msgType.matches("[a-l]")) {
                         getData(msgType.charAt(0));
@@ -92,17 +92,17 @@ public class Hitokoto extends BotPlugin {
                         getData(types.charAt((int) (Math.random() * 12)));
                     }
                     String type = typesMap.get(getType);
-                    Msg msgBuilder = Msg.builder()
+                    MsgUtils msgBuilder = MsgUtils.builder()
                             .reply(event.getMessageId())
                             .text("『" + hitokoto + "』\n" + "出自：" + from + "\n" + "类型：" + type);
                     bot.sendGroupMsg(groupId, msgBuilder.build(), false);
                     lastGetTimeMap.put(groupId + userId, Instant.now().getEpochSecond());
                 } catch (Exception e) {
-                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("一言获取失败,请稍后重试~").build(), false);
+                    bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("一言获取失败,请稍后重试~").build(), false);
                     log.error("一言群组发送异常: {}", e.getMessage());
                 }
             } else {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("请求过于频繁~ 剩余CD时间为" + rCd + "秒").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("请求过于频繁~ 剩余CD时间为" + rCd + "秒").build(), false);
             }
         }
         return MESSAGE_IGNORE;
@@ -128,7 +128,7 @@ public class Hitokoto extends BotPlugin {
                         getData(types.charAt((int) (Math.random() * 12)));
                     }
                     String type = typesMap.get(getType);
-                    Msg msgBuilder = Msg.builder()
+                    MsgUtils msgBuilder = MsgUtils.builder()
                             .text("『" + hitokoto + "』\n" + "出自：" + from + "\n" + "类型：" + type);
                     bot.sendPrivateMsg(userId, msgBuilder.build(), false);
                     lastGetTimeMap.put(userId, Instant.now().getEpochSecond());

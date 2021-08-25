@@ -3,7 +3,7 @@ package com.mikuac.bot.aop;
 import com.mikuac.bot.common.utils.SearchModeUtils;
 import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
-import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import lombok.extern.slf4j.Slf4j;

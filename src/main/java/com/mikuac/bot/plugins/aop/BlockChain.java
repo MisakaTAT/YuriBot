@@ -7,11 +7,11 @@ import com.mikuac.bot.common.utils.HttpClientUtils;
 import com.mikuac.bot.common.utils.RegexUtils;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.RegexConst;
-import com.mikuac.shiro.bot.Bot;
-import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.core.Bot;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
-import com.mikuac.shiro.utils.Msg;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
@@ -63,8 +63,8 @@ public class BlockChain extends BotPlugin {
         sellPrice = CommonUtils.formatDouble(n * price * sell);
     }
 
-    public Msg builderMsg(Boolean exIsNull, Boolean isGroupMsg, long uerId) {
-        Msg msg = Msg.builder();
+    public MsgUtils builderMsg(Boolean exIsNull, Boolean isGroupMsg, long uerId) {
+        MsgUtils msg = MsgUtils.builder();
         if (isGroupMsg) {
             msg.at(uerId);
             msg.text("\n");
@@ -89,7 +89,7 @@ public class BlockChain extends BotPlugin {
         if (msg.matches(RegexConst.BINANCE_PRICE)) {
             long groupId = event.getGroupId();
             long userId = event.getUserId();
-            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("币价查询中，请稍后~").build(), false);
+            bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("币价查询中，请稍后~").build(), false);
             bcType = RegexUtils.regexGroup(RegexConst.BINANCE_PRICE, msg, 1);
             String number = RegexUtils.regexGroup(RegexConst.BINANCE_PRICE, msg, 2);
             if (bcType != null && !bcType.isEmpty()) {
@@ -103,7 +103,7 @@ public class BlockChain extends BotPlugin {
                         bot.sendGroupMsg(groupId, builderMsg(true, true, userId).build(), false);
                     }
                 } catch (Exception e) {
-                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("查询失败，可能是货币类型输入错误，请检查后重试~").build(), false);
+                    bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("查询失败，可能是货币类型输入错误，请检查后重试~").build(), false);
                 }
             }
         }

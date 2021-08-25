@@ -7,11 +7,11 @@ import com.mikuac.bot.common.utils.HttpClientUtils;
 import com.mikuac.bot.common.utils.RegexUtils;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.RegexConst;
-import com.mikuac.shiro.bot.Bot;
-import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.core.Bot;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
-import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +50,8 @@ public class RainbowSixStats extends BotPlugin {
     /**
      * 数据处理
      */
-    public Msg getDataAndBuilder() {
-        Msg msg = Msg.builder();
+    public MsgUtils getDataAndBuilder() {
+        MsgUtils msg = MsgUtils.builder();
         for (BasicStat basicStat : r6S.getBasicStat()) {
             if ("apac".equals(basicStat.getRegion())) {
                 msg.text("【基本信息】")
@@ -115,16 +115,16 @@ public class RainbowSixStats extends BotPlugin {
             String gameUserId = RegexUtils.regex(RegexConst.GET_R6_ID, msg);
             if (gameUserId != null) {
                 gameUserId = URLEncoder.encode(gameUserId, StandardCharsets.UTF_8);
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text(gameUserId + "数据查询中，请稍后~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text(gameUserId + "数据查询中，请稍后~").build(), false);
                 try {
                     getRainbowSixStats(gameUserId);
                     getDataAndBuilder();
                     bot.sendGroupMsg(groupId, getDataAndBuilder().text("\n\n").at(userId).build(), false);
                 } catch (Exception e) {
-                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text(gameUserId + "游戏数据查询失败，请稍后重试~").build(), false);
+                    bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text(gameUserId + "游戏数据查询失败，请稍后重试~").build(), false);
                 }
             } else {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("游戏ID匹配失败，请重试~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("游戏ID匹配失败，请重试~").build(), false);
             }
 
         }

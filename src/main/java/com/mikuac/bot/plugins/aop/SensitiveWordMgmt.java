@@ -6,11 +6,11 @@ import com.mikuac.bot.config.RegexConst;
 import com.mikuac.bot.entity.SensitiveWordEntity;
 import com.mikuac.bot.plugins.SensitiveWords;
 import com.mikuac.bot.repository.SensitiveWordRepository;
-import com.mikuac.shiro.bot.Bot;
-import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.core.Bot;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
-import com.mikuac.shiro.utils.Msg;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
@@ -58,7 +58,7 @@ public class SensitiveWordMgmt extends BotPlugin {
         // 检查指令发送者是否为admin
         if (Global.botAdminId != userId) {
             if (groupId != 0L) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("此操作仅管理员可执行").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("此操作仅管理员可执行").build(), false);
             } else {
                 bot.sendPrivateMsg(userId, "此操作仅管理员可执行", false);
             }
@@ -83,7 +83,7 @@ public class SensitiveWordMgmt extends BotPlugin {
     private void addWordToDb(@NotNull Bot bot, String word, long groupId, long userId) {
         if (sensitiveWordRepository.findWord(word).isPresent()) {
             if (groupId != 0L) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("敏感词已存在，请勿重复添加").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("敏感词已存在，请勿重复添加").build(), false);
             } else {
                 bot.sendPrivateMsg(userId, "敏感词已存在，请勿重复添加", false);
             }
@@ -95,7 +95,7 @@ public class SensitiveWordMgmt extends BotPlugin {
         // 向关键词树添加单词，免去重启程序加载新增词
         sensitiveWords.addWord(word);
         if (groupId != 0L) {
-            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("敏感词添加成功").build(), false);
+            bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("敏感词添加成功").build(), false);
         } else {
             bot.sendPrivateMsg(userId, "敏感词添加成功", false);
         }
@@ -106,7 +106,7 @@ public class SensitiveWordMgmt extends BotPlugin {
         // 从关键词树移除单词，免去重启程序
         sensitiveWords.removeWord(word);
         if (groupId != 0L) {
-            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("敏感词删除成功").build(), false);
+            bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("敏感词删除成功").build(), false);
         } else {
             bot.sendPrivateMsg(userId, "敏感词删除成功", false);
         }

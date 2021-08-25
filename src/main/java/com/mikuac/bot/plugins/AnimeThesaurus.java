@@ -7,12 +7,12 @@ import com.mikuac.bot.common.utils.FileUtils;
 import com.mikuac.bot.common.utils.RegexUtils;
 import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
-import com.mikuac.shiro.bot.Bot;
-import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.common.utils.ShiroUtils;
+import com.mikuac.shiro.core.Bot;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
-import com.mikuac.shiro.utils.Msg;
-import com.mikuac.shiro.utils.ShiroUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
@@ -29,9 +29,8 @@ import java.util.List;
 @Component
 public class AnimeThesaurus extends BotPlugin {
 
-    JSONObject jsonObject;
-
     private final static String IMAGE_CQ_CODE = "[CQ:image";
+    JSONObject jsonObject;
 
     @PostConstruct
     private void init() {
@@ -67,7 +66,7 @@ public class AnimeThesaurus extends BotPlugin {
                 if (sendMsg == null) {
                     return MESSAGE_IGNORE;
                 }
-                bot.sendGroupMsg(groupId, Msg.builder().reply(msgId).text(sendMsg).build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().reply(msgId).text(sendMsg).build(), false);
             }
         }
         return MESSAGE_IGNORE;

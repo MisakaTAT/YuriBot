@@ -9,11 +9,11 @@ import com.mikuac.bot.common.utils.*;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
-import com.mikuac.shiro.bot.Bot;
-import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.core.Bot;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
-import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,11 +96,11 @@ public class WhatAnime extends BotPlugin {
         animeInfo = JSON.parseObject(result, AnimeInfo.class);
     }
 
-    public Msg buildMsg(Boolean isGroupMsg, long userId, AnimeInfo.Media data, BasicInfo.Result result) {
+    public MsgUtils buildMsg(Boolean isGroupMsg, long userId, AnimeInfo.Media data, BasicInfo.Result result) {
         String startTime = data.getStartDate().getYear() + "年" + data.getStartDate().getMonth() + "月" + data.getStartDate().getDay() + "日";
         String endTime = data.getEndDate().getYear() + "年" + data.getEndDate().getMonth() + "月" + data.getEndDate().getDay() + "日";
         // 构建Msg
-        Msg sendMsg = Msg.builder();
+        MsgUtils sendMsg = MsgUtils.builder();
         if (isGroupMsg) {
             sendMsg.at(userId).text("\n");
         }
@@ -133,31 +133,31 @@ public class WhatAnime extends BotPlugin {
 
         if (msg.matches(RegexConst.WHATANIME)) {
             if (banUtils.isBanned(userId)) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("您因触发滥用规则已被永久封禁~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("您因触发滥用规则已被永久封禁~").build(), false);
                 return MESSAGE_IGNORE;
             }
             // 防止重复执行
             if (map.get(key) != null) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("您已经处于搜番模式啦，请直接发送图片让我来帮您检索~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("您已经处于搜番模式啦，请直接发送图片让我来帮您检索~").build(), false);
                 return MESSAGE_IGNORE;
             }
             // 检查是否处于搜(图/本)模式
             if (map.get(key + 1) != null) {
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("您已经处于搜(图/本)模式，请先退出此模式后再次尝试~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("您已经处于搜(图/本)模式，请先退出此模式后再次尝试~").build(), false);
                 return MESSAGE_IGNORE;
             }
             SearchModeUtils.setMap(key, groupId, userId, "group");
-            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("您已进入搜番模式，请发送番剧截图来帮您检索~ (注意：" + Global.banUtilsLimitTime + "秒内发送超过" + Global.banUtilsLimitCount + "张图片将会触发滥用规则被封禁)").build(), false);
+            bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("您已进入搜番模式，请发送番剧截图来帮您检索~ (注意：" + Global.banUtilsLimitTime + "秒内发送超过" + Global.banUtilsLimitCount + "张图片将会触发滥用规则被封禁)").build(), false);
             return MESSAGE_IGNORE;
         }
 
         if (msg.matches(RegexConst.WHATANIME_QUIT)) {
             if (map.get(key) != null) {
                 SearchModeUtils.quitSearch(key);
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("已为您退出搜番模式~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("已为您退出搜番模式~").build(), false);
                 return MESSAGE_IGNORE;
             }
-            bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("您尚未进入搜番模式~").build(), false);
+            bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("您尚未进入搜番模式~").build(), false);
             return MESSAGE_IGNORE;
         }
 
@@ -169,19 +169,19 @@ public class WhatAnime extends BotPlugin {
                 map.get(key).setStartTime(Instant.now().getEpochSecond());
                 // 检查滥用
                 banUtils.setBan(userId);
-                bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("番剧检索中，请稍后~").build(), false);
+                bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("番剧检索中，请稍后~").build(), false);
                 try {
                     getBasicInfo(picUrl);
                     BasicInfo.Result result = basicInfo.getResult().get(0);
                     // 获取详细信息
                     AnimeInfo.Media data = animeInfo.getGetData().getMedia();
                     // 构建消息
-                    Msg send = buildMsg(true, userId, data, result);
+                    MsgUtils send = buildMsg(true, userId, data, result);
                     // 发送视频
                     bot.sendGroupMsg(groupId, send.build(), false);
-                    bot.sendGroupMsg(groupId, Msg.builder().video(result.getVideo(), picUrl).build(), false);
+                    bot.sendGroupMsg(groupId, MsgUtils.builder().video(result.getVideo(), picUrl).build(), false);
                 } catch (Exception e) {
-                    bot.sendGroupMsg(groupId, Msg.builder().at(userId).text("WhatAnime番剧检索失败，请更换图片或稍后重试~").build(), false);
+                    bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("WhatAnime番剧检索失败，请更换图片或稍后重试~").build(), false);
                     log.error("WhatAnime插件检索异常: {}", e.getMessage());
                 }
             }
@@ -242,10 +242,10 @@ public class WhatAnime extends BotPlugin {
                     // 获取详细信息
                     AnimeInfo.Media data = animeInfo.getGetData().getMedia();
                     // 构建消息
-                    Msg send = buildMsg(false, userId, data, result);
+                    MsgUtils send = buildMsg(false, userId, data, result);
                     bot.sendPrivateMsg(userId, send.build(), false);
                     // 发送视频
-                    bot.sendPrivateMsg(userId, Msg.builder().video(result.getVideo(), picUrl).build(), false);
+                    bot.sendPrivateMsg(userId, MsgUtils.builder().video(result.getVideo(), picUrl).build(), false);
                 } catch (Exception e) {
                     bot.sendPrivateMsg(userId, "WhatAnime番剧检索失败，请更换图片或稍后重试~", false);
                     log.error("WhatAnime插件检索异常: {}", e.getMessage());

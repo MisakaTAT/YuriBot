@@ -3,11 +3,11 @@ package com.mikuac.bot.plugins.aop;
 import com.mikuac.bot.common.utils.RegexUtils;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.RegexConst;
-import com.mikuac.shiro.bot.Bot;
-import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.core.Bot;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
-import com.mikuac.shiro.utils.Msg;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +25,7 @@ public class HttpCat extends BotPlugin {
         if (msg.matches(RegexConst.HTTP_CAT)) {
             String httpCode = RegexUtils.regexGroup(RegexConst.HTTP_CAT, msg, 1);
             if (httpCode != null && !httpCode.isEmpty()) {
-                Msg sendMsg = Msg.builder().reply(event.getMessageId()).img(ApiConst.HTTP_CAT + httpCode);
+                MsgUtils sendMsg = MsgUtils.builder().reply(event.getMessageId()).img(ApiConst.HTTP_CAT + httpCode);
                 bot.sendGroupMsg(event.getGroupId(), sendMsg.build(), false);
             }
         }
@@ -38,7 +38,7 @@ public class HttpCat extends BotPlugin {
         if (msg.matches(RegexConst.HTTP_CAT)) {
             String httpCode = RegexUtils.regexGroup(RegexConst.HTTP_CAT, msg, 1);
             if (httpCode != null && !httpCode.isEmpty()) {
-                Msg sendMsg = Msg.builder().img(ApiConst.HTTP_CAT + httpCode);
+                MsgUtils sendMsg = MsgUtils.builder().img(ApiConst.HTTP_CAT + httpCode);
                 bot.sendPrivateMsg(event.getUserId(), sendMsg.build(), false);
             }
         }

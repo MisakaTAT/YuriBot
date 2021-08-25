@@ -4,10 +4,10 @@ import com.mikuac.bot.bean.MsgCountCacheBean;
 import com.mikuac.bot.common.utils.SendMsgUtils;
 import com.mikuac.bot.entity.MsgCountEntity;
 import com.mikuac.bot.repository.MsgCountRepository;
-import com.mikuac.shiro.bot.Bot;
-import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.core.Bot;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
-import com.mikuac.shiro.utils.Msg;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -42,7 +42,7 @@ public class GroupMsgCount extends BotPlugin {
             for (long groupId : groupIdList) {
                 Optional<MsgCountEntity> msgCount = msgCountRepository.findTodayMaxCount(groupId);
                 if (msgCount.isPresent() && msgCount.get().getTodayMsgCount() > 0) {
-                    Msg msg = Msg.builder()
+                    MsgUtils msg = MsgUtils.builder()
                             .at(msgCount.get().getUserId())
                             .text("\n恭喜获得今日群龙王称号~")
                             .text("\n今日发言次数：" + msgCount.get().getTodayMsgCount())
@@ -50,7 +50,7 @@ public class GroupMsgCount extends BotPlugin {
                     sendMsgUtils.sendGroupMsgForMsg(groupId, msg);
                 } else {
                     log.info("群组[{}]发言次数获取异常或者无人发言", groupId);
-                    Msg msg = Msg.builder()
+                    MsgUtils msg = MsgUtils.builder()
                             .text("今日群内无人发言，暂无龙王诞生~");
                     sendMsgUtils.sendGroupMsgForMsg(groupId, msg);
                 }

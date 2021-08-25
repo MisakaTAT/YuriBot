@@ -1,11 +1,11 @@
 package com.mikuac.bot.plugins.aop;
 
 import com.mikuac.bot.config.RegexConst;
-import com.mikuac.shiro.bot.Bot;
-import com.mikuac.shiro.bot.BotPlugin;
+import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.core.Bot;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
-import com.mikuac.shiro.utils.Msg;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class SendHelp extends BotPlugin {
 
-    public Msg buildMsg(Boolean isGroupMsg, long userId) {
-        Msg sendMsg = Msg.builder();
+    public MsgUtils buildMsg(Boolean isGroupMsg, long userId) {
+        MsgUtils sendMsg = MsgUtils.builder();
         if (isGroupMsg) {
             sendMsg.at(userId).text("\n");
         }

@@ -3,7 +3,7 @@ package com.mikuac.bot.telegram;
 import com.mikuac.bot.common.utils.SendMsgUtils;
 import com.mikuac.bot.common.utils.TelegramUtils;
 import com.mikuac.bot.config.Global;
-import com.mikuac.shiro.utils.Msg;
+import com.mikuac.shiro.common.utils.MsgUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -41,7 +41,7 @@ public class ForwardMessage extends TelegramLongPollingBot {
                     List<Long> groupIdList = sendMsgUtils.getGroupList();
                     if (groupIdList != null && !groupIdList.isEmpty()) {
                         for (long groupId : groupIdList) {
-                            Msg msg = Msg.builder()
+                            MsgUtils msg = MsgUtils.builder()
                                     .img(imgUrl)
                                     .text("\nFrom Telegram：" + (forwardFrom != null ? forwardFrom : groupName));
                             sendMsgUtils.sendGroupMsgForMsg(groupId, msg);
