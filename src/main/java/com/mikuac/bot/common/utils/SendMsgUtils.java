@@ -24,28 +24,23 @@ public class SendMsgUtils {
     @Resource
     private BotContainer botContainer;
 
-    public void sendPrivateMsgForMsg(long userId, MsgUtils msg) throws InterruptedException {
+    public void sendPrivateMsgForMsg(long userId, MsgUtils msg) {
         Bot bot = botContainer.robots.get(Global.botSelfId);
-        Thread.sleep(1000);
         bot.sendPrivateMsg(userId, msg.build(), false);
     }
 
-    public void sendGroupMsgForMsg(long groupId, MsgUtils msg) throws InterruptedException {
+    public void sendGroupMsgForMsg(long groupId, MsgUtils msg) {
         Bot bot = botContainer.robots.get(Global.botSelfId);
-        Thread.sleep(1000);
         bot.sendGroupMsg(groupId, msg.build(), false);
     }
 
-    public void sendPrivateMsgForText(long userId, String msg) throws InterruptedException {
+    public void sendPrivateMsgForText(long userId, String msg) {
         Bot bot = botContainer.robots.get(Global.botSelfId);
-        Thread.sleep(1000);
         bot.sendPrivateMsg(userId, msg, false);
     }
 
-    public void sendGroupMsgForText(long groupId, String msg) throws InterruptedException {
+    public void sendGroupMsgForText(long groupId, String msg) {
         Bot bot = botContainer.robots.get(Global.botSelfId);
-        // 限制发送速度
-        Thread.sleep(1000);
         bot.sendGroupMsg(groupId, msg, false);
     }
 

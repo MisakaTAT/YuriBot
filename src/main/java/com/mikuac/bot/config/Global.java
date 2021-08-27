@@ -4,8 +4,6 @@ import com.mikuac.bot.bean.ConfigBean;
 import com.mikuac.bot.common.utils.ConfigUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 /**
  * Created on 2021/5/24.
  *
@@ -26,13 +24,6 @@ public class Global {
     public static int setuDelTime;
     public static int setuMaxGet;
     public static int repeatRandomCountSize;
-    public static boolean telegramEnableProxy;
-    public static String telegramBaseUrl;
-    public static String telegramProxyHost;
-    public static int telegramProxyPort;
-    public static String telegramBotName;
-    public static String telegramBotToken;
-    public static List<Long> telegramForwardGroup;
     public static int banUtilsLimitTime;
     public static int banUtilsLimitCount;
     public static String sauceNaoApiKey;
@@ -51,13 +42,6 @@ public class Global {
         setuDelTime = config.getSetu().getDelTime();
         setuMaxGet = config.getSetu().getMaxGet();
         repeatRandomCountSize = config.getRepeat().getRandomCountSize();
-        telegramEnableProxy = config.getTelegram().isEnableProxy();
-        telegramBaseUrl = config.getTelegram().getBaseUrl();
-        telegramProxyHost = config.getTelegram().getProxyHost();
-        telegramProxyPort = config.getTelegram().getProxyPort();
-        telegramBotName = config.getTelegram().getBotName();
-        telegramBotToken = config.getTelegram().getBotToken();
-        telegramForwardGroup = config.getTelegram().getForwardGroup();
         banUtilsLimitTime = config.getBanUtils().getLimitTime();
         banUtilsLimitCount = config.getBanUtils().getLimitCount();
         sauceNaoApiKey = config.getSauceNao().getApiKey();
