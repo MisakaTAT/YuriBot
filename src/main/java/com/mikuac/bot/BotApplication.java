@@ -26,17 +26,17 @@ import java.net.UnknownHostException;
 @SpringBootApplication
 public class BotApplication {
 
-    private final static String START_MSG = "你好~ 我是悠里⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄";
+    private final static String START_MSG = "你好~ 我是" + Global.BOT_NAME + " ⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄";
 
     private static String[] args;
 
     private static ConfigurableApplicationContext context;
 
     public static void reboot() {
-        log.info("开始重启悠里");
+        log.info("开始重启{}", Global.BOT_NAME);
         context.close();
         BotApplication.context = SpringApplication.run(BotApplication.class, args);
-        log.info("悠里重启完毕");
+        log.info("{}重启完毕", Global.BOT_NAME);
     }
 
     public static void shutdown() {
@@ -68,11 +68,11 @@ public class BotApplication {
     public WebServerFactoryCustomizer webServerFactoryCustomizer() {
         return (WebServerFactoryCustomizer<ConfigurableServletWebServerFactory>) factory -> {
             try {
-                factory.setAddress(InetAddress.getByName(Global.serverAddress));
+                factory.setAddress(InetAddress.getByName(Global.SERVER_ADDRESS));
             } catch (UnknownHostException e) {
                 log.error("启动地址设置失败: {}", e.getMessage());
             }
-            factory.setPort(Global.serverPort);
+            factory.setPort(Global.SERVER_PORT);
         };
     }
 

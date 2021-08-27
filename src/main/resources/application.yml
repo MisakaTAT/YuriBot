@@ -29,7 +29,6 @@ shiro:
     - com.mikuac.bot.plugins.Repeat
     - com.mikuac.bot.plugins.AntiBiliApp
     - com.mikuac.bot.plugins.GroupMsgCount
-    - com.mikuac.bot.plugins.aop.BlockChain
     - com.mikuac.bot.plugins.aop.PhoenixWright
     - com.mikuac.bot.plugins.aop.SteamRep
     - com.mikuac.bot.plugins.aop.SensitiveWordMgmt

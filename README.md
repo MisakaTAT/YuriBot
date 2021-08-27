@@ -19,6 +19,7 @@
 </p>
 
 # Features
+
 - [x] 一言
 - [x] 复读姬
 - [x] HttpCat
@@ -38,6 +39,7 @@
 - [x] 撤回含有敏感词的消息
 
 # Install Maven For Centos
+
 ```shell
 wget http://mirrors.hust.edu.cn/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
 tar -zxvf  apache-maven-3.6.3-bin.tar.gz
@@ -53,6 +55,7 @@ mvn -version
 ```
 
 # Build Jar Package
+
 ```shell
 # Get source
 git clone https://github.com/MisakaTAT/YuriBot.git
@@ -63,7 +66,9 @@ java -jar YuriBot-main/target/Yuri-Bot-v1.0.1-Alpha.jar
 # The first run generates a default config file (you can custom this config file)
 vim config.json
 ```
+
 # Config File
+
 <details>
 <summary>点击查看详细内容</summary>
 <pre><code>  
@@ -135,12 +140,15 @@ vim config.json
 </details>
 
 # Credits
+
 * Powered By [Shiro](https://github.com/MisakaTAT/Shiro)
 * [setu-api](https://api.lolicon.app/#/setu)
 * [heroku-pximg-proxy](https://github.com/Tsuk1ko/heroku-pximg-proxy)
 
 # Client Connect
+
 修改目录下生成的 `config.json`（也可使用默认值）
+
 ```json
 {
   "server": {
@@ -149,26 +157,37 @@ vim config.json
   }
 }
 ```
+
 配置反向WebSocket
 
 以go-cqhttp为例 修改`config.yaml`如下参数
+
 ```yaml
 - ws-reverse:
     universal: ws://127.0.0.1:5000/ws/shiro
 ```
 
 # License
+
 MIT License
 
 Copyright (c) <year> <copyright holders>
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+persons to whom the Software is furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice (including the next paragraph) shall be included in all copies or substantial portions of the Software.
+The above copyright notice and this permission notice (including the next paragraph) shall be included in all copies or
+substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # Thanks
+
 Thanks [JetBrains](https://www.jetbrains.com/?from=mirai) Provide Free License Support OpenSource Project
 
 [<img src="https://mikuac.com/images/jetbrains-variant-3.png" width="200"/>](https://www.jetbrains.com/?from=mirai)

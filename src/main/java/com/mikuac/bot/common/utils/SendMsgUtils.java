@@ -25,22 +25,22 @@ public class SendMsgUtils {
     private BotContainer botContainer;
 
     public void sendPrivateMsgForMsg(long userId, MsgUtils msg) {
-        Bot bot = botContainer.robots.get(Global.botSelfId);
+        Bot bot = botContainer.robots.get(Global.BOT_SELF_ID);
         bot.sendPrivateMsg(userId, msg.build(), false);
     }
 
     public void sendGroupMsgForMsg(long groupId, MsgUtils msg) {
-        Bot bot = botContainer.robots.get(Global.botSelfId);
+        Bot bot = botContainer.robots.get(Global.BOT_SELF_ID);
         bot.sendGroupMsg(groupId, msg.build(), false);
     }
 
     public void sendPrivateMsgForText(long userId, String msg) {
-        Bot bot = botContainer.robots.get(Global.botSelfId);
+        Bot bot = botContainer.robots.get(Global.BOT_SELF_ID);
         bot.sendPrivateMsg(userId, msg, false);
     }
 
     public void sendGroupMsgForText(long groupId, String msg) {
-        Bot bot = botContainer.robots.get(Global.botSelfId);
+        Bot bot = botContainer.robots.get(Global.BOT_SELF_ID);
         bot.sendGroupMsg(groupId, msg, false);
     }
 
@@ -51,12 +51,12 @@ public class SendMsgUtils {
         List<Long> groupIdList = new ArrayList<>();
 
         //获取Bot对象
-        Bot bot = botContainer.robots.get(Global.botSelfId);
+        Bot bot = botContainer.robots.get(Global.BOT_SELF_ID);
         if (bot == null) {
             for (int i = 1; i < retryCount; i++) {
                 log.info("Bot对象获取失败，当前失败[{}]次，剩余重试次数[{}]，将在" + (retryDelay / 1000) + "秒后重试~", i, retryCount - i - 1);
                 Thread.sleep(retryDelay);
-                bot = botContainer.robots.get(Global.botSelfId);
+                bot = botContainer.robots.get(Global.BOT_SELF_ID);
                 if (bot != null) {
                     log.info("Bot对象获取成功[{}]", bot);
                     break;

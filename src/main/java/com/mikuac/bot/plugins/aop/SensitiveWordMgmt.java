@@ -56,7 +56,7 @@ public class SensitiveWordMgmt extends BotPlugin {
 
     private boolean roleCheckFail(@NotNull Bot bot, long groupId, long userId) {
         // 检查指令发送者是否为admin
-        if (Global.botAdminId != userId) {
+        if (Global.BOT_ADMIN_ID != userId) {
             if (groupId != 0L) {
                 bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("此操作仅管理员可执行").build(), false);
             } else {

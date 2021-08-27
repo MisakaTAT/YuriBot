@@ -14,7 +14,6 @@ import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
-import com.sun.research.ws.wadl.HTTPMethods;
 import lombok.SneakyThrows;
 import org.apache.commons.text.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +38,7 @@ public class AntiBiliApp extends BotPlugin {
 
     private String getRedirectUrlBv(String url) throws IOException {
         HttpURLConnection h = (HttpURLConnection) new URL(url).openConnection();
-        h.setRequestMethod(HTTPMethods.GET.value());
+        h.setRequestMethod("GET");
         h.connect();
         if (h.getResponseCode() == HttpStatus.HTTP_FORBIDDEN) {
             String bvId = RegexUtils.regex(RegexConst.GET_URL_BVID, String.valueOf(h.getURL()));

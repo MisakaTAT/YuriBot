@@ -60,8 +60,8 @@ public class AnimeThesaurus extends BotPlugin {
         String atId = RegexUtils.regexGroup(RegexConst.GROUP_AT, msg, 1);
         if (atId != null && !atId.isEmpty()) {
             long botId = Long.parseLong(atId);
-            if (Global.botSelfId == botId) {
-                msg = msg.replace(String.format("[CQ:at,qq=%s] ", Global.botSelfId), "");
+            if (Global.BOT_SELF_ID == botId) {
+                msg = msg.replace(String.format("[CQ:at,qq=%s] ", Global.BOT_SELF_ID), "");
                 String sendMsg = getRespList(msg);
                 if (sendMsg == null) {
                     return MESSAGE_IGNORE;

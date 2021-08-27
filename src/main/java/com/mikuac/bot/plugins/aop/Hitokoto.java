@@ -80,9 +80,9 @@ public class Hitokoto extends BotPlugin {
             long userId = event.getUserId();
             long getNowTime = Instant.now().getEpochSecond();
             long lastGetTime = lastGetTimeMap.getOrDefault(groupId + userId, 0L);
-            long rCd = Math.abs((getNowTime - lastGetTime) - Global.hitokotoCdTime);
+            long rCd = Math.abs((getNowTime - lastGetTime) - Global.HITOKOTO_CD_TIME);
             // 逻辑处理
-            if (getNowTime >= lastGetTime + Global.hitokotoCdTime) {
+            if (getNowTime >= lastGetTime + Global.HITOKOTO_CD_TIME) {
                 try {
                     bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("一言获取中~").build(), false);
                     String msgType = msg.replaceAll("(.*?)-", "");
@@ -116,9 +116,9 @@ public class Hitokoto extends BotPlugin {
             long userId = event.getUserId();
             long getNowTime = Instant.now().getEpochSecond();
             long lastGetTime = lastGetTimeMap.getOrDefault(userId, 0L);
-            long rCd = Math.abs((getNowTime - lastGetTime) - Global.hitokotoCdTime);
+            long rCd = Math.abs((getNowTime - lastGetTime) - Global.HITOKOTO_CD_TIME);
             // 逻辑处理
-            if (getNowTime >= lastGetTime + Global.hitokotoCdTime) {
+            if (getNowTime >= lastGetTime + Global.HITOKOTO_CD_TIME) {
                 bot.sendPrivateMsg(userId, "一言获取中~", false);
                 String msgType = msg.replaceAll("(.*?)-", "");
                 try {

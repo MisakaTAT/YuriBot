@@ -25,12 +25,12 @@ public class GroupJoinAndQuit extends BotPlugin {
         long groupId = event.getGroupId();
         long userId = event.getUserId();
         // 排除BOT自身入群通知
-        if (userId == Global.botSelfId) {
+        if (userId == Global.BOT_SELF_ID) {
             return MESSAGE_IGNORE;
         }
         MsgUtils msg = MsgUtils.builder()
                 .at(userId)
-                .text("Hi~ 我是" + Global.botBotName + "，欢迎加入本群，如果想了解我，请发送 " + Global.prefixPrefix + "帮助 或 " + Global.prefixPrefix + "help获取帮助信息~");
+                .text("Hi~ 我是" + Global.BOT_NAME + "，欢迎加入本群，如果想了解我，请发送 " + Global.CMD_PREFIX + "帮助 或 " + Global.CMD_PREFIX + "help获取帮助信息~");
         bot.sendGroupMsg(groupId, msg.build(), false);
         return MESSAGE_IGNORE;
     }

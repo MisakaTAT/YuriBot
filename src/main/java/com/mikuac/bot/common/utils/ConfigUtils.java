@@ -8,7 +8,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.mikuac.bot.bean.ConfigBean;
 import com.mikuac.bot.config.Global;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -25,7 +24,6 @@ import java.nio.file.WatchEvent;
  * @author Zero
  */
 @Slf4j
-@Component
 public class ConfigUtils {
 
     private final static String FILE_NAME = "config.json";

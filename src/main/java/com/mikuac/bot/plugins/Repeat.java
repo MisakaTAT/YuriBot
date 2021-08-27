@@ -39,7 +39,7 @@ public class Repeat extends BotPlugin {
      */
     Map<Long, Integer> countMap = new ConcurrentHashMap<>();
 
-    int randomCount = RandomUtil.randomInt(Global.repeatRandomCountSize);
+    int randomCount = RandomUtil.randomInt(Global.REPEAT_RANDOM_COUNT_SIZE);
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
@@ -52,7 +52,7 @@ public class Repeat extends BotPlugin {
         int count = countMap.getOrDefault(groupId, 0);
 
         // 过滤指令
-        if (msg.startsWith(Global.prefixPrefix)) {
+        if (msg.startsWith(Global.CMD_PREFIX)) {
             return MESSAGE_IGNORE;
         }
 

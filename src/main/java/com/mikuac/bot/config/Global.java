@@ -2,49 +2,47 @@ package com.mikuac.bot.config;
 
 import com.mikuac.bot.bean.ConfigBean;
 import com.mikuac.bot.common.utils.ConfigUtils;
-import org.springframework.stereotype.Component;
 
 /**
  * Created on 2021/5/24.
  *
  * @author Zero
  */
-@Component
 public class Global {
 
-    public static String serverAddress;
-    public static int serverPort;
-    public static String botBotName;
-    public static long botAdminId;
-    public static long botSelfId;
-    public static String prefixPrefix;
-    public static int hitokotoCdTime;
-    public static String setuApiKey;
-    public static int setuCdTime;
-    public static int setuDelTime;
-    public static int setuMaxGet;
-    public static int repeatRandomCountSize;
-    public static int banUtilsLimitTime;
-    public static int banUtilsLimitCount;
-    public static String sauceNaoApiKey;
+    public static String SERVER_ADDRESS;
+    public static int SERVER_PORT;
+    public static String BOT_NAME;
+    public static long BOT_ADMIN_ID;
+    public static long BOT_SELF_ID;
+    public static String CMD_PREFIX;
+    public static int HITOKOTO_CD_TIME;
+    public static String SETU_API_KEY;
+    public static int SETU_CD_TIME;
+    public static int SETU_DELETE_TIME;
+    public static int SETU_ONEDAY_MAX_GET;
+    public static int REPEAT_RANDOM_COUNT_SIZE;
+    public static int BAN_UTILS_LIMIT_TIME;
+    public static int BAN_UTILS_LIMIT_COUNT;
+    public static String SAUCENAO_API_KEY;
     public static ConfigBean config = ConfigUtils.init(false);
 
     public static void set() {
-        serverAddress = config.getServer().getAddress();
-        serverPort = config.getServer().getPort();
-        botBotName = config.getBot().getBotName();
-        botAdminId = config.getBot().getAdminId();
-        botSelfId = config.getBot().getSelfId();
-        prefixPrefix = config.getPrefix().getPrefix();
-        hitokotoCdTime = config.getHitokoto().getCdTime();
-        setuApiKey = config.getSetu().getApiKey();
-        setuCdTime = config.getSetu().getCdTime();
-        setuDelTime = config.getSetu().getDelTime();
-        setuMaxGet = config.getSetu().getMaxGet();
-        repeatRandomCountSize = config.getRepeat().getRandomCountSize();
-        banUtilsLimitTime = config.getBanUtils().getLimitTime();
-        banUtilsLimitCount = config.getBanUtils().getLimitCount();
-        sauceNaoApiKey = config.getSauceNao().getApiKey();
+        SERVER_ADDRESS = config.getServer().getAddress();
+        SERVER_PORT = config.getServer().getPort();
+        BOT_NAME = config.getBot().getBotName();
+        BOT_ADMIN_ID = config.getBot().getAdminId();
+        BOT_SELF_ID = config.getBot().getSelfId();
+        CMD_PREFIX = config.getPrefix().getPrefix();
+        HITOKOTO_CD_TIME = config.getHitokoto().getCdTime();
+        SETU_API_KEY = config.getSetu().getApiKey();
+        SETU_CD_TIME = config.getSetu().getCdTime();
+        SETU_DELETE_TIME = config.getSetu().getDelTime();
+        SETU_ONEDAY_MAX_GET = config.getSetu().getMaxGet();
+        REPEAT_RANDOM_COUNT_SIZE = config.getRepeat().getRandomCountSize();
+        BAN_UTILS_LIMIT_TIME = config.getBanUtils().getLimitTime();
+        BAN_UTILS_LIMIT_COUNT = config.getBanUtils().getLimitCount();
+        SAUCENAO_API_KEY = config.getSauceNao().getApiKey();
     }
 
 }
