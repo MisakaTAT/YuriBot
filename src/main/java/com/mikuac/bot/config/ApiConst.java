@@ -25,10 +25,6 @@ public class ApiConst {
 
     public final static String BILI_VIDEO_INFO_API = "https://api.bilibili.com/x/web-interface/view?bvid=";
 
-    public final static String BIANCE_USDT_API = "https://api.binancezh.co/api/v3/ticker/price?symbol=";
-
-    public final static String BIANCE_MARKET_API = "https://otc-api.huobi.be/v1/data/market/detail";
-
     public final static String STEAM_REP_API2 = "https://steamid.facheme.com/lookup";
 
     public final static String HTTP_CAT = "https://http.cat/";

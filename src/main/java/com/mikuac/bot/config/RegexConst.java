@@ -53,8 +53,6 @@ public class RegexConst {
 
     public final static String PLUGIN_DISABLE = "(.*)插件禁用-(.*)";
 
-    public final static String BINANCE_PRICE = "(?i)bc\\s+([a-z]+)\\s?+(.*)";
-
     public final static String PHOENIX_WRIGHT = "^(?i)[逆n][转z][裁c][判p]\\s+(.*)\\s+(.*)";
 
     public final static String STEAM_REP = "SteamRep\\s(.*)";
