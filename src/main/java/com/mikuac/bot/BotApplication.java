@@ -26,8 +26,6 @@ import java.net.UnknownHostException;
 @SpringBootApplication
 public class BotApplication {
 
-    private final static String START_MSG = "你好~ 我是" + Global.BOT_NAME + " ⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄";
-
     private static String[] args;
 
     private static ConfigurableApplicationContext context;
@@ -52,7 +50,7 @@ public class BotApplication {
     public static void main(String[] args) {
         BotApplication.args = args;
         BotApplication.context = SpringApplication.run(BotApplication.class, args);
-        log.info(START_MSG);
+        log.info("你好~ 我是" + Global.BOT_NAME + " ⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄");
     }
 
     @Bean

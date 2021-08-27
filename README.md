@@ -111,20 +111,6 @@ vim config.json
         // 复读阈值
      "randomCountSize": 5
     },
-    "telegram": {
-        // Telegram api反代地址，请反代 https://api.telegram.org，如果同时设置了baseUrl和proxy，将优先使用baseUrl
-        "baseUrl": "",
-        // 是否启用代理
-        "enableProxy": false,
-        // 代理地址
-        "proxyHost": "127.0.0.1",
-        // 代理端口
-        "proxyPort": 7890,
-        // Bot名
-        "botName": "Bot Name Value",
-        // Bot Token
-        "botToken": "Bot Token Value"
-    },
     "banUtils": {
         // 搜图搜番时间阈值，单位秒
         "limitTime": 30,
