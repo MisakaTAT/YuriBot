@@ -23,10 +23,6 @@ public class HttpClientUtils {
 
     /**
      * Get请求并返回Json数据
-     *
-     * @param url api地址
-     * @return
-     * @throws Exception
      */
     public static String httpGetWithJson(String url, Boolean noReferer) {
         CloseableHttpClient httpClient = HttpClients.createDefault();

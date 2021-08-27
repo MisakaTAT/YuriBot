@@ -4,6 +4,7 @@ HELP.md
 logs
 GroupMsgCountCache.json
 config.json
+temp/*
 #src/main/resources/application.yml
 target/
 !.mvn/wrapper/maven-wrapper.jar

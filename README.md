@@ -63,6 +63,76 @@ java -jar YuriBot-main/target/Yuri-Bot-v1.0.1-Alpha.jar
 # The first run generates a default config file (you can custom this config file)
 vim config.json
 ```
+# Config File
+<details>
+<summary>点击查看详细内容</summary>
+<pre><code>  
+// 这是一个配置文件示例，首次运行将在目录下生成config.json，请根据实际需求修改
+{
+    "server": {
+        // 运行地址
+        "address": "127.0.0.1",
+        // 运行端口
+        "port": 5000
+    },
+    // 一言
+    "hitokoto": {
+        // 冷却时间，单位秒
+        "cdTime": 10
+    },
+    "bot": {
+        // Bot名
+        "botName": "悠里",
+        // 管理员QQ
+        "adminId": 0,
+        // Bot QQ
+        "selfId": 0
+    },
+    "prefix": {
+        // 指令前缀
+        "prefix": "."
+    },
+    "setu": {
+        // 色图ApiKey
+        "apiKey": "Api Key Value",
+        // 冷却时间，单位秒
+        "cdTime": 120,
+        // 撤回时间，单位秒
+        "delTime": 30,
+        // 每日上限
+        "maxGet": 15
+    },
+    "repeat": {
+        // 复读阈值
+     "randomCountSize": 5
+    },
+    "telegram": {
+        // Telegram api反代地址，请反代 https://api.telegram.org，如果同时设置了baseUrl和proxy，将优先使用baseUrl
+        "baseUrl": "",
+        // 是否启用代理
+        "enableProxy": false,
+        // 代理地址
+        "proxyHost": "127.0.0.1",
+        // 代理端口
+        "proxyPort": 7890,
+        // Bot名
+        "botName": "Bot Name Value",
+        // Bot Token
+        "botToken": "Bot Token Value"
+    },
+    "banUtils": {
+        // 搜图搜番时间阈值，单位秒
+        "limitTime": 30,
+        // 时间阈值最大发送图片数量
+        "limitCount": 10
+    },
+    "sauceNao": {
+        // SauceNao Api Key
+        "apiKey": "Api Key Value"
+    }
+}
+</code></pre>
+</details>
 
 # Credits
 * Powered By [Shiro](https://github.com/MisakaTAT/Shiro)

@@ -54,10 +54,13 @@ public class ConfigUtils {
         configBean.setBot(bot);
 
         ConfigBean.Telegram telegram = new ConfigBean.Telegram();
+        telegram.setEnableProxy(false);
+        telegram.setBaseUrl("");
         telegram.setBotName("Bot Name Value");
         telegram.setBotToken("Bot Token Value");
         telegram.setProxyHost("127.0.0.1");
         telegram.setProxyPort(1080);
+        telegram.setForwardGroup(null);
         configBean.setTelegram(telegram);
 
         ConfigBean.Prefix prefix = new ConfigBean.Prefix();

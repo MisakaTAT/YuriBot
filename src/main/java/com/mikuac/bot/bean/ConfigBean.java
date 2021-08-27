@@ -2,6 +2,8 @@ package com.mikuac.bot.bean;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * Created on 2021/5/24.
  *
@@ -36,10 +38,13 @@ public class ConfigBean {
 
     @Data
     public static class Telegram {
+        private boolean enableProxy;
+        private String baseUrl;
         private String proxyHost;
         private int proxyPort;
         private String botName;
         private String botToken;
+        private List<Long> forwardGroup;
     }
 
     @Data
