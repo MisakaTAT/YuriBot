@@ -2,8 +2,8 @@ package com.mikuac.bot.plugins.aop;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mikuac.bot.bean.SteamRepBean;
-import com.mikuac.bot.common.utils.HttpClientUtils;
 import com.mikuac.bot.common.utils.RegexUtils;
+import com.mikuac.bot.common.utils.RequestUtils;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.RegexConst;
 import com.mikuac.shiro.common.utils.MsgUtils;
@@ -30,7 +30,7 @@ public class SteamRep extends BotPlugin {
 
     public String getDom(String id) {
         String url = "https://steamrepcn.com/profiles/" + id + "/content";
-        String result = HttpClientUtils.httpGetWithJson(url, false);
+        String result = RequestUtils.get(url, false);
         JSONObject jsonObject = JSONObject.parseObject(result);
         return jsonObject.getString("html");
     }

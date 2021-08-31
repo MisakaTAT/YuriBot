@@ -5,8 +5,8 @@ import com.alibaba.fastjson.JSON;
 import com.mikuac.bot.bean.antibili.AntiBiliBean;
 import com.mikuac.bot.bean.antibili.AntiBiliData;
 import com.mikuac.bot.bean.antibili.AntiBiliStat;
-import com.mikuac.bot.common.utils.HttpClientUtils;
 import com.mikuac.bot.common.utils.RegexUtils;
+import com.mikuac.bot.common.utils.RequestUtils;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.RegexConst;
 import com.mikuac.shiro.common.utils.MsgUtils;
@@ -51,7 +51,7 @@ public class AntiBiliApp extends BotPlugin {
     }
 
     private void getVideoInfo(String bvId) {
-        String result = HttpClientUtils.httpGetWithJson(ApiConst.BILI_VIDEO_INFO_API + bvId, false);
+        String result = RequestUtils.get(ApiConst.BILI_VIDEO_INFO_API + bvId, false);
         antiBiliBean = JSON.parseObject(result, AntiBiliBean.class);
     }
 

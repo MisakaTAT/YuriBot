@@ -39,7 +39,7 @@ public class SauceNao extends BotPlugin {
 
     public void searchResult(String picUrl) {
         String param = "api_key=" + Global.SAUCENAO_API_KEY + "&output_type=2&numres=3&db=999&url=" + picUrl;
-        String result = HttpClientUtils.httpGetWithJson(ApiConst.SAUCENAO_API + param, false);
+        String result = RequestUtils.get(ApiConst.SAUCENAO_API + param, false);
         sauceNaoBean = JSON.parseObject(result, SauceNaoBean.class);
     }
 

@@ -3,8 +3,8 @@ package com.mikuac.bot.plugins.aop;
 import com.alibaba.fastjson.JSON;
 import com.mikuac.bot.bean.r6s.*;
 import com.mikuac.bot.common.utils.CommonUtils;
-import com.mikuac.bot.common.utils.HttpClientUtils;
 import com.mikuac.bot.common.utils.RegexUtils;
+import com.mikuac.bot.common.utils.RequestUtils;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.RegexConst;
 import com.mikuac.shiro.common.utils.MsgUtils;
@@ -43,7 +43,7 @@ public class RainbowSixStats extends BotPlugin {
      * @param gameUserName 游戏用户名
      */
     public void getRainbowSixStats(String gameUserName) {
-        String result = HttpClientUtils.httpGetWithJson(ApiConst.R6S_API + gameUserName, true);
+        String result = RequestUtils.get(ApiConst.R6S_API + gameUserName, true);
         r6S = JSON.parseObject(result, R6S.class);
     }
 

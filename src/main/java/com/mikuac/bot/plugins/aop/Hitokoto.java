@@ -3,7 +3,7 @@ package com.mikuac.bot.plugins.aop;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.mikuac.bot.common.utils.HttpClientUtils;
+import com.mikuac.bot.common.utils.RequestUtils;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
@@ -64,7 +64,7 @@ public class Hitokoto extends BotPlugin {
     private char getType;
 
     public void getData(char type) {
-        String result = HttpClientUtils.httpGetWithJson(ApiConst.HITOKOTO_API + type, false);
+        String result = RequestUtils.get(ApiConst.HITOKOTO_API + type, false);
         JSONObject jsonObject = JSONObject.parseObject(result);
         hitokoto = jsonObject.getString("hitokoto");
         from = jsonObject.getString("from");

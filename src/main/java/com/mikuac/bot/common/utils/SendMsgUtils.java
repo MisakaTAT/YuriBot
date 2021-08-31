@@ -4,6 +4,7 @@ import com.mikuac.bot.config.Global;
 import com.mikuac.shiro.common.utils.MsgUtils;
 import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotContainer;
+import com.mikuac.shiro.dto.action.response.GroupInfoResp;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -45,61 +46,14 @@ public class SendMsgUtils {
     }
 
     public List<Long> getGroupList() throws InterruptedException {
-        int retryCount = 6;
-        int retryDelay = 10000;
-
         List<Long> groupIdList = new ArrayList<>();
-
-        //获取Bot对象
         Bot bot = botContainer.robots.get(Global.BOT_SELF_ID);
-        if (bot == null) {
-            for (int i = 1; i < retryCount; i++) {
-                log.info("Bot对象获取失败，当前失败[{}]次，剩余重试次数[{}]，将在" + (retryDelay / 1000) + "秒后重试~", i, retryCount - i - 1);
-                Thread.sleep(retryDelay);
-                bot = botContainer.robots.get(Global.BOT_SELF_ID);
-                if (bot != null) {
-                    log.info("Bot对象获取成功[{}]", bot);
-                    break;
-                }
-                if (i == 5) {
-                    log.error("Bot对象获取失败5次，将中止此函数");
-                    return groupIdList;
-                }
-            }
-        } else {
-            log.info("Bot对象获取成功[{}]", bot);
-        }
-
-        //获取群号列表
-        for (int i = 1; i < retryCount; i++) {
-            try {
-                int groupCount = 0;
-                if (bot != null) {
-                    groupCount = bot.getGroupList().getData().size();
-                }
-                if (groupCount > 0) {
-                    log.info("群组计数获取成功，当前群组数量[{}]", groupCount);
-                    //遍历群号
-                    for (int j = 0; j < groupCount; j++) {
-                        groupIdList.add(bot.getGroupList().getData().get(j).getGroupId());
-                    }
-                    break;
-                } else {
-                    log.error("群组计数获取失败，且未发生异常，将中止此函数，当前群组计数[{}]", groupCount);
-                    return groupIdList;
-                }
-            } catch (Exception e) {
-                log.error("群组计数获取失败，当前失败[{}]次，剩余重试次数[{}]，将在" + (retryDelay / 1000) + "秒后重试~", i, retryCount - i - 1);
-                if (i == 5) {
-                    log.error("群组计数获取失败5次，将中止此函数");
-                    return groupIdList;
-                }
-                Thread.sleep(retryDelay);
+        if (bot != null) {
+            for (GroupInfoResp groupInfoResp : bot.getGroupList().getData()) {
+                groupIdList.add(groupInfoResp.getGroupId());
             }
         }
-
         return groupIdList;
-
     }
 
 }

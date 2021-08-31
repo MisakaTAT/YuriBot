@@ -74,7 +74,7 @@ public class WhatAnime extends BotPlugin {
     }
 
     public void getBasicInfo(String picUrl) throws IOException {
-        String result = HttpClientUtils.httpGetWithJson(ApiConst.WHAT_ANIME_BASIC_API + picUrl, false);
+        String result = RequestUtils.get(ApiConst.WHAT_ANIME_BASIC_API + picUrl, false);
         basicInfo = JSON.parseObject(result, BasicInfo.class);
         // 取得基本信息后调用getDetailedData方法取得详细信息
         // api docs返回结果按相似性排序，从最相似到最不相似，所以取list第一个即可
@@ -92,7 +92,7 @@ public class WhatAnime extends BotPlugin {
         JSONObject json = new JSONObject();
         json.put("query", graphqlQuery);
         json.put("variables", variables);
-        String result = HttpUtils.post(ApiConst.WHAT_ANIME_INFO_API, json.toJSONString());
+        String result = RequestUtils.post(ApiConst.WHAT_ANIME_INFO_API, json.toJSONString());
         animeInfo = JSON.parseObject(result, AnimeInfo.class);
     }
 

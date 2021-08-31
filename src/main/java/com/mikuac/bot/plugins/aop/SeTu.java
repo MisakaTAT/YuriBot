@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.mikuac.bot.bean.setu.Data;
 import com.mikuac.bot.bean.setu.SetuBean;
 import com.mikuac.bot.common.task.AsyncTask;
-import com.mikuac.bot.common.utils.HttpClientUtils;
+import com.mikuac.bot.common.utils.RequestUtils;
 import com.mikuac.bot.config.ApiConst;
 import com.mikuac.bot.config.Global;
 import com.mikuac.bot.config.RegexConst;
@@ -57,10 +57,9 @@ public class SeTu extends BotPlugin {
     }
 
     public void getData(String r18) {
-        String result = HttpClientUtils.httpGetWithJson(ApiConst.SETU_API + Global.SETU_API_KEY + r18, false);
+        String result = RequestUtils.get(ApiConst.SETU_API + Global.SETU_API_KEY + r18, false);
         seTuBean = JSON.parseObject(result, SetuBean.class);
     }
-
 
     @Override
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
@@ -90,9 +89,8 @@ public class SeTu extends BotPlugin {
                             picUrl = data.getUrl();
                         }
                         bot.sendPrivateMsg(userId, stInfoMsg.build(), false);
-                        // 构建闪照图片消息
-                        MsgUtils flashPic = MsgUtils.builder().flashImg(picUrl);
-                        ActionData<MsgId> picMsg = bot.sendPrivateMsg(userId, flashPic.build(), false);
+                        MsgUtils pic = MsgUtils.builder().img(picUrl);
+                        ActionData<MsgId> picMsg = bot.sendPrivateMsg(userId, pic.build(), false);
                         if (picMsg.getData() != null) {
                             asyncTask.deleteMsg(picMsg.getData().getMessageId(), botContainer.robots.get(Global.BOT_SELF_ID));
                         }
@@ -144,9 +142,8 @@ public class SeTu extends BotPlugin {
                             picUrl = data.getUrl();
                         }
                         bot.sendGroupMsg(groupId, stInfoMsg.build(), false);
-                        // 构建闪照图片消息
-                        MsgUtils flashPic = MsgUtils.builder().flashImg(picUrl);
-                        ActionData<MsgId> picMsg = bot.sendGroupMsg(groupId, flashPic.build(), false);
+                        MsgUtils pic = MsgUtils.builder().img(picUrl);
+                        ActionData<MsgId> picMsg = bot.sendGroupMsg(groupId, pic.build(), false);
                         if (picMsg.getData() != null) {
                             asyncTask.deleteMsg(picMsg.getData().getMessageId(), botContainer.robots.get(Global.BOT_SELF_ID));
                         }
