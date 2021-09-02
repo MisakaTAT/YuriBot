@@ -1,6 +1,6 @@
 package com.mikuac.bot.common.utils;
 
-import com.mikuac.bot.config.Global;
+import com.mikuac.bot.config.Config;
 import com.mikuac.shiro.common.utils.MsgUtils;
 import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotContainer;
@@ -26,28 +26,28 @@ public class SendMsgUtils {
     private BotContainer botContainer;
 
     public void sendPrivateMsgForMsg(long userId, MsgUtils msg) {
-        Bot bot = botContainer.robots.get(Global.BOT_SELF_ID);
+        Bot bot = botContainer.robots.get(Config.BOT_SELF_ID);
         bot.sendPrivateMsg(userId, msg.build(), false);
     }
 
     public void sendGroupMsgForMsg(long groupId, MsgUtils msg) {
-        Bot bot = botContainer.robots.get(Global.BOT_SELF_ID);
+        Bot bot = botContainer.robots.get(Config.BOT_SELF_ID);
         bot.sendGroupMsg(groupId, msg.build(), false);
     }
 
     public void sendPrivateMsgForText(long userId, String msg) {
-        Bot bot = botContainer.robots.get(Global.BOT_SELF_ID);
+        Bot bot = botContainer.robots.get(Config.BOT_SELF_ID);
         bot.sendPrivateMsg(userId, msg, false);
     }
 
     public void sendGroupMsgForText(long groupId, String msg) {
-        Bot bot = botContainer.robots.get(Global.BOT_SELF_ID);
+        Bot bot = botContainer.robots.get(Config.BOT_SELF_ID);
         bot.sendGroupMsg(groupId, msg, false);
     }
 
     public List<Long> getGroupList() throws InterruptedException {
         List<Long> groupIdList = new ArrayList<>();
-        Bot bot = botContainer.robots.get(Global.BOT_SELF_ID);
+        Bot bot = botContainer.robots.get(Config.BOT_SELF_ID);
         if (bot != null) {
             for (GroupInfoResp groupInfoResp : bot.getGroupList().getData()) {
                 groupIdList.add(groupInfoResp.getGroupId());

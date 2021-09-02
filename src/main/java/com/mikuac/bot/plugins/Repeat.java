@@ -3,7 +3,7 @@ package com.mikuac.bot.plugins;
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.util.RandomUtil;
-import com.mikuac.bot.config.Global;
+import com.mikuac.bot.config.Config;
 import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
@@ -39,7 +39,7 @@ public class Repeat extends BotPlugin {
      */
     Map<Long, Integer> countMap = new ConcurrentHashMap<>();
 
-    int randomCount = RandomUtil.randomInt(Global.REPEAT_RANDOM_COUNT_SIZE);
+    int randomCount = RandomUtil.randomInt(Config.REPEAT_RANDOM_COUNT_SIZE);
 
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
@@ -52,7 +52,7 @@ public class Repeat extends BotPlugin {
         int count = countMap.getOrDefault(groupId, 0);
 
         // 过滤指令
-        if (msg.startsWith(Global.CMD_PREFIX)) {
+        if (msg.startsWith(Config.CMD_PREFIX)) {
             return MESSAGE_IGNORE;
         }
 

@@ -1,6 +1,6 @@
 package com.mikuac.bot.plugins.aop;
 
-import com.mikuac.bot.config.Global;
+import com.mikuac.bot.config.Config;
 import com.mikuac.bot.config.RegexConst;
 import com.mikuac.bot.entity.PluginSwitchEntity;
 import com.mikuac.bot.repository.PluginSwitchRepository;
@@ -73,7 +73,7 @@ public class PluginSwitch extends BotPlugin {
         String pluginName = msg.replaceAll("(.*)插件(.*)用-", "");
         String type = msg.replaceAll("插件(.*)用-(.*)", "");
 
-        if (msg.matches(RegexConst.PLUGIN_DISABLE) && userId == Global.BOT_ADMIN_ID) {
+        if (msg.matches(RegexConst.PLUGIN_DISABLE) && userId == Config.BOT_ADMIN_ID) {
             switch (type) {
                 case "群组":
                     pluginSwitchRepository.groupDisable(pluginName, true);
@@ -94,7 +94,7 @@ public class PluginSwitch extends BotPlugin {
             }
         }
 
-        if (msg.matches(RegexConst.PLUGIN_ENABLE) && userId == Global.BOT_ADMIN_ID) {
+        if (msg.matches(RegexConst.PLUGIN_ENABLE) && userId == Config.BOT_ADMIN_ID) {
             switch (type) {
                 case "群组":
                     pluginSwitchRepository.groupDisable(pluginName, false);

@@ -6,7 +6,7 @@ import cn.hutool.core.io.watch.watchers.DelayWatcher;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mikuac.bot.bean.ConfigBean;
-import com.mikuac.bot.config.Global;
+import com.mikuac.bot.config.Config;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.PostConstruct;
@@ -95,14 +95,14 @@ public class ConfigUtils {
             ConfigBean configBean = JSON.parseObject(FileUtils.readFile(FILE_NAME), ConfigBean.class);
             if (isReload) {
                 log.info("检测到配置文件修改，即将重载配置文件");
-                Global.config = configBean;
-                Global.set();
+                Config.config = configBean;
+                Config.set();
                 log.info("配置文件已重载");
                 return configBean;
             }
             log.info("配置文件解析完毕");
-            Global.config = configBean;
-            Global.set();
+            Config.config = configBean;
+            Config.set();
             return configBean;
         } catch (Exception e) {
             log.error("配置文件解析失败或生成默认配置文件失败，即将退出: {}", e.getMessage());

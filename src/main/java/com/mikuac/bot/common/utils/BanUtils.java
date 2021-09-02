@@ -1,6 +1,6 @@
 package com.mikuac.bot.common.utils;
 
-import com.mikuac.bot.config.Global;
+import com.mikuac.bot.config.Config;
 import com.mikuac.bot.entity.BanEntity;
 import com.mikuac.bot.repository.BanRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -39,10 +39,10 @@ public class BanUtils {
         long nowTime = Instant.now().getEpochSecond();
 
         // 判断是否还在限制时间内
-        if (startTime + Global.BAN_UTILS_LIMIT_TIME >= nowTime && userId != Global.BOT_ADMIN_ID) {
+        if (startTime + Config.BAN_UTILS_LIMIT_TIME >= nowTime && userId != Config.BOT_ADMIN_ID) {
             int getMsgCount = msgCountMap.getOrDefault(userId, 0);
             // 如果在限制时间内发送的消息次数大于限制次数则封禁
-            if (getMsgCount > Global.BAN_UTILS_LIMIT_COUNT) {
+            if (getMsgCount > Config.BAN_UTILS_LIMIT_COUNT) {
                 log.info("用户：[{}]已触发滥用规则被封禁", userId);
                 BanEntity banEntity = new BanEntity();
                 banEntity.setUserId(userId);

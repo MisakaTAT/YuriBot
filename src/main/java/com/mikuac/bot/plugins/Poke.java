@@ -1,6 +1,6 @@
 package com.mikuac.bot.plugins;
 
-import com.mikuac.bot.config.Global;
+import com.mikuac.bot.config.Config;
 import com.mikuac.shiro.common.utils.MsgUtils;
 import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotPlugin;
@@ -25,8 +25,8 @@ public class Poke extends BotPlugin {
         long userId = event.getUserId();
         long targetId = event.getTargetId();
 
-        if (event.getSenderId() != Global.BOT_SELF_ID) {
-            if (Global.BOT_SELF_ID == targetId || Global.BOT_ADMIN_ID == targetId) {
+        if (event.getSenderId() != Config.BOT_SELF_ID) {
+            if (Config.BOT_SELF_ID == targetId || Config.BOT_ADMIN_ID == targetId) {
                 bot.sendGroupMsg(groupId, MsgUtils.builder().poke(userId).build(), false);
             }
         }

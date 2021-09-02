@@ -8,7 +8,7 @@ import com.mikuac.bot.common.utils.ConfigUtils;
  *
  * @author Zero
  */
-public class Global {
+public class Config {
 
     public static String SERVER_ADDRESS;
     public static int SERVER_PORT;

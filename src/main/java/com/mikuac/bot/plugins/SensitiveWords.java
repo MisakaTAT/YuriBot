@@ -1,7 +1,7 @@
 package com.mikuac.bot.plugins;
 
 import cn.hutool.dfa.WordTree;
-import com.mikuac.bot.config.Global;
+import com.mikuac.bot.config.Config;
 import com.mikuac.bot.entity.SensitiveWordEntity;
 import com.mikuac.bot.repository.SensitiveWordRepository;
 import com.mikuac.shiro.common.utils.MsgUtils;
@@ -71,7 +71,7 @@ public class SensitiveWords extends BotPlugin {
         long groupId = event.getGroupId();
         int msgId = event.getMessageId();
         // 检查Bot是否有管理员权限
-        ActionData<GroupMemberInfoResp> groupBotInfo = bot.getGroupMemberInfo(groupId, Global.BOT_SELF_ID, false);
+        ActionData<GroupMemberInfoResp> groupBotInfo = bot.getGroupMemberInfo(groupId, Config.BOT_SELF_ID, false);
         if (groupBotInfo != null && groupBotInfo.getData() != null) {
             if (!ADMIN_ROLE.equals(groupBotInfo.getData().getRole())) {
                 return MESSAGE_IGNORE;
@@ -81,7 +81,7 @@ public class SensitiveWords extends BotPlugin {
         ActionData<GroupMemberInfoResp> groupMemberInfo = bot.getGroupMemberInfo(groupId, userId, false);
         if (groupMemberInfo != null && groupMemberInfo.getData() != null) {
             String getRole = groupMemberInfo.getData().getRole();
-            if (ADMIN_ROLE.equals(getRole) || Global.BOT_ADMIN_ID == userId || OWNER_ROLE.equals(getRole)) {
+            if (ADMIN_ROLE.equals(getRole) || Config.BOT_ADMIN_ID == userId || OWNER_ROLE.equals(getRole)) {
                 return MESSAGE_IGNORE;
             }
         }
@@ -90,7 +90,7 @@ public class SensitiveWords extends BotPlugin {
             bot.deleteMsg(msgId);
             MsgUtils sendMsg = MsgUtils.builder()
                     .at(userId)
-                    .text(Global.BOT_NAME + "注意到您发送到内容存在不适当的内容，已撤回处理，请注意言行哟～");
+                    .text(Config.BOT_NAME + "注意到您发送到内容存在不适当的内容，已撤回处理，请注意言行哟～");
             bot.sendGroupMsg(groupId, sendMsg.build(), false);
             log.info("检测到敏感词: [{}]，来自群: [{}]，发送者: [{}]", msg, groupId, userId);
             // 如果是敏感词就阻止后面的插件执行，防止复读

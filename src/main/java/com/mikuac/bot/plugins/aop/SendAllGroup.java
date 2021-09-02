@@ -2,7 +2,7 @@ package com.mikuac.bot.plugins.aop;
 
 import com.mikuac.bot.common.utils.RegexUtils;
 import com.mikuac.bot.common.utils.SendMsgUtils;
-import com.mikuac.bot.config.Global;
+import com.mikuac.bot.config.Config;
 import com.mikuac.bot.config.RegexConst;
 import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotPlugin;
@@ -35,7 +35,7 @@ public class SendAllGroup extends BotPlugin {
     public int onPrivateMessage(@NotNull Bot bot, PrivateMessageEvent event) {
         long userId = event.getUserId();
         String msg = event.getMessage();
-        if (userId != Global.BOT_ADMIN_ID) {
+        if (userId != Config.BOT_ADMIN_ID) {
             bot.sendPrivateMsg(userId, "此操作仅管理员可执行哟～", false);
             return MESSAGE_IGNORE;
         }

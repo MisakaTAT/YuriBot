@@ -1,7 +1,7 @@
 package com.mikuac.bot.common.task;
 
 import com.mikuac.bot.BotApplication;
-import com.mikuac.bot.config.Global;
+import com.mikuac.bot.config.Config;
 import com.mikuac.shiro.core.Bot;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -25,7 +25,7 @@ public class AsyncTask {
     public void deleteMsg(int msgId, Bot bot) {
         if (msgId != 0) {
             try {
-                Thread.sleep(Global.SETU_DELETE_TIME * 1000L);
+                Thread.sleep(Config.SETU_DELETE_TIME * 1000L);
                 bot.deleteMsg(msgId);
                 log.info("色图撤回成功，消息ID：[{}]", msgId);
             } catch (InterruptedException e) {

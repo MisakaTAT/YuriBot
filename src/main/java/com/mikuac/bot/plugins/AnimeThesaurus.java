@@ -5,7 +5,7 @@ import cn.hutool.json.JSONObject;
 import com.alibaba.fastjson.JSONArray;
 import com.mikuac.bot.common.utils.FileUtils;
 import com.mikuac.bot.common.utils.RegexUtils;
-import com.mikuac.bot.config.Global;
+import com.mikuac.bot.config.Config;
 import com.mikuac.bot.config.RegexConst;
 import com.mikuac.shiro.common.utils.MsgUtils;
 import com.mikuac.shiro.common.utils.ShiroUtils;
@@ -60,8 +60,8 @@ public class AnimeThesaurus extends BotPlugin {
         String atId = RegexUtils.regexGroup(RegexConst.GROUP_AT, msg, 1);
         if (atId != null && !atId.isEmpty()) {
             long botId = Long.parseLong(atId);
-            if (Global.BOT_SELF_ID == botId) {
-                msg = msg.replace(String.format("[CQ:at,qq=%s] ", Global.BOT_SELF_ID), "");
+            if (Config.BOT_SELF_ID == botId) {
+                msg = msg.replace(String.format("[CQ:at,qq=%s] ", Config.BOT_SELF_ID), "");
                 String sendMsg = getRespList(msg);
                 if (sendMsg == null) {
                     return MESSAGE_IGNORE;

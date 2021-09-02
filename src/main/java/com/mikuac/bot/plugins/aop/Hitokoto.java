@@ -5,7 +5,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.mikuac.bot.common.utils.RequestUtils;
 import com.mikuac.bot.config.ApiConst;
-import com.mikuac.bot.config.Global;
+import com.mikuac.bot.config.Config;
 import com.mikuac.bot.config.RegexConst;
 import com.mikuac.shiro.common.utils.MsgUtils;
 import com.mikuac.shiro.core.Bot;
@@ -80,9 +80,9 @@ public class Hitokoto extends BotPlugin {
             long userId = event.getUserId();
             long getNowTime = Instant.now().getEpochSecond();
             long lastGetTime = lastGetTimeMap.getOrDefault(groupId + userId, 0L);
-            long rCd = Math.abs((getNowTime - lastGetTime) - Global.HITOKOTO_CD_TIME);
+            long rCd = Math.abs((getNowTime - lastGetTime) - Config.HITOKOTO_CD_TIME);
             // 逻辑处理
-            if (getNowTime >= lastGetTime + Global.HITOKOTO_CD_TIME) {
+            if (getNowTime >= lastGetTime + Config.HITOKOTO_CD_TIME) {
                 try {
                     bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("一言获取中~").build(), false);
                     String msgType = msg.replaceAll("(.*?)-", "");
@@ -116,9 +116,9 @@ public class Hitokoto extends BotPlugin {
             long userId = event.getUserId();
             long getNowTime = Instant.now().getEpochSecond();
             long lastGetTime = lastGetTimeMap.getOrDefault(userId, 0L);
-            long rCd = Math.abs((getNowTime - lastGetTime) - Global.HITOKOTO_CD_TIME);
+            long rCd = Math.abs((getNowTime - lastGetTime) - Config.HITOKOTO_CD_TIME);
             // 逻辑处理
-            if (getNowTime >= lastGetTime + Global.HITOKOTO_CD_TIME) {
+            if (getNowTime >= lastGetTime + Config.HITOKOTO_CD_TIME) {
                 bot.sendPrivateMsg(userId, "一言获取中~", false);
                 String msgType = msg.replaceAll("(.*?)-", "");
                 try {

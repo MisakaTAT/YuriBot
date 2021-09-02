@@ -7,7 +7,7 @@ import com.mikuac.bot.bean.whatanime.AnimeInfo;
 import com.mikuac.bot.bean.whatanime.BasicInfo;
 import com.mikuac.bot.common.utils.*;
 import com.mikuac.bot.config.ApiConst;
-import com.mikuac.bot.config.Global;
+import com.mikuac.bot.config.Config;
 import com.mikuac.bot.config.RegexConst;
 import com.mikuac.shiro.common.utils.MsgUtils;
 import com.mikuac.shiro.core.Bot;
@@ -147,7 +147,7 @@ public class WhatAnime extends BotPlugin {
                 return MESSAGE_IGNORE;
             }
             SearchModeUtils.setMap(key, groupId, userId, "group");
-            bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("您已进入搜番模式，请发送番剧截图来帮您检索~ (注意：" + Global.BAN_UTILS_LIMIT_TIME + "秒内发送超过" + Global.BAN_UTILS_LIMIT_COUNT + "张图片将会触发滥用规则被封禁)").build(), false);
+            bot.sendGroupMsg(groupId, MsgUtils.builder().at(userId).text("您已进入搜番模式，请发送番剧截图来帮您检索~ (注意：" + Config.BAN_UTILS_LIMIT_TIME + "秒内发送超过" + Config.BAN_UTILS_LIMIT_COUNT + "张图片将会触发滥用规则被封禁)").build(), false);
             return MESSAGE_IGNORE;
         }
 
@@ -214,7 +214,7 @@ public class WhatAnime extends BotPlugin {
                 return MESSAGE_IGNORE;
             }
             SearchModeUtils.setMap(key, userId, "private");
-            bot.sendPrivateMsg(userId, "您已进入搜番模式，请发送番剧截图来帮您检索~ (注意：" + Global.BAN_UTILS_LIMIT_TIME + "秒内发送超过" + Global.BAN_UTILS_LIMIT_COUNT + "张图片将会触发滥用规则被封禁)", false);
+            bot.sendPrivateMsg(userId, "您已进入搜番模式，请发送番剧截图来帮您检索~ (注意：" + Config.BAN_UTILS_LIMIT_TIME + "秒内发送超过" + Config.BAN_UTILS_LIMIT_COUNT + "张图片将会触发滥用规则被封禁)", false);
             return MESSAGE_IGNORE;
         }
 

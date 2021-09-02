@@ -1,6 +1,6 @@
 package com.mikuac.bot;
 
-import com.mikuac.bot.config.Global;
+import com.mikuac.bot.config.Config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,10 +31,10 @@ public class BotApplication {
     private static ConfigurableApplicationContext context;
 
     public static void reboot() {
-        log.info("开始重启{}", Global.BOT_NAME);
+        log.info("开始重启{}", Config.BOT_NAME);
         context.close();
         BotApplication.context = SpringApplication.run(BotApplication.class, args);
-        log.info("{}重启完毕", Global.BOT_NAME);
+        log.info("{}重启完毕", Config.BOT_NAME);
     }
 
     public static void shutdown() {
@@ -50,7 +50,7 @@ public class BotApplication {
     public static void main(String[] args) {
         BotApplication.args = args;
         BotApplication.context = SpringApplication.run(BotApplication.class, args);
-        log.info("你好~ 我是" + Global.BOT_NAME + " ⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄");
+        log.info("你好~ 我是" + Config.BOT_NAME + " ⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄");
     }
 
     @Bean
@@ -66,11 +66,11 @@ public class BotApplication {
     public WebServerFactoryCustomizer webServerFactoryCustomizer() {
         return (WebServerFactoryCustomizer<ConfigurableServletWebServerFactory>) factory -> {
             try {
-                factory.setAddress(InetAddress.getByName(Global.SERVER_ADDRESS));
+                factory.setAddress(InetAddress.getByName(Config.SERVER_ADDRESS));
             } catch (UnknownHostException e) {
                 log.error("启动地址设置失败: {}", e.getMessage());
             }
-            factory.setPort(Global.SERVER_PORT);
+            factory.setPort(Config.SERVER_PORT);
         };
     }
 
