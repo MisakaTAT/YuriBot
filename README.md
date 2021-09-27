@@ -1,5 +1,9 @@
 <div align="center">
 
+>#### 由于代码写的太烂，该项目正在使用 Kotlin 重构中 ···
+>#### 如果您对该项目感兴趣请移步至 [Yuri-Kotlin](https://github.com/MisakaTAT/Yuri-Kotlin)
+
+
 # YuriBot
 
 </div>
